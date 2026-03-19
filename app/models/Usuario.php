@@ -2,16 +2,9 @@
 
 require __DIR__ . "/Conexion.php";
 
-class Usuario
+class Usuario extends Model
 {
-    private $_conexion;
-
-    public function __construct($conexion)
-    {
-        $this->_conexion = $conexion; // guardamos la conexión para usarla en los métodos
-    }
-
-
+    
     public function obtenerUsuario($usuario)
     {
         $consulta = "SELECT * FROM Usuario WHERE nombre = :nombre";
