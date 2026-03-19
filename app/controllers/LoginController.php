@@ -12,14 +12,19 @@ class LoginController
         $this->usuarioModelo = new Usuario($conexion);
     }
 
-    public function login($DatosPost)
+    public function login()
     {
+        // Obtener el contenido raw del body
+        $inputJSON = file_get_contents('php://input');
 
-        $errores=[];
+        // Convertir a array asociativo
+        $DatosPost = json_decode($inputJSON, true);
+
+        $errores = [];
 
         $usuario = trim($DatosPost['usuario'] ?? '');
         $contrasena = trim($DatosPost['contrasena'] ?? '');
-        
+
 
         if ($usuario == '') {
             $errores['usuario'] = "Introduce un usuario";
@@ -32,12 +37,12 @@ class LoginController
         if (empty($errores)) {
             $user_info = $this->usuarioModelo->obtenerUsuario($usuario);
             if (!$user_info) {
-                $errores['usuario'] = "Usuario no existe";     
-            }
-
-            $contrasenaInfo = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
-            if (!$contrasenaInfo) {
-                $errores['contrasena'] = "contraseña incorrecta";
+                $errores['usuario'] = "Usuario no existe";
+            } else {
+                $contrasenaInfo = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
+                if (!$contrasenaInfo) {
+                    $errores['contrasena'] = "contraseña incorrecta";
+                }
             }
 
             if ($user_info && $contrasenaInfo) {
@@ -45,12 +50,21 @@ class LoginController
 
                 $_SESSION["usuario"] = $usuario;
 
-                header("location: ../index.php");
+                header('Content-Type: application/json');
+                echo json_encode([
+                    "status" => "ok",
+                    "mensaje" => "Usuario inicio sesión correctamente"
+                ]);
                 exit();
 
-            }else{
-                return $errores;
+            } else {
+                echo json_encode([
+                    "status" => "error",
+                    "mensaje" => "Usuario no pudo iniciar sesión correctamente"
+                ]);
+                exit();
             }
+
         }
 
     }
