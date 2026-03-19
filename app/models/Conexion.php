@@ -22,8 +22,6 @@ $_bd="Aparkt";
         //echo "Todo funciona correctamente. Estás conectado! <br>";
 
     } catch (PDOException $e) {
-        die("Error de conexion: Vuelve a intertarlo");
+        die($e->getMessage());
     }
-?>
-
 ?>

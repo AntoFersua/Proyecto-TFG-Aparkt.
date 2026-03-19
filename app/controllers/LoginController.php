@@ -15,33 +15,32 @@ class LoginController
     public function login($DatosPost)
     {
 
+        $errores=[];
+
         $usuario = trim($DatosPost['usuario'] ?? '');
         $contrasena = trim($DatosPost['contrasena'] ?? '');
-        $errores = false;
+        
 
         if ($usuario == '') {
-            $err_usuario = "Introduce un usuario";
-            $errores = true;
+            $errores['usuario'] = "Introduce un usuario";
         }
 
         if ($contrasena == '') {
-            $err_contrasena = "Introduce un contraseña";
-            $errores = true;
+            $errores['contrasena'] = "Introduce un contraseña";
         }
 
-        if (!$errores) {
-            $user_info = $this->usuarioModelo->obtenerPorUsuario($usuario);
+        if (empty($errores)) {
+            $user_info = $this->usuarioModelo->obtenerUsuario($usuario);
             if (!$user_info) {
-                $err_usuario = "Usuario no existe";
-                $errores = true;
+                $errores['usuario'] = "Usuario no existe";     
             }
 
-            if (!$this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena'])) {
-                $err_contrasena = "contraseña incorrecta";
-                $errores = true;
+            $contrasenaInfo = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
+            if (!$contrasenaInfo) {
+                $errores['contrasena'] = "contraseña incorrecta";
             }
 
-            if ($user_info && $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena'])) {
+            if ($user_info && $contrasenaInfo) {
                 session_start();
 
                 $_SESSION["usuario"] = $usuario;
@@ -49,6 +48,8 @@ class LoginController
                 header("location: ../index.php");
                 exit();
 
+            }else{
+                return $errores;
             }
         }
 
