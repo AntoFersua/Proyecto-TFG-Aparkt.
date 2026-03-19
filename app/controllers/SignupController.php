@@ -25,12 +25,12 @@ class SignupController
 
         $usuario = trim($DatosPost['usuario'] ?? "");
         $contrasena = trim($DatosPost['contrasena'] ?? "");
-        $email = strtolower(trim($DatosPost['email'] ?? ""));
+        $email = filter_var($DatosPost['email'], FILTER_SANITIZE_EMAIL) ?? "";
 
         if ($usuario == "") {
             $errores["usuario"] = "Introduzca un nombre de usuario";
-        } elseif (strlen($usuario) < 8 || strlen($usuario) > 16) {
-            $errores["usuario"] = "usuario debe tener entre 8 a 16 caracteres";
+        } elseif (!preg_match("/^[a-zA-Z][a-zA-Z0-9_]{7,15}$/", $usuario)) {
+            $errores["usuario"] = "Usuario inválido: debe empezar con letra, solo letras, números y _, entre 8 y 16 caracteres";
         }
 
         if ($contrasena == "") {
@@ -53,8 +53,7 @@ class SignupController
         if (empty($errores)) {
             if ($this->usuarioModelo->obtenerUsuario($usuario)) {
                 $errores["usuario"] = "Ya existe un usuario con ese nombre";
-            }
-            if ($this->usuarioModelo->existeEmail($email)) {
+            }elseif ($this->usuarioModelo->existeEmail($email)) {
                 $errores["email"] = "Ya existe un usuario con ese email";
             }
         }
