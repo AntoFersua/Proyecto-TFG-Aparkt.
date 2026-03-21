@@ -11,7 +11,7 @@
     margin:0;
     padding:0;
     box-sizing: border-box;
-    /*outline: 1px solid red;*/ 
+    outline: 1px solid red; 
 }
 
 /* HEADER */
@@ -83,6 +83,7 @@ footer > div,
     display: flex;
     flex-direction: column; 
     gap: 10px;
+    text-align: center;
     flex: 1; 
 }
 
@@ -104,6 +105,8 @@ footer p {
 footer > p {          
     text-align: center;   
     font-size: 12px;
+    padding-top: 10px;
+    width: 100%;
 }
 
 
