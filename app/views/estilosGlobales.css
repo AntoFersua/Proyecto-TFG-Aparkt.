@@ -1,0 +1,103 @@
+/*Nuestros colores de Aparkt*/
+:root {
+  --color-azulOscuro: #005A60 ;
+  --color-verde: #34AF72; 
+  --color-verdeAmarillo: #B5FFC2;
+  --color-naranja: #D99E73;
+}
+
+
+*, *::before, *::after{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    outline: 1px solid red;
+}
+
+/* HEADER */
+header {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-verde);
+}
+
+/* logo */
+header img {
+    display: block;
+}
+
+
+/*navegacion header IZQUIERDA*/
+.navIzquierda ul {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+}
+
+
+.navIzquierda a {
+    text-decoration: none;
+    font-weight: 400;
+}
+
+/*navegación header DERECHA*/
+.navDerecha ul {
+    display: flex;
+    gap: 10px;
+    list-style: none; 
+}
+
+.navDerecha a {
+    text-decoration: none;
+    font-weight: 400;
+    color: black;
+}
+
+/* botones */
+#botonesDerecha {
+    display: flex;
+}
+
+
+
+/* FOOTER */
+footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: var(--color-verdeAmarillo);
+    padding: 30px 20px;
+}
+
+/* COLUMNAS (logo, pago, redes) */
+footer > div,
+.sectionRedes,
+.sectionPago {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    flex: 1; 
+}
+
+/* logo */
+footer img {
+    display: block;
+}
+
+/* textos */
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+
+/* copyright */
+footer > p {
+    width: 100%;          
+    text-align: center;   
+    font-size: 12px;
+}

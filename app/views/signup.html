@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="estilosGlobales.css" />
+    <script src=""></script>
+  </head>
+  <body>
+    <!--HEADER-->
+    <header>
+      <!-- NAVEGACIÓN -->
+      <img src="logo.png" alt="Logo" />
+      <!--METER LOGO Y PONER DISPLAY:BLOCK-->
+
+      <nav class="navIzquierda">
+        <ul>
+          <li><a href="#">Mapa</a></li>
+          <li><a href="#">Aparkt</a></li>
+        </ul>
+      </nav>
+      <nav class="navDerecha">
+        <ul>
+          <li><a href="#">Log In</a></li>
+          <li><a href="#">Sign Up</a></li>
+        </ul>
+      </nav>
+      <div id="botonesDerecha">
+        <button>Idioma</button>
+        <button>Toggle</button>
+        <!--METER TOGGLE -->
+      </div>
+    </header>
+
+    <!--MAIN-->
+    <main>
+      <!-- Lado izquierdo (logo) -->
+      <section class="izquierda">
+        <img src="logo.png" alt="Logo" />
+        <!--METER LOGO -->
+
+        <label>
+          <input type="checkbox" required /> Acepto los Términos de servicio y
+          política de privacidad
+        </label>
+
+        <button type="submit">Crear Cuenta</button>
+      </section>
+
+      <!-- Lado derecho (formulario) -->
+      <section class="derecha">
+        <h2>Crear tu cuenta</h2>
+
+        <form>
+          <div>
+            <label>Nombre</label>
+            <input type="text" placeholder="Introduce tu nombre" required />
+          </div>
+
+          <div>
+            <label>Apellidos</label>
+            <input type="text" placeholder="Introduce tus apellidos" required />
+          </div>
+
+          <div>
+            <label>Correo Electrónico</label>
+            <input type="email" placeholder="Introduce tu correo" required />
+          </div>
+
+          <div>
+            <label>Número Teléfono</label>
+            <input
+              type="tel"
+              placeholder="Introduce tu número de teléfono"
+              required
+            />
+          </div>
+
+          <div>
+            <label>Contraseña</label>
+            <input type="password" placeholder="Crea una contraseña" required />
+            <small
+              >La contraseña tiene que tener mínimo 8 caracteres y 1 caracter
+              especial</small
+            >
+          </div>
+
+          <div>
+            <label>Confirmar Contraseña</label>
+            <input
+              type="password"
+              placeholder="Confirma tu contraseña"
+              required
+            />
+          </div>
+
+          <p>¿Ya tienes cuenta? <a href="#">Iniciar sesión</a></p>
+        </form>
+      </section>
+    </main>
+
+    <!--FOOTER-->
+    <footer>
+      <div>
+        <img src="logo.png" alt="Logo" />
+        <!--METER LOGO -->
+      </div>
+      <!--redes-->
+      <section class="sectionRedes">
+        <p>Instagram</p>
+        <p>LinkedIn</p>
+        <p>Twitter</p>
+        <p>Youtube</p>
+        <p>TikTok</p>
+      </section>
+
+      <!--pago-->
+      <section class="sectionPago">
+        <p>PayPal</p>
+        <p>Bizzum</p>
+        <p>Tarjeta de crédito</p>
+      </section>
+
+      <p>2026.Copyright</p>
+    </footer>
+  </body>
+</html>
