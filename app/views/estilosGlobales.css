@@ -14,6 +14,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* outline: 1px solid red; */
 }
 
 body {
@@ -31,12 +32,10 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
-  background: rgba(0, 90, 96, 0.85);
-  /* box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15); */
+  background: linear-gradient(to bottom, #005a60 0%, #34af72 100%);
   position: sticky;
   top: 0;
   z-index: 10;
-  overflow: visible;
 
   .logoHeader {
     display: flex;
@@ -77,7 +76,11 @@ header {
         transition: transform 0.3s ease;
 
         &:hover {
-          transform: translateY(10px);
+          transform: translateY(15px);
+          -webkit-transform: translateY(15px);
+          -moz-transform: translateY(15px);
+          -ms-transform: translateY(15px);
+          -o-transform: translateY(15px);
         }
 
         a {
@@ -213,6 +216,8 @@ header {
 /* MAIN */
 main {
   flex: 1;
+  padding-top: 50px;
+  padding-inline: 10%;
 }
 
 /* FOOTER */
@@ -285,8 +290,4 @@ footer {
 
 main img {
   height: 300px;
-}
-
-main {
-  padding-top: 50px;
 }
