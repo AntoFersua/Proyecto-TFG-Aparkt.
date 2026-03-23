@@ -218,14 +218,15 @@ main {
   flex: 1;
   padding-top: 50px;
   padding-inline: 10%;
+  min-height: 100vh;
+  
+  z-index: 1;
   /*imagen de fondo */
   background-image: url("fondoAparkt.png"); 
   background-size: cover;     
   background-position: center; 
   background-repeat: no-repeat;
-  position: relative; 
-  z-index: 1;
-  min-height: 100vh;
+  position: relative;
 }
 
 /* FOOTER */
@@ -233,16 +234,15 @@ footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-start;
-  background: rgba(0, 90, 96, 0.85);
-  padding: 25px 30px;
+  align-items: center;
+  background: var(--color-azulOscuro);
+  padding: 10px 20px;
   box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.15);
 
   & > div,
   .sectionRedes,
   .sectionPago {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     gap: 10px;
     flex: 1;
   }
@@ -265,14 +265,13 @@ footer {
       background: transparent;
 
       &:hover {
-        background-color: var(--color-verde);
+        background-color: rgba(255, 255, 255, 0.2);
         transform: translateY(-2px);
       }
     }
   }
 
   .sectionRedes {
-    grid-template-rows: repeat(2, 1fr);
   }
 
   & > p {
