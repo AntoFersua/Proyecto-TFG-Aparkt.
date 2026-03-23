@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mapa Aparkt</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.js"></script>
+    <script src="index.js"></script>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        #mapa{
+            width: 100%;
+            position: absolute; 
+            top: 0; 
+            bottom: 0; 
+        }
+    </style>
 </head>
 <body>
-    <h1>HOLAAAAA</h1>
-    <h2>Que tal</h2>
+    <div id="mapa"></div>
 </body>
 </html>
