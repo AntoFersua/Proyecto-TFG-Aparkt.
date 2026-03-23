@@ -15,7 +15,7 @@ class Vehiculo extends Model
         $stmt->execute(['nombre' => $usuario]);
         $fila = $stmt->fetch();
         if (!$fila) {
-            throw new Exception("no existe id para ese usuario");
+            throw new Exception("No existe id para ese usuario");
         } else {
             $id_usuario=$fila['id'];
             $consulta1 = "INSERT INTO Vehiculo (tipo_vehiculo, id_usuario, id_plaza_aparcamiento, tamano)
