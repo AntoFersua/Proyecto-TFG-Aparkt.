@@ -94,7 +94,7 @@
         <!--METER LOGO -->
 
         <label>
-          <input type="checkbox" required /> Acepto los Términos de servicio y
+          <input id="aceptarTerminos" type="checkbox" required /> Acepto los Términos de servicio y
           política de privacidad
         </label>
 
@@ -108,22 +108,23 @@
         <form>
           <div>
             <label>Nombre</label>
-            <input type="text" placeholder="Introduce tu nombre" required />
+            <input id="inputNombre" type="text" placeholder="Introduce tu nombre" required />
           </div>
 
           <div>
             <label>Apellidos</label>
-            <input type="text" placeholder="Introduce tus apellidos" required />
+            <input id="inputApellidos" type="text" placeholder="Introduce tus apellidos" required />
           </div>
 
           <div>
             <label>Correo Electrónico</label>
-            <input type="email" placeholder="Introduce tu correo" required />
+            <input id="inputCorreo" type="email" placeholder="Introduce tu correo" required />
           </div>
 
           <div>
             <label>Número Teléfono</label>
             <input
+              id = "inputTelefono"
               type="tel"
               placeholder="Introduce tu número de teléfono"
               required
@@ -132,7 +133,7 @@
 
           <div>
             <label>Contraseña</label>
-            <input type="password" placeholder="Crea una contraseña" required />
+            <input id="inputContrasena" type="password" placeholder="Crea una contraseña" required />
             <small
               >La contraseña tiene que tener mínimo 8 caracteres y 1 caracter
               especial</small
@@ -142,13 +143,14 @@
           <div>
             <label>Confirmar Contraseña</label>
             <input
+              id = "confirmarContrasena"
               type="password"
               placeholder="Confirma tu contraseña"
               required
             />
           </div>
 
-          <p>¿Ya tienes cuenta? <a href="#">Iniciar sesión</a></p>
+          <p>¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
         </form>
       </section>
     </main>
