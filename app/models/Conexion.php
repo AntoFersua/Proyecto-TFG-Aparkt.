@@ -1,9 +1,9 @@
 <?php
 
-$_servidor="localhost";
-$_usuario="root";
-$_contrasena="";
-$_bd="Aparkt";
+    $_servidor="localhost";
+    $_usuario="root";
+    $_contrasena="";
+    $_bd="Aparkt";
 
     try {
         $_conexion = new PDO(
