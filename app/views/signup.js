@@ -12,8 +12,137 @@ window.onload = function () {
 
     form.onsubmit = function (e) {
       limpiarErrores();
-        /**Aceptar condiciones */
+      let valido = true;
 
+      /**Aceptar condiciones que este checked */
+      if (!checkbox.checked) {
+        mostrarError(checkbox, "Debes aceptar los términos.");
+        valido = false;
+      }
+
+      /**Nombre (que no sea vacío y >3) */
+      let nombre = nombreInput.value.trim();
+      if (nombre === "") {
+        mostrarError(nombreInput, "El nombre es obligatorio");
+        valido = false;
+      } else if (nombre.length < 3) {
+        mostrarError(nombreInput, "El nombre es demasiado corto.");
+        valido = false;
+      }
+
+      /**Apellidos (que no esté vacío) */
+      let apellidos = apellidosInput.value.trim();
+
+      if (apellidos === "") {
+        mostrarError(apellidosInput, "Los apellidos son obligatorios.");
+        valido = false;
+      }
+
+      // EMAIL (no vacío, dominio válido, @ y .)
+      let email = emailInput.value.trim();
+
+      /**Email válidos */
+      let dominiosEmail = [
+        "gmail.com",
+        "yahoo.com",
+        "outlook.com",
+        "hotmail.com",
+        "live.com",
+        "icloud.com",
+        "aol.com",
+        "mail.com",
+        "zoho.com",
+        "protonmail.com",
+      ];
+    
+      /**Separo el email por el arroba, me queda un array  */
+      let partesCorreo = email.split("@");
+      let parteDominio = partesCorreo[1]; /**me quedo con la parte de después del arroba, índice 1 */
+
+      if (email === "") {
+        mostrarError(emailInput, "El email es obligatorio.");
+        valido = false;
+      } else if (!email.includes("@") || !email.includes(".")) {
+        mostrarError(emailInput, "El email no es válido.");
+        valido = false;
+      } else if (email.split("@").length !== 2) {
+        mostrarError(emailInput, "El email no es válido.");
+        valido = false;
+      } else if (!dominiosEmail.includes(parteDominio)) {
+        mostrarError(emailInput, "El dominio del email no es válido.");
+        valido = false;
+      }
+
+      /**TELÉFONO (no vacío, solo números y >9) */
+      let telefono = telefonoInput.value.trim();
+      let soloNumeros = true;
+
+      for (let i = 0; i < telefono.length; i++) {
+        if (telefono[i] < "0" || telefono[i] > "9") {
+          soloNumeros = false;
+        }
+      }
+
+      if (telefono === "") {
+        mostrarError(telefonoInput, "El teléfono es obligatorio.");
+        valido = false;
+      } else if (!soloNumeros) {
+        mostrarError(telefonoInput, "El teléfono solo debe contener números.");
+        valido = false;
+      } else if (telefono.length < 9) {
+        mostrarError(telefonoInput, "El teléfono debe tener al menos 9 dígitos.");
+        valido = false;
+      }
+
+      /**Contraseña (no vacío, con número, mayúscula, caracter especial) */
+      let password = passwordInput.value.trim();
+      let tieneNumero = false;
+      let tieneMayuscula = false;
+      let tieneEspecial = false;
+      let especiales = "!@#$%^&*_";
+
+      for (let i = 0; i < password.length; i++) { 
+        let c = password[i]; /**cada caracter de la contraseña */
+
+        if (c >= "0" && c <= "9") {
+          tieneNumero = true;
+        }
+        if (c >= "A" && c <= "Z") {
+          tieneMayuscula = true;
+        }
+
+        for (let j = 0; j < especiales.length; j++) {
+          if (c === especiales[j]) tieneEspecial = true;
+        }
+      }
+
+      if (password === "") {
+        mostrarError(passwordInput, "La contraseña es obligatoria.");
+        valido = false;
+      } else if (password.length < 8) {
+        mostrarError(passwordInput, "Debe tener al menos 8 caracteres.");
+        valido = false;
+      } else if (!tieneNumero) {
+        mostrarError(passwordInput, "Debe tener al menos un número.");
+        valido = false;
+      } else if (!tieneMayuscula) {
+        mostrarError(passwordInput, "Debe tener una mayúscula.");
+        valido = false;
+      } else if (!tieneEspecial) {
+        mostrarError(passwordInput, "Debe tener un carácter especial.");
+        valido = false;
+      }
+
+      /**Confirmar contraseña (que sea la misma que la anterior) */
+      let confirmarPassword = confirmarPasswordInput.value.trim();
+
+      if (confirmarPassword === "") {
+        mostrarError(confirmarPasswordInput, "Debes confirmar la contraseña.");
+        valido = false;
+      } else if (confirmarPassword !== password) {
+        mostrarError(confirmarPasswordInput, "Las contraseñas no coinciden.");
+        valido = false;
+      }
 
       /**Si algo falla paramos el onsubmit */
       if (!valido) {
@@ -21,6 +150,8 @@ window.onload = function () {
       }
     };
 
+
+    /**FUNCIONES PARA MOSTRAR ERRORES Y QUITARLOS */
     function mostrarError(elemento, mensaje) {
       let error = document.createElement("div");
       error.className = "mensajeError";
