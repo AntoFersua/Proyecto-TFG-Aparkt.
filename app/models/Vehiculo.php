@@ -17,9 +17,9 @@ class Vehiculo extends Model
         if (!$fila) {
             throw new Exception("no existe id para ese usuario");
         } else {
-            $id_usuario=$fila['id'];
+            $id_usuario = $fila['id'];
             $consulta1 = "INSERT INTO Vehiculo (tipo_vehiculo, id_usuario, id_plaza_aparcamiento, tamano)
-            VALUES(:tipo_vehiculo, :id_usuario, :id_plaza_aparcamiento, :tamano)"; 
+            VALUES(:tipo_vehiculo, :id_usuario, :id_plaza_aparcamiento, :tamano)";
             $stmt = $this->_conexion->prepare($consulta1);
             $stmt->execute([
                 'nombre' => $usuario,

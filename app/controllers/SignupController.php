@@ -71,6 +71,7 @@ class SignupController
                 "status" => "error",
                 "errores" => $errores
             ]);
+            exit();
         }
 
 

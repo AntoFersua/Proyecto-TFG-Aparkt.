@@ -39,13 +39,13 @@ class LoginController
             if (!$user_info) {
                 $errores['usuario'] = "Usuario no existe";
             } else {
-                $contrasenaInfo = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
-                if (!$contrasenaInfo) {
+                $contrasenaCorrecta = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
+                if (!$contrasenaCorrecta) {
                     $errores['contrasena'] = "contraseña incorrecta";
                 }
             }
 
-            if ($user_info && $contrasenaInfo) {
+            if ($user_info && $contrasenaCorrecta) {
                 session_start();
 
                 $_SESSION["usuario"] = $usuario;
