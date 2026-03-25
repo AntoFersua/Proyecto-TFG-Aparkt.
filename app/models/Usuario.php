@@ -1,43 +1,45 @@
 <?php
-
-require __DIR__ . "/Conexion.php";
-
-class Usuario extends Model
-{
+    //incluir el archivo conexion
+    require __DIR__ . "/Conexion.php";
     
-    public function obtenerUsuario($usuario)
+    //clase usuario que hereda de model
+    class Usuario extends Model
     {
-        $consulta = "SELECT * FROM Usuario WHERE nombre = :nombre";
-        $stmt = $this->_conexion->prepare($consulta);
-        $stmt->execute(['nombre' => $usuario]);
-        return $stmt->fetch();
-    }
+        //FUNCIONES 
+        public function obtenerUsuario($usuario)
+        {
+            $consulta = "SELECT * FROM Usuario WHERE nombre = :nombre";
+            $stmt = $this->_conexion->prepare($consulta);
+            $stmt->bindValue(":nombre", $usuario, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch();
+        }
 
-    public function existeEmail($email)
-    {
-        $consulta = "SELECT COUNT(*) FROM Usuario WHERE email = :email";
-        $stmt = $this->_conexion->prepare($consulta);
-        $stmt->execute(['email' => $email]);
-        return $stmt->fetch();
-    }
+        public function existeEmail($email)
+        {
+            $consulta = "SELECT COUNT(*) FROM Usuario WHERE email = :email";
+            $stmt = $this->_conexion->prepare($consulta);
+            $stmt->bindValue(":email", $email, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch();
+        }
 
-    public function verificarContrasena($contrasena, $hash)
-    {
-        return password_verify($contrasena, $hash);
-    }
+        public function verificarContrasena($contrasena, $hash)
+        {
+            return password_verify($contrasena, $hash);
+        }
 
-    public function crearUsuario($usuario, $contrasenaHasheada, $email)
-    {
-        $consulta = "INSERT INTO Usuario (Nombre, puntuacion, contrasena, email) VALUES (:nombre, :puntuacion, :contrasenaHasheada, :email)";
-        $stmt = $this->_conexion->prepare($consulta);
-        $stmt->execute([
-            'nombre' => $usuario,
-            'puntuacion' => 0,
-            'contrasenaHasheada' => $contrasenaHasheada,
-            'email' => $email,
-        ]);
-        return $stmt->true;
+        public function crearUsuario($usuario, $contrasenaHasheada, $email)
+        {
+            $consulta = "INSERT INTO Usuario (Nombre, puntuacion, contrasena, email) VALUES (:nombre, :puntuacion, :contrasenaHasheada, :email)";
+            $stmt = $this->_conexion->prepare($consulta);
+            $stmt->bindValue(":nombre", $usuario, PDO::PARAM_STR);
+            $stmt->bindValue(":puntuacion", 0, PDO::PARAM_INT);
+            $stmt->bindValue(":contrasenaHasheada", $contrasenaHasheada, PDO::PARAM_STR);
+            $stmt->bindValue(":email", $email, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->rowCount() > 0;
+        }
     }
-}
 
 ?>
