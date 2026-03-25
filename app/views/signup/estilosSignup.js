@@ -1,42 +1,43 @@
 (() => {
-  const secciones = document.querySelectorAll(".seccion-formulario");
+  const carrusel = $(".owl-carousel");
   const pasos = document.querySelectorAll(".indicador-paso .paso");
-  const btnAtras = document.getElementById("btnAtras");
-  const btnSiguiente = document.getElementById("btnSiguiente");
   const btnCrear = document.getElementById("btnCrear");
+  const navCarrusel = document.querySelector(".nav-carrusel");
 
-  let pasoActual = 0;
-  const totalPasos = secciones.length;
+  const totalPasos = 3;
 
-  function mostrarPaso(index) {
-    secciones.forEach((s, i) => {
-      s.classList.toggle("activa", i === index);
-    });
+  carrusel.owlCarousel({
+    items: 1,
+    navText: ["Atrás", "Siguiente"],
+    navContainer: ".nav-carrusel",
+    dots: false,
+    smartSpeed: 300,
+    loop: false,
+  });
 
+  function actualizarUI(index) {
     pasos.forEach((p, i) => {
       p.classList.toggle("activo", i <= index);
     });
 
-    btnAtras.classList.toggle("visible", index > 0);
-    btnSiguiente.classList.toggle("oculto", index === totalPasos - 1);
-    btnCrear.classList.toggle("visible", index === totalPasos - 1);
+    const btnAtras = navCarrusel.querySelector(".owl-prev");
+    const btnSiguiente = navCarrusel.querySelector(".owl-next");
+
+    btnAtras.style.display = index > 0 ? "block" : "none";
+
+    if (index === totalPasos - 1) {
+      btnSiguiente.style.display = "none";
+      btnCrear.classList.add("visible");
+    } else {
+      btnSiguiente.style.display = "block";
+      btnCrear.classList.remove("visible");
+    }
   }
 
-  btnSiguiente.addEventListener("click", () => {
-    if (pasoActual < totalPasos - 1) {
-      pasoActual++;
-      mostrarPaso(pasoActual);
-    }
+  carrusel.on("changed.owl.carousel", function (e) {
+    actualizarUI(e.item.index);
   });
 
-  btnAtras.addEventListener("click", () => {
-    if (pasoActual > 0) {
-      pasoActual--;
-      mostrarPaso(pasoActual);
-    }
-  });
-
-  // Toggle ver contraseña
   document.querySelectorAll(".ver-contrasena").forEach((btn) => {
     btn.addEventListener("click", () => {
       const input = btn.closest(".input-field").querySelector("input");
@@ -52,6 +53,5 @@
     });
   });
 
-  // Estado inicial
-  mostrarPaso(0);
+  actualizarUI(0);
 })();
