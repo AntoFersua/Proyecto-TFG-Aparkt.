@@ -7,31 +7,25 @@ class Vehiculo extends Model
     // private $tipos_vehiculos = ["berlina", "turismo", "furgoneta", "moto"];
     // private $tamanos = ["grande", "mediano", "pequeño"];
 
-    public function crearVehiculo($usuario, $tipo_vehiculo, $tamano, $id_plaza_aparcamiento)
+    public function crearVehiculo($usuarioId, $tipoVehiculo, $tamano, $plazaId = null)
     {
-
-        $consulta = "SELECT id FROM Usuario WHERE nombre= :nombre";
+        $consulta = "INSERT INTO Vehiculo (usuario_id, tipo_vehiculo, tamano, plaza_aparcamiento_id) VALUES (:usuario_id, :tipo_vehiculo, :tamano, :plaza_id)";
         $stmt = $this->_conexion->prepare($consulta);
-        $stmt->execute(['nombre' => $usuario]);
-        $fila = $stmt->fetch();
-        if (!$fila) {
-            throw new Exception("No existe id para ese usuario");
-        } else {
-            $id_usuario = $fila['id'];
-            $consulta1 = "INSERT INTO Vehiculo (tipo_vehiculo, id_usuario, id_plaza_aparcamiento, tamano)
-            VALUES(:tipo_vehiculo, :id_usuario, :id_plaza_aparcamiento, :tamano)";
-            $stmt = $this->_conexion->prepare($consulta1);
-            $stmt->execute([
-                'nombre' => $usuario,
-                'tipo_vehiculo' => $tipo_vehiculo,
-                'id_usuario' => $id_usuario,
-                'id_plaza_aparcamiento' => $id_plaza_aparcamiento,
-                'tamano' => $tamano
-            ]);
-            return $stmt->true;
-        }
-
+        $stmt->bindValue(":usuario_id", $usuarioId, PDO::PARAM_INT);
+        $stmt->bindValue(":tipo_vehiculo", $tipoVehiculo, PDO::PARAM_STR);
+        $stmt->bindValue(":tamano", $tamano, PDO::PARAM_STR);
+        $stmt->bindValue(":plaza_id", $plazaId, $plazaId ? PDO::PARAM_INT : PDO::PARAM_NULL);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
 
+    public function obtenerVehiculosPorUsuario($usuarioId)
+    {
+        $consulta = "SELECT v.*, pa.ubicacion as plaza_ubicacion FROM Vehiculo v LEFT JOIN PlazaAparcamiento pa ON v.plaza_aparcamiento_id = pa.id WHERE v.usuario_id = :usuario_id";
+        $stmt = $this->_conexion->prepare($consulta);
+        $stmt->bindValue(":usuario_id", $usuarioId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
 
