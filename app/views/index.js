@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', function () {
-   /* fetch('../config/config.php')
+    fetch('../config/config.php')
         .then(function(response){
             console.log("Status:", response.status);
             return response.json();
@@ -23,6 +23,6 @@ window.addEventListener('DOMContentLoaded', function () {
         .catch(function(error){
             console.log("Error: " + error);
         });
-    */
+    
      
 });

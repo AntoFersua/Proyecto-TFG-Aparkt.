@@ -1,5 +1,5 @@
 <?php
-   /* require_once(__DIR__ . '/../models/Configuracion.php'); 
+    require_once(__DIR__ . '/../models/Configuracion.php'); 
     //obtener Api key 
     $apiKey = Configuracion::get('MAPS_API_KEY'); 
 
@@ -7,6 +7,6 @@
     header('Content-Type: application/json');
     echo json_encode([  
         "MAPS_API_KEY" => $apiKey
-    ]);*/
+    ]);
 
 ?> 
