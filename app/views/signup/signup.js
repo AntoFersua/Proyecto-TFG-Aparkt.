@@ -1,272 +1,69 @@
-<<<<<<< HEAD
-  document.addEventListener("DOMContentLoaded", function () {
-    let form = document.querySelector("form");
-
-    function mostrarError(elemento, mensaje) {
-      let existente = elemento.parentNode.querySelector(".mensajeError");
-      if (existente) existente.remove();
-      let error = document.createElement("div");
-      error.className = "mensajeError";
-      error.style.color = "#f87171";
-      error.style.fontSize = "0.9em";
-      error.textContent = mensaje;
-      elemento.parentNode.appendChild(error);
-    }
-
-    function limpiarErrores() {
-      document.querySelectorAll(".mensajeError").forEach(el => el.remove());
-    }
-=======
 document.addEventListener("DOMContentLoaded", function () {
-  alert("JS ajajj");
-  let form = document.querySelector("form");
-  let nombreInput = document.getElementById("inputNombre");
-  let apellidosInput = document.getElementById("inputApellidos");
-  let emailInput = document.getElementById("inputCorreo");
-  let telefonoInput = document.getElementById("inputTelefono");
-  let passwordInput = document.getElementById("inputContrasena");
-  let confirmarPasswordInput = document.getElementById("confirmarContrasena");
-  let checkbox = document.getElementById("aceptarTerminos");
+  const form = document.querySelector("form");
+  const btnCrear = document.getElementById("btnCrear");
 
-  form.onsubmit = function (e) {
-    e.preventDefault();
-    limpiarErrores();
-    let valido = true;
->>>>>>> 4a1aaa6f5733a031130a64c8d4ebdbc58bb3a371
-
-    /**Aceptar condiciones que este checked */
-    if (!checkbox.checked) {
-      mostrarError(checkbox, "Debes aceptar los términos.");
-      valido = false;
-    }
-
-    /**NOMBRE (que no sea vacío,  empezar con letra, solo letras y entre 2 y 15 caracteres) */
-    let nombre = nombreInput.value.trim();
-    const regexNombre = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,15}$/;
-
-    if (nombre === "") {
-      mostrarError(nombreInput, "El nombre es obligatorio");
-      valido = false;
-    } else if (!regexNombre.test(nombre)) {
-      mostrarError(nombreInput, "El nombre no cumple con el formato");
-      valido = false;
-    }
-
-    /**APELLIDOS (que no esté vacío, solo pueden contener letras, espacios y tildes) */
-    let apellidos = apellidosInput.value.trim();
-    const regexApellidos = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]{3,100}$/;
-
-    if (apellidos === "") {
-      mostrarError(apellidosInput, "Los apellidos son obligatorios");
-      valido = false;
-    } else if (!regexApellidos.test(apellidos)) {
-      mostrarError(apellidosInput, "Los apellidos no cumplen con el formato");
-      valido = false;
-    }
-
-    // EMAIL (no vacío, dominio válido, @ y .)
-    let email = emailInput.value.trim();
-
-    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (email === "") {
-      mostrarError(emailInput, "El email es obligatorio");
-      valido = false;
-    } else if (!regexEmail.test(email)) {
-      mostrarError(emailInput, "El email no tiene el formato");
-      valido = false;
-    }
-
-    /**TELÉFONO (no vacío, solo números y >9) */
-    let telefono = telefonoInput.value.trim();
-    const regexTelefono = /^\d{9,}$/;
-    if (telefono === "") {
-      mostrarError(telefonoInput, "El teléfono es obligatorio");
-      valido = false;
-    } else if (!regexTelefono.test(telefono)) {
-      mostrarError(telefonoInput,"El teléfono debe tener al menos 9 dígitos y solo números");
-      valido = false;
-    }
-
-    /**CONTRASEÑA (no vacío, con número, mayúscula, caracter especial) */
-    let password = passwordInput.value.trim();
-
-    const regexPass = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[@!?%])[A-Za-z@!%?]{6,15}$/;
-
-    if (password === "") {
-      mostrarError(passwordInput, "La contraseña es obligatoria");
-      valido = false;
-    } else if (!regexPass.test(password)) {
-      mostrarError(
-        passwordInput,
-        "La contraseña debe tener entre 6 y 15 caracteres, una mayúscula, una minúscula y un carácter especial",
-      );
-      valido = false;
-    }
-
-    /**Confirmar contraseña (que sea la misma que la anterior) */
-    let confirmarPassword = confirmarPasswordInput.value.trim();
-
-    if (confirmarPassword === "") {
-      mostrarError(confirmarPasswordInput, "Debes confirmar la contraseña.");
-      valido = false;
-    } else if (confirmarPassword !== password) {
-      mostrarError(confirmarPasswordInput, "Las contraseñas no coinciden.");
-      valido = false;
-    }
-
-    /**Si algo falla paramos el onsubmit */
-    if (!valido) {
+  if (btnCrear) {
+    btnCrear.addEventListener("click", function (e) {
       e.preventDefault();
-<<<<<<< HEAD
-      limpiarErrores();
+      enviarFormulario();
+    });
+  }
 
-      const passwordInput = document.getElementById("inputContrasena");
-      const confirmarPasswordInput = document.getElementById("confirmarContrasena");
-      const checkbox = document.getElementById("aceptarTerminos");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      enviarFormulario();
+    });
+  }
 
-      const password = passwordInput.value.trim();
-      const especiales = "@!?%";
-      let tieneMayuscula = false;
-      let tieneMinuscula = false;
-      let tieneEspecial = false;
+  function enviarFormulario() {
+    const nombreInput = document.getElementById("inputNombre");
+    const apellidosInput = document.getElementById("inputApellidos");
+    const emailInput = document.getElementById("inputCorreo");
+    const ciudadInput = document.getElementById("inputCiudad");
+    const telefonoInput = document.getElementById("inputTelefono");
+    const passwordInput = document.getElementById("inputContrasena");
 
-      for (let i = 0; i < password.length; i++) {
-        let c = password[i];
-        if (c >= "A" && c <= "Z") tieneMayuscula = true;
-        if (c >= "a" && c <= "z") tieneMinuscula = true;
-        if (especiales.includes(c)) tieneEspecial = true;
-      }
+    if (!nombreInput || !apellidosInput || !emailInput || !ciudadInput || !telefonoInput || !passwordInput) {
+      alert("Error: No se encontraron los campos del formulario");
+      return;
+    }
 
-      let valido = true;
+    const nombre = nombreInput.value.trim();
+    const apellido = apellidosInput.value.trim();
+    const email = emailInput.value.trim();
+    const ciudad = ciudadInput.value.trim();
+    const telefono = telefonoInput.value.trim();
+    const contrasena = passwordInput.value.trim();
 
-      if (password === "") {
-        mostrarError(passwordInput, "La contraseña es obligatoria.");
-        valido = false;
-      } else if (password.length < 6 || password.length > 15) {
-        mostrarError(passwordInput, "Debe tener entre 6 y 15 caracteres.");
-        valido = false;
-      } else if (!tieneMayuscula) {
-        mostrarError(passwordInput, "Debe tener al menos una mayúscula.");
-        valido = false;
-      } else if (!tieneMinuscula) {
-        mostrarError(passwordInput, "Debe tener al menos una minúscula.");
-        valido = false;
-      } else if (!tieneEspecial) {
-        mostrarError(passwordInput, "Debe tener al menos un símbolo (@!?%).");
-        valido = false;
-      }
+    const datos = {
+      usuario: nombre,
+      apellido: apellido,
+      email: email,
+      ciudad: ciudad,
+      telefono: telefono,
+      contrasena: contrasena
+    };
 
-      const confirmarPassword = confirmarPasswordInput.value.trim();
-      if (confirmarPassword === "") {
-        mostrarError(confirmarPasswordInput, "Debes confirmar la contraseña.");
-        valido = false;
-      } else if (confirmarPassword !== password) {
-        mostrarError(confirmarPasswordInput, "Las contraseñas no coinciden.");
-        valido = false;
-      }
-
-      if (!checkbox.checked) {
-        mostrarError(checkbox, "Debes aceptar los términos.");
-        valido = false;
-      }
-
-      if (!valido) {
-        return;
-      }
-
-      const nombre = document.getElementById("inputNombre").value.trim();
-      const apellido = document.getElementById("inputApellidos").value.trim();
-      const email = document.getElementById("inputCorreo").value.trim();
-      const ciudad = document.getElementById("inputCiudad").value.trim();
-
-      const datos = {
-        usuario: nombre,
-        apellido: apellido,
-        email: email,
-        ciudad: ciudad,
-        contrasena: password
-      };
-
-      fetch('../../controllers/SignupController.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-      })
-      .then(respuesta => respuesta.json())
-      .then(data => {
-        if (data.status === 'ok') {
+    fetch("../../controllers/SignupController.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    })
+      .then((respuesta) => respuesta.json())
+      .then((data) => {
+        if (data.status === "ok") {
           alert(data.mensaje);
-          window.location.href = '../login/login.html';
+          window.location.href = "../login/login.html";
         } else if (data.errores) {
           alert(Object.values(data.errores).join("\n"));
         } else {
-          alert(data.mensaje || 'Error en el registro');
+          alert(data.mensaje || "Error en el registro");
         }
       })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Error de conexión');
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Error de conexiÃ³n");
       });
-    };
-  });
-=======
-    } else {
-      const datos = {
-        usuario: nombre,
-        apellidos: apellidos,
-        email: email,
-        telefono: telefono,
-        contrasena: password,
-      };
-
-      fetch(
-        "http://localhost/tfg/Proyecto-TFG-Aparkt/app/controllers/SignupController.php",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datos),
-        },
-      )
-        .then((respuesta) => respuesta.json())
-        .then((data) => {
-          if (data.status === "ok") {
-            alert(data.mensaje);
-            window.location.href = "/app/views/login/login.html";
-          } else if (data.errores) {
-            for (let campo in data.errores) {
-              let input = document.getElementById(
-                "input" + campo.charAt(0).toUpperCase() + campo.slice(1),
-              );
-              if (input) mostrarError(input, data.errores[campo]);
-            }
-          } else {
-            alert(data.mensaje || "Error en el registro");
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("Error de conexión");
-        });
-    }
-  };
-
-  /**FUNCIONES PARA MOSTRAR ERRORES Y QUITARLOS */
-  function mostrarError(elemento, mensaje) {
-    let error = document.createElement("div");
-    error.className = "mensajeError";
-    error.style.color = "red";
-    error.style.fontSize = "0.9em";
-    error.textContent = mensaje;
-
-    elemento.parentNode.appendChild(error);
-  }
-
-  function limpiarErrores() {
-    let errores = document.querySelectorAll(".mensajeError");
-    for (let i = 0; i < errores.length; i++) {
-      errores[i].parentNode.removeChild(errores[i]);
-    }
   }
 });
->>>>>>> 4a1aaa6f5733a031130a64c8d4ebdbc58bb3a371
