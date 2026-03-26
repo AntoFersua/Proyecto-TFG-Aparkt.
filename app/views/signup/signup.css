@@ -126,16 +126,23 @@ main {
 }
 
 .seccion-formulario {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 10px;
   width: 100%;
   padding: 0 8px;
   box-sizing: border-box;
+}
 
-  &.activa {
-    display: flex;
-  }
+/* Ocultar navegación nativa de Owl Carousel */
+.owl-carousel > .owl-nav,
+.owl-carousel .owl-dots {
+  display: none !important;
+}
+
+.owl-carousel .owl-stage {
+  display: flex;
+  align-items: flex-start;
 }
 
 .input-field {
@@ -161,7 +168,9 @@ main {
     width: 100%;
     box-sizing: border-box;
     font-family: inherit;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
 
     &:focus {
       outline: none;
@@ -248,45 +257,44 @@ main {
   gap: 8px;
   width: 100%;
 
-  .btn-atras {
-    padding: 10px 16px;
-    font-size: 0.78rem;
-    font-family: inherit;
-    font-weight: 500;
-    color: var(--color-azulOscuro);
-    background: transparent;
-    border: 1.5px solid var(--color-azulOscuro);
-    border-radius: 20px;
-    cursor: pointer;
-    display: none;
-
-    &:active {
-      transform: scale(0.98);
-    }
-
-    &.visible {
-      display: block;
-    }
-  }
-
-  .btn-siguiente {
-    padding: 10px 16px;
-    font-size: 0.78rem;
-    font-family: inherit;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(135deg, var(--color-azulOscuro), #007a82);
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
+  .nav-carrusel {
+    display: flex;
+    gap: 8px;
     flex: 1;
 
-    &:active {
-      transform: scale(0.98);
+    .owl-prev,
+    .owl-next {
+      padding: 10px 16px;
+      font-size: 0.78rem;
+      font-family: inherit;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      text-align: center;
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      &.disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
     }
 
-    &.oculto {
-      display: none;
+    .owl-prev {
+      color: var(--color-azulOscuro);
+      background: transparent;
+      border: 1.5px solid var(--color-azulOscuro);
+      font-weight: 500;
+    }
+
+    .owl-next {
+      color: #fff;
+      background: linear-gradient(135deg, var(--color-azulOscuro), #007a82);
+      border: none;
     }
   }
 

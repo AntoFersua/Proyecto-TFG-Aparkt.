@@ -3,29 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mapa Aparkt</title>
+    <meta name="description" content="Crea tu cuenta en Aparkt" />
+    <meta name="keywords" content="Aparkt, Cuenta, Aparcamiento" />
+    <meta name="author" content="Aparkt" />
+    <title>Sign Up</title>
     <link
-      href="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.css"
       rel="stylesheet"
+      type="text/css"
+      href="/app/views/estilosGlobales.css"
     />
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.20.0/mapbox-gl.js"></script>
-    <script src="index.js"></script>
-    <link rel="stylesheet" type="text/css" href="estilosGlobales.css" />
-    <script src="funcionesGlobales.js" defer></script>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-      #mapa {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="signup.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+    <script src="/app/views/funcionesGlobales.js" defer></script>
+    <script src="signup.js" defer></script>
   </head>
   <body>
+    <!--HEADER-->
     <header>
       <!-- NAVEGACIÓN -->
       <div class="logoHeader">
@@ -97,9 +93,140 @@
         </button>
       </div>
     </header>
+
+    <!--MAIN-->
     <main>
-      <div id="mapa"></div>
+      <article class="telefono">
+        <span class="notch"></span>
+
+        <form>
+          <div class="form-contenido">
+            <h2>CREAR CUENTA</h2>
+            <img src="/app/views/assets/imagotipoAparkt.png" alt="Aparkt" />
+
+            <!-- Indicador de paso -->
+            <div class="indicador-paso">
+              <span class="paso activo"></span>
+              <span class="paso"></span>
+              <span class="paso"></span>
+            </div>
+
+            <!-- Carrusel de secciones -->
+            <div class="owl-carousel owl-theme">
+              <!-- Sección 1: Nombre y Apellidos -->
+              <div class="seccion-formulario">
+                <div class="input-field">
+                  <input
+                    id="inputNombre"
+                    type="text"
+                    placeholder=" "
+                    required
+                  />
+                  <label for="inputNombre">Nombre</label>
+                </div>
+                <div class="input-field">
+                  <input
+                    id="inputApellidos"
+                    type="text"
+                    placeholder=" "
+                    required
+                  />
+                  <label for="inputApellidos">Apellidos</label>
+                </div>
+              </div>
+
+              <!-- Sección 2: Correo y Teléfono -->
+              <div class="seccion-formulario">
+                <div class="input-field">
+                  <input
+                    id="inputCorreo"
+                    type="email"
+                    placeholder=" "
+                    required
+                  />
+                  <label for="inputCorreo">Correo Electrónico</label>
+                </div>
+                <div class="input-field">
+                  <input
+                    id="inputTelefono"
+                    type="tel"
+                    placeholder=" "
+                    required
+                  />
+                  <label for="inputTelefono">Número Teléfono</label>
+                </div>
+              </div>
+
+              <!-- Sección 3: Contraseñas -->
+              <div class="seccion-formulario">
+                <div class="input-field">
+                  <input
+                    id="inputContrasena"
+                    type="password"
+                    placeholder=" "
+                    required
+                  />
+                  <label for="inputContrasena">Contraseña</label>
+                  <button
+                    type="button"
+                    class="ver-contrasena"
+                    aria-label="Mostrar contraseña"
+                  >
+                    <svg viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                  <small>Mínimo 8 caracteres y 1 caracter especial</small>
+                </div>
+                <div class="input-field">
+                  <input
+                    id="confirmarContrasena"
+                    type="password"
+                    placeholder=" "
+                    required
+                  />
+                  <label for="confirmarContrasena">Confirmar Contraseña</label>
+                  <button
+                    type="button"
+                    class="ver-contrasena"
+                    aria-label="Mostrar contraseña"
+                  >
+                    <svg viewBox="0 0 24 24">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
+                <label class="checkbox-wrapper">
+                  <input id="aceptarTerminos" type="checkbox" required />
+                  <span
+                    >Acepto los Términos de servicio y política de
+                    privacidad</span
+                  >
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones navegación -->
+          <div class="nav-pasos">
+            <div class="nav-carrusel"></div>
+            <button type="submit" class="btn-crear" id="btnCrear">
+              Crear Cuenta
+            </button>
+          </div>
+
+          <p>¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
+        </form>
+      </article>
+
+      <!-- Logo (derecha) -->
+      <div class="main-izquierdo">
+        <img src="/app/views/assets/isotipoAparkt.png" alt="Logo" />
+      </div>
     </main>
+
     <!--FOOTER-->
     <footer>
       <div>
@@ -176,5 +303,9 @@
 
       <p>2026.Copyright</p>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="estilosSignup.js"></script>
   </body>
 </html>
