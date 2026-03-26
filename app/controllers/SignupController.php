@@ -25,9 +25,9 @@ class SignupController
 
         //obtener datos
         $usuario = trim($DatosPost['usuario'] ?? "");
-        $apellidos = trim($DatosPost['apellidos'] ?? "");
+        $apellido = trim($DatosPost['apellido'] ?? "");
+        $ciudad = trim($DatosPost['ciudad'] ?? "");
         $contrasena = trim($DatosPost['contrasena'] ?? "");
-        $telefono = trim($DatosPost['telefono'] ?? "");
         $email = filter_var($DatosPost['email'], FILTER_SANITIZE_EMAIL) ?? "";
 
         //validar datos
@@ -39,26 +39,24 @@ class SignupController
         //IMPORTANTE, MIRAR LA VAALIDACIÓN DEL FRONTED, FALTA AÑADIR NUMEROS A LA PASS
         if ($contrasena == "") {
             $errores["contrasena"] = "Introduzca una contraseña";
-        } elseif (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[@!?%])[A-Za-z@!%?]{6,15}$/", $contrasena)) {
+        } elseif (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[@!?%])[A-Za-z0-9@!%?]{6,15}$/", $contrasena)) {
             $errores["contrasena"] = "mínimo 6 caracteres y máximo 15, al menos una mayúscula, al menos una minúscula, al menos un símbolo (@!?%)";
         }
         
-        if ($telefono == "") {
-            $errores["telefono"] = "Introduzca un teléfono";
-        } elseif (!preg_match("/^[0-9]{9}$/", $telefono)) {
-            $errores["telefono"] = "El teléfono debe tener 9 dígitos";
-        }
-
         if ($email == "") {
             $errores["email"] = "Introduzca un email";
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errores["email"] = "Formato incorrecto de email";
         }
 
-        if ($apellidos == "") {
-            $errores["apellidos"] = "Introduzca los apellidos";
-        } elseif (!preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]{3,100}$/", $apellidos)) {
-            $errores["apellidos"] = "Los apellidos solo pueden contener letras, espacios y tildes (3-100 caracteres)";
+        if ($apellido == "") {
+            $errores["apellido"] = "Introduzca el apellido";
+        } elseif (!preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]{3,100}$/", $apellido)) {
+            $errores["apellido"] = "El apellido solo puede contener letras, espacios y tildes (3-100 caracteres)";
+        }
+
+        if ($ciudad == "") {
+            $errores["ciudad"] = "Introduzca la ciudad";
         }
         /**
          * 
@@ -81,7 +79,7 @@ class SignupController
         if (empty($errores)) {
             //hashear contraseña y crear usuario
             $contrasenaHasheada = password_hash($contrasena, PASSWORD_DEFAULT);
-            if ($this->usuarioModelo->crearUsuario($usuario, $contrasenaHasheada, $email, $apellidos)) {
+            if ($this->usuarioModelo->crearUsuario($usuario, $apellido, $email, $ciudad, $contrasenaHasheada)) {
                 echo json_encode([
                     "status" => "ok",
                     "mensaje" => "usuario registrado correctamente"

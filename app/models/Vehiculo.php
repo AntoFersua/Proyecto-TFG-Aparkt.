@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . "/Conexion.php";
+require __DIR__ . "/Model.php";
 
 class Vehiculo extends Model
 {

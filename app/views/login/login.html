@@ -7,9 +7,10 @@
     <meta name="keywords" content="Sesión, Aparkt, Aparcamiento" />
     <meta name="author" content="Aparkt" />
     <title>Log In</title>
-    <link rel="stylesheet" type="text/css" href="/app/views/estilosGlobales.css" />
+    <link rel="stylesheet" type="text/css" href="../estilosGlobales.css" />
     <link rel="stylesheet" type="text/css" href="login.css" />
-    <script src="/app/views/funcionesGlobales.js" defer></script>
+    <script src="../funcionesGlobales.js" defer></script>
+    <script src="login.js"></script>
     <style>
       /* Inline fallback por si login.css no carga */
     </style>
@@ -19,15 +20,15 @@
     <header>
       <!-- NAVEGACIÓN -->
       <div class="logoHeader">
-        <img src="/app/views/assets/imagotipoAparkt.png" alt="Logo" />
+        <img src="../assets/imagotipoAparkt.png" alt="Logo" />
       </div>
       <!-- METER LOGO Y PONER DISPLAY:BLOCK -->
       <nav class="navPrincipal">
         <ul>
-          <li><a href="/app/views/index.html">Mapa</a></li>
-          <li><a href="/app/views/aparkt/aparkt.html">Aparkt</a></li>
-          <li><a href="/app/views/login/login.html">Log In</a></li>
-          <li><a href="/app/views/signup/signup.html">Sign Up</a></li>
+          <li><a href="../index.html">Mapa</a></li>
+          <li><a href="../aparkt/aparkt.html">Aparkt</a></li>
+          <li><a href="login.html">Log In</a></li>
+          <li><a href="../signup/signup.html">Sign Up</a></li>
         </ul>
       </nav>
       <div id="headerDerecha">
@@ -92,7 +93,7 @@
     <main>
       <!-- Logo Aparkt -->
       <div class="main-izquierdo">
-        <img src="/app/views/assets/isotipoAparkt.png" alt="Logo" />
+        <img src="../assets/isotipoAparkt.png" alt="Logo" />
         <!-- METER LOGO -->
       </div>
       <article class="telefono">
@@ -101,7 +102,7 @@
         <form id="loginForm" novalidate>
           <div class="form-contenido">
             <h2>BIENVENIDO</h2>
-            <img src="/app/views/assets/imagotipoAparkt.png" alt="Aparkt" />
+            <img src="../assets/imagotipoAparkt.png" alt="Aparkt" />
 
             <!-- Email -->
             <div class="input-field" id="emailGroup">
@@ -186,7 +187,7 @@
           </div>
 
           <!-- Enlace para crear usuario nuevo -->
-          <p>¿Nuevo usuario? <a href="signup.html">Crear cuenta</a></p>
+          <p>¿Nuevo usuario? <a href="../signup/signup.html">Crear cuenta</a></p>
         </form>
       </article>
     </main>
@@ -194,7 +195,7 @@
     <!--FOOTER-->
     <footer>
       <div>
-        <img src="/app/views/assets/imagotipoAparkt.png" alt="Logo" />
+        <img src="../assets/imagotipoAparkt.png" alt="Logo" />
         <!--METER LOGO -->
       </div>
       <!--redes-->

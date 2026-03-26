@@ -24,4 +24,6 @@
     } catch (PDOException $e) {
         die($e->getMessage());
     }
+
+    return $_conexion;
 ?>

@@ -18,11 +18,12 @@ class Usuario extends Model
 
     public function existeEmail($email)
     {
-        $consulta = "SELECT COUNT(*) FROM Usuario WHERE email = :email";
+        $consulta = "SELECT COUNT(*) as total FROM Usuario WHERE email = :email";
         $stmt = $this->_conexion->prepare($consulta);
         $stmt->bindValue(":email", $email, PDO::PARAM_STR);
         $stmt->execute();
-        return $stmt->fetch();
+        $resultado = $stmt->fetch();
+        return $resultado['total'] > 0;
     }
 
     public function verificarContrasena($contrasena, $hash)
@@ -39,14 +40,15 @@ class Usuario extends Model
         return $stmt->fetch();
     }
 
-    public function crearUsuario($usuario, $contrasenaHasheada, $email, $apellidos = null)
+    public function crearUsuario($usuario, $apellido, $email, $ciudad, $contrasenaHasheada)
     {
-        $consulta = "INSERT INTO Usuario (nombre, apellidos, puntuacion, contrasena, email) VALUES (:nombre, :apellidos, :puntuacion, :contrasenaHasheada, :email)";
+        $consulta = "INSERT INTO Usuario (nombre, apellido, ciudad, puntuacion, contrasena, email) VALUES (:nombre, :apellido, :ciudad, :puntuacion, :contrasena, :email)";
         $stmt = $this->_conexion->prepare($consulta);
         $stmt->bindValue(":nombre", $usuario, PDO::PARAM_STR);
-        $stmt->bindValue(":apellidos", $apellidos, PDO::PARAM_STR);
+        $stmt->bindValue(":apellido", $apellido, PDO::PARAM_STR);
+        $stmt->bindValue(":ciudad", $ciudad, PDO::PARAM_STR);
         $stmt->bindValue(":puntuacion", 0, PDO::PARAM_INT);
-        $stmt->bindValue(":contrasenaHasheada", $contrasenaHasheada, PDO::PARAM_STR);
+        $stmt->bindValue(":contrasena", $contrasenaHasheada, PDO::PARAM_STR);
         $stmt->bindValue(":email", $email, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->rowCount() > 0;

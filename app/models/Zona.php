@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . "/Conexion.php";
+require __DIR__ . "/Model.php";
 
 class Zona extends Model
 {
@@ -11,7 +12,7 @@ class Zona extends Model
         VALUES (:ubicacion)";
         $stmt = $this->_conexion->prepare($consulta);
         $stmt->execute(['ubicacion' => $ubicacion]);
-        return $stmt->true;
+        return $stmt->rowCount() > 0;
     }
 
 

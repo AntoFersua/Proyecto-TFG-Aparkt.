@@ -10,38 +10,30 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="/app/views/estilosGlobales.css"
+      href="../estilosGlobales.css"
     />
     <link rel="stylesheet" type="text/css" href="signup.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
     />
-    <script src="/app/views/funcionesGlobales.js" defer></script>
-    <script src="/signup.js"></script>
-
-
-    <!--PARA PODER VER LOS ESTILOS EN LOCALHOST SINO NO SE VEN-->
-        <link rel="stylesheet" type="text/css" href="http://localhost/tfg/Proyecto-TFG-Aparkt/app/views/estilosGlobales.css" />
-    <link rel="stylesheet" type="text/css" href="http://localhost/tfg/Proyecto-TFG-Aparkt/app/views/signup.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-    <script src="http://localhost/tfg/Proyecto-TFG-Aparkt/app/views/funcionesGlobales.js" defer></script>
-    <script src="http://localhost/tfg/Proyecto-TFG-Aparkt/app/views/signup/signup.js"></script>
+    <script src="../funcionesGlobales.js" defer></script>
+    <script src="signup.js"></script>
   </head>
   <body>
     <!--HEADER-->
     <header>
       <!-- NAVEGACIÓN -->
       <div class="logoHeader">
-        <img src="/app/views/assets/imagotipoAparkt.png" alt="Logo" />
+        <img src="../assets/imagotipoAparkt.png" alt="Logo" />
       </div>
       <!-- METER LOGO Y PONER DISPLAY:BLOCK -->
       <nav class="navPrincipal">
         <ul>
-          <li><a href="/app/views/index.html">Mapa</a></li>
-          <li><a href="/app/views/aparkt/aparkt.html">Aparkt</a></li>
-          <li><a href="/app/views/login/login.html">Log In</a></li>
-          <li><a href="/app/views/signup/signup.html">Sign Up</a></li>
+          <li><a href="../index.html">Mapa</a></li>
+          <li><a href="../aparkt/aparkt.html">Aparkt</a></li>
+          <li><a href="../login/login.html">Log In</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
         </ul>
       </nav>
       <div id="headerDerecha">
@@ -110,7 +102,7 @@
         <form>
           <div class="form-contenido">
             <h2>CREAR CUENTA</h2>
-            <img src="/app/views/assets/imagotipoAparkt.png" alt="Aparkt" />
+            <img src="../assets/imagotipoAparkt.png" alt="Aparkt" />
 
             <!-- Indicador de paso -->
             <div class="indicador-paso">
@@ -156,12 +148,12 @@
                 </div>
                 <div class="input-field">
                   <input
-                    id="inputTelefono"
-                    type="tel"
+                    id="inputCiudad"
+                    type="text"
                     placeholder=" "
                     required
                   />
-                  <label for="inputTelefono">Número Teléfono</label>
+                  <label for="inputCiudad">Ciudad</label>
                 </div>
               </div>
 
@@ -185,7 +177,7 @@
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   </button>
-                  <small>Mínimo 8 caracteres y 1 caracter especial</small>
+                  <small>6-15 caracteres, mayúscula, minúscula y símbolo (@!%?)</small>
                 </div>
                 <div class="input-field">
                   <input
@@ -225,20 +217,20 @@
             </button>
           </div>
 
-          <p>¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
+          <p>¿Ya tienes cuenta? <a href="../login/login.html">Iniciar sesión</a></p>
         </form>
       </article>
 
       <!-- Logo (derecha) -->
       <div class="main-izquierdo">
-        <img src="/app/views/assets/isotipoAparkt.png" alt="Logo" />
+        <img src="../assets/isotipoAparkt.png" alt="Logo" />
       </div>
     </main>
 
     <!--FOOTER-->
     <footer>
       <div>
-        <img src="/app/views/assets/imagotipoAparkt.png" alt="Logo" />
+        <img src="../assets/imagotipoAparkt.png" alt="Logo" />
         <!--METER LOGO -->
       </div>
       <!--redes-->
