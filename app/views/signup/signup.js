@@ -1,7 +1,7 @@
-window.onload = function () {
-  document.addEventListener("DOMContentLoaded", function () {
-    let form = document.querySelector("form");
 
+  document.addEventListener("DOMContentLoaded", function () {
+      alert("JS ajajj");
+    let form = document.querySelector("form");
     let nombreInput = document.getElementById("inputNombre");
     let apellidosInput = document.getElementById("inputApellidos");
     let emailInput = document.getElementById("inputCorreo");
@@ -149,7 +149,6 @@ window.onload = function () {
       if (!valido) {
         e.preventDefault();
       } else {
-        e.preventDefault();
         
         const datos = {
           usuario: nombre,
@@ -158,7 +157,8 @@ window.onload = function () {
           telefono: telefono,
           contrasena: password
         };
-        fetch('../../app/controllers/SignupController.php', {
+
+        fetch('http://localhost/tfg/Proyecto-TFG-Aparkt/app/controllers/SignupController.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(datos)
@@ -201,4 +201,4 @@ window.onload = function () {
       }
     }
   });
-};
+
