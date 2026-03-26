@@ -11,6 +11,7 @@ window.onload = function () {
     let checkbox = document.getElementById("aceptarTerminos");
 
     form.onsubmit = function (e) {
+      e.preventDefault();
       limpiarErrores();
       let valido = true;
 
@@ -147,10 +148,41 @@ window.onload = function () {
       /**Si algo falla paramos el onsubmit */
       if (!valido) {
         e.preventDefault();
+      } else {
+        e.preventDefault();
+        
+        const datos = {
+          usuario: nombre,
+          apellidos: apellidos,
+          email: email,
+          telefono: telefono,
+          contrasena: password
+        };
+        fetch('../app/controllers/SignupController.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datos)
+        })
+        .then(respuesta => respuesta.json())
+        .then(data => {
+          if (data.status === 'ok') {
+            alert(data.mensaje);
+            window.location.href = 'login.html';
+          } else if (data.errores) {
+            for (let campo in data.errores) {
+              let input = document.getElementById('input' + campo.charAt(0).toUpperCase() + campo.slice(1));
+              if (input) mostrarError(input, data.errores[campo]);
+            }
+          } else {
+            alert(data.mensaje || 'Error en el registro');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error de conexión');
+        });
       }
     };
-
-
     /**FUNCIONES PARA MOSTRAR ERRORES Y QUITARLOS */
     function mostrarError(elemento, mensaje) {
       let error = document.createElement("div");

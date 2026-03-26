@@ -3,7 +3,7 @@
     $_servidor="localhost";
     $_usuario="root";
     $_contrasena="";
-    $_bd="Aparkt";
+    $_bd="aparkt";
 
     try {
         $_conexion = new PDO(

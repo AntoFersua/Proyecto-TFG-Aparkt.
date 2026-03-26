@@ -27,6 +27,7 @@ class SignupController
         $usuario = trim($DatosPost['usuario'] ?? "");
         $apellidos = trim($DatosPost['apellidos'] ?? "");
         $contrasena = trim($DatosPost['contrasena'] ?? "");
+        $telefono = trim($DatosPost['telefono'] ?? "");
         $email = filter_var($DatosPost['email'], FILTER_SANITIZE_EMAIL) ?? "";
 
         //validar datos
@@ -40,6 +41,12 @@ class SignupController
             $errores["contrasena"] = "Introduzca una contraseña";
         } elseif (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[@!?%])[A-Za-z@!%?]{6,15}$/", $contrasena)) {
             $errores["contrasena"] = "mínimo 6 caracteres y máximo 15, al menos una mayúscula, al menos una minúscula, al menos un símbolo (@!?%)";
+        }
+        
+        if ($telefono == "") {
+            $errores["telefono"] = "Introduzca un teléfono";
+        } elseif (!preg_match("/^[0-9]{9}$/", $telefono)) {
+            $errores["telefono"] = "El teléfono debe tener 9 dígitos";
         }
 
         if ($email == "") {

@@ -5,6 +5,7 @@ window.onload = function () {
     let passwordInput = document.getElementById("password");
 
     form.onsubmit = function (e) {
+      e.preventDefault();
       limpiarErrores();
       let valido = true;
 
@@ -12,7 +13,7 @@ window.onload = function () {
       if (emailInput.value == "") {
         mostrarError(emailInput, "El email es obligatorio.");
         valido = false;
-      }else if(emailInput.length>50){
+      }else if(emailInput.value.length>50){
         mostrarError(emailInput, "El email es demasiado largo.");
         valido = false;
       }
@@ -29,7 +30,42 @@ window.onload = function () {
       if (!valido){
         e.preventDefault(); 
       } 
+
+      let datos = {
+        usuario: emailInput.value.trim(),
+        contrasena: passwordInput.value.trim()
+      };
+
+      fetch('../app/controllers/LoginController.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        //JS → String JSON
+        body: JSON.stringify(datos)
+      })
+       //transforma la respuesta de JSON a objeto
+      .then(response => response.json())
+      //data = objeto respuesta
+      .then(data => {
+        if (data.status === 'ok') {
+          alert(data.mensaje);
+          window.location.href = 'index.html';
+        } else {
+          if (data.errores) {
+            for (let campo in data.errores) {
+              let input = campo === 'usuario' ? emailInput : passwordInput;
+              mostrarError(input, data.errores[campo]);
+            }
+          } else {
+            alert(data.mensaje || 'Error en el login');
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error de conexión');
+      });
     };
+    
 
     function mostrarError(elemento, mensaje) {
       const error = document.createElement("div");

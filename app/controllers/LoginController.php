@@ -1,72 +1,68 @@
 <?php
-    //importar los archivos
-    require "app/models/Conexion.php";
-    require "app/models/Usuario.php";
-    class LoginController
+//importar los archivos
+require "app/models/Conexion.php";
+require "app/models/Usuario.php";
+class LoginController
+{
+    private $usuarioModelo;
+    public function __construct($conexion)
     {
-        private $usuarioModelo;
-
-        public function __construct($conexion)
-        {
-            $this->usuarioModelo = new Usuario($conexion);
-        }
-
-        public function login()
-        {
-            // Obtener el contenido raw del body
-            $inputJSON = file_get_contents('php://input');
-
-            // Convertir a array asociativo
-            $DatosPost = json_decode($inputJSON, true);
-
-            $errores = [];
-
-            //obtener datos del frontend
-            $usuario = trim($DatosPost['usuario'] ?? '');
-            $contrasena = trim($DatosPost['contrasena'] ?? '');
-
-            //valdiaciones
-            if ($usuario == '') {
-                $errores['usuario'] = "Introduce un usuario";
-            }
-            if ($contrasena == '') {
-                $errores['contrasena'] = "Introduce un contraseña";
-            }
-
-        if (empty($errores)) {
-            $user_info = $this->usuarioModelo->obtenerUsuario($usuario);
-            if (!$user_info) {
-                $errores['usuario'] = "Usuario no existe";
-            } else {
-                $contrasenaInfo = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
-                if (!$contrasenaInfo) {
-                    $errores['contrasena'] = "contraseña incorrecta";
-                }
-            }
-
-            if ($user_info && $contrasenaInfo) {
-                session_start();
-
-                $_SESSION["usuario"] = $usuario;
-
-                    //indicar cabecera json y devolver respuesta al frontend
-                    header('Content-Type: application/json');
-                    echo json_encode([
-                        "status" => "ok",
-                        "mensaje" => "Usuario inicio sesión correctamente"
-                    ]);
-                    exit();
-
-                } else {
-                    //devolver error 
-                    echo json_encode([
-                        "status" => "error",
-                        "mensaje" => "Usuario no pudo iniciar sesión correctamente"
-                    ]);
-                    exit();
-                }
-            }
-        }
+        $this->usuarioModelo = new Usuario($conexion);
     }
-
+    public function login()
+    {
+        // Obtener el contenido raw del body
+        $inputJSON = file_get_contents('php://input');
+        // Convertir a array asociativo
+        $DatosPost = json_decode($inputJSON, true);
+        $errores = [];
+        //obtener datos del frontend
+        $usuario = trim($DatosPost['usuario'] ?? '');
+        $contrasena = trim($DatosPost['contrasena'] ?? '');
+        //validaciones
+        if ($usuario == '') {
+            $errores['usuario'] = "Introduce un usuario";
+        }
+        if ($contrasena == '') {
+            $errores['contrasena'] = "Introduce una contraseña";
+        }
+        //indicar cabecera json y devolver respuesta al frontend
+        header('Content-Type: application/json');
+        //si hay errores de validación básica, devolverlos
+        if (!empty($errores)) {
+            echo json_encode([
+                "status" => "error",
+                "errores" => $errores
+            ]);
+            exit();
+        }
+        //si no hay errores, verificar usuario en la base de datos
+        $user_info = $this->usuarioModelo->obtenerUsuario($usuario);
+        if (!$user_info) {
+            $errores['usuario'] = "Usuario no existe";
+        } else {
+            //verificar contraseña
+            $contrasenaInfo = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
+            if (!$contrasenaInfo) {
+                $errores['contrasena'] = "Contraseña incorrecta";
+            }
+        }
+        //si hay errores de base de datos, devolverlos
+        if (!empty($errores)) {
+            echo json_encode([
+                "status" => "error",
+                "errores" => $errores
+            ]);
+            exit();
+        }
+        //si todo está bien, crear sesión
+        session_start();
+        $_SESSION["usuario"] = $usuario;
+        //devolver éxito
+        echo json_encode([
+            "status" => "ok",
+            "mensaje" => "Usuario inició sesión correctamente"
+        ]);
+    }
+}
 ?>
