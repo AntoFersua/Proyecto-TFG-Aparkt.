@@ -1,7 +1,7 @@
 <?php
 //importar los archivos
-require 'app/models/Conexion.php';
-require "app/models/Usuario.php";
+require __DIR__ . '/../models/Conexion.php';
+require __DIR__ . '/../models/Usuario.php';
 
 class SignupController
 {
@@ -99,5 +99,10 @@ class SignupController
             ]);
         }
     }
+}
+if (basename($_SERVER['SCRIPT_FILENAME']) === 'SignupController.php') {
+    $conexion = require __DIR__ . '/../models/Conexion.php';
+    $controller = new SignupController($conexion);
+    $controller->registrar();
 }
 ?>

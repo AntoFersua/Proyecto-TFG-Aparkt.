@@ -158,7 +158,7 @@ window.onload = function () {
           telefono: telefono,
           contrasena: password
         };
-        fetch('../app/controllers/SignupController.php', {
+        fetch('../../app/controllers/SignupController.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(datos)
@@ -167,12 +167,12 @@ window.onload = function () {
         .then(data => {
           if (data.status === 'ok') {
             alert(data.mensaje);
-            window.location.href = 'login.html';
+            window.location.href = '/app/views/login/login.html';
           } else if (data.errores) {
             for (let campo in data.errores) {
               let input = document.getElementById('input' + campo.charAt(0).toUpperCase() + campo.slice(1));
               if (input) mostrarError(input, data.errores[campo]);
-            }
+            } 
           } else {
             alert(data.mensaje || 'Error en el registro');
           }

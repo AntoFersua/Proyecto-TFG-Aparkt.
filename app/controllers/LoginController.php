@@ -1,7 +1,7 @@
 <?php
 //importar los archivos
-require "app/models/Conexion.php";
-require "app/models/Usuario.php";
+require __DIR__ . '/../models/Conexion.php';
+require __DIR__ . '/../models/Usuario.php';
 class LoginController
 {
     private $usuarioModelo;
@@ -64,5 +64,10 @@ class LoginController
             "mensaje" => "Usuario inició sesión correctamente"
         ]);
     }
+}
+if (basename($_SERVER['SCRIPT_FILENAME']) === 'LoginController.php') {
+    $conexion = require __DIR__ . '/../models/Conexion.php';
+    $controller = new LoginController($conexion);
+    $controller->login();
 }
 ?>
