@@ -65,6 +65,7 @@ class LoginController
         ]);
     }
 }
+//Ejecuta automaticamente el proceso de login cuando se accede al archivo LoginController
 if (basename($_SERVER['SCRIPT_FILENAME']) === 'LoginController.php') {
     $conexion = require __DIR__ . '/../models/Conexion.php';
     $controller = new LoginController($conexion);
