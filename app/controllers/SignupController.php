@@ -36,7 +36,7 @@ class SignupController
         } elseif (!preg_match("/^[a-zA-Z][a-zA-Z0-9_]{7,15}$/", $usuario)) {
             $errores["usuario"] = "Usuario inválido: debe empezar con letra, solo letras, números y _, entre 8 y 16 caracteres";
         }
-        //IMPORTANTE, MIRAR LA VAALIDACIÓN DEL FRONTED, FALTA AÑADIR NUMEROS A LA PASS
+        //IMPORTANTE, MIRAR LA VAALIDACIÓN DEL FRONTEND, FALTA AÑADIR NUMEROS A LA PASS
         if ($contrasena == "") {
             $errores["contrasena"] = "Introduzca una contraseña";
         } elseif (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[@!?%])[A-Za-z0-9@!%?]{6,15}$/", $contrasena)) {
