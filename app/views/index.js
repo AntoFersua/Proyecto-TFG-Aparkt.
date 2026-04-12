@@ -27,10 +27,55 @@ window.addEventListener('DOMContentLoaded', function () {
                 mapa.setFog({});
             });
 
-            
-            //Cuando el mapa termina de cargar, se añade el control de navegación del zoom y rotación
+            //Cuando el mapa termina de cargar, se añade el control de navegación del zoom y rotación, y el estado de aparcamiento
             mapa.on('load', function () {
                mapa.addControl(new mapboxgl.NavigationControl());
+
+                //Indicar estado de aparcamiento 
+                function estadoAparcamiento(longitudX, latitudY, radioCirculo, idSource, idCapa, colorRelleno, colorBorde){
+                    //Coordenada de la señal
+                    const centro = [longitudX, latitudY];
+                    //Radio del circulo en metros
+                    const radio = radioCirculo;
+                    const opciones = { 
+                        //Numero de pts del circulo
+                        steps: 64,           
+                        units: 'meters',     
+                        properties: {}       
+                    };
+                    //crear el circulo
+                    const circulo = turf.circle(centro, radio, opciones);
+                    //Añadir datos geograficos al mapa en forma de geojson
+                    mapa.addSource(idSource, {
+                        type: 'geojson',           
+                        data: circulo              
+                    });
+                    //Añadir capa visual al mapa
+                    mapa.addLayer({
+                        //identificador de la capa
+                        id: idCapa, 
+                        //de tipo poligono con relleno
+                        type: 'fill',      
+                        //enlazar con la fuente zona 
+                        source: idSource,    
+                        paint: {                   
+                            'fill-color': colorRelleno,      
+                            'fill-outline-color': colorBorde                 
+                        }
+                    });
+                    return {
+                        sourceID: idSource,  
+                        layerID: idCapa
+                    };
+                }
+
+                const zona1 = estadoAparcamiento(-4.476059, 36.718963, 100, "zona", "zona-parking-fill", "rgba(255, 0, 0, 0.3)", "red");
+                
+                //eliminar layer y luego source
+                //mapa.removeLayer(zona1.layerID);
+                //mapa.removeSource(zona1.sourceID);
+
+                const zona2 = estadoAparcamiento(-4.476059, 36.72896, 500, "zona2", "zona-fill", "rgba(255, 0, 0, 0.3)", "red");
             });
 
             
@@ -48,8 +93,8 @@ window.addEventListener('DOMContentLoaded', function () {
                     })
                     //Procesar datos obtenidos
                     .then(function (datos) {
-                        /*Se obtiene el nombre del lugar completo con calle, provincia y país o solo el nombre de la calle o un mensaje por defecto.
-                        Se accede al elemento 0 del array features de datos, si existe se accede a properties, si existe se accede a full_address en caso de que no se sigue con name...
+                        /*Se obtiene el nombre del lugar completo con calle, provincia y país o solo el nombre de la calle o un nombre de la calle o un mensaje por defecto.
+                        Se accede al elemento 0 del array featutes de datos, si existe se accede a properties, si existe se accede a full_address en caso de que no se sigue con name...
                         console.log(datos);*/  
                         const address = datos.features[0]?.properties?.full_address || datos.features[0]?.properties?.name || 'Dirección no encontrada'; 
                         alert('Coordenadas: ' + longitud.toFixed(6) + ', ' + latitud.toFixed(6) + '\nDirección: ' + address);
@@ -59,17 +104,92 @@ window.addEventListener('DOMContentLoaded', function () {
                         alert('Coordenadas: ' + longitud.toFixed(6) + ', ' + latitud.toFixed(6) + '\nError al obtener dirección');
                     });
             });
+            
+            
+            //Crear popup con titulo y texto
+            function crearPopupTituloParrafo(titulo, parrafo){
+                const popupTituloParrafo = new mapboxgl.Popup()
+                .setHTML('<h3>'+titulo+'</h3><p>'+parrafo+'</p>');
 
-            //añadir marcador
-            new mapboxgl.Marker({ color: 'red' })
+                return popupTituloParrafo;
+            }
+
+            const popupAnuncianteCasaLola = crearPopupTituloParrafo("Casa Lola", "El mejor restaurante de la zona.");
+            const popupAnuncianteCasaPaco = crearPopupTituloParrafo("Casa Paco", "El mejor restaurante de la zona.");
+            
+            //Forma sin función
+            /*const popupAnuncianteCasaLola = new mapboxgl.Popup()
+            .setHTML('<h3>Casa Lola</h3><p>El mejor restaurante de la zona.</p>');*/
+
+            //Crear popup con solo titulo
+            function crearPopupTitulo(titulo){
+                const popupTitulo = new mapboxgl.Popup()
+                .setHTML('<h3>'+titulo+'</h3>');
+
+                return popupTitulo;
+            }
+
+            const popupUsuarioCasa = crearPopupTitulo("Mi Casa");
+            const popupUsuarioColegio = crearPopupTitulo("Mi Cole");
+
+            //Crear popup con solo texto
+            function crearPopupTexto(texto){
+                const popupTexto = new mapboxgl.Popup()
+                .setText(texto);
+
+                return popupTexto;
+            }
+
+            const popupUsuarioUbicacion = crearPopupTexto("Mi ubi");
+
+            //Forma sin función
+            /*const popupUsuarioUbicacion = new mapboxgl.Popup()
+            .setText('Mi ubi');*/
+            
+
+            //añadir marcador basico 
+            function añadirMarcadorBasico(longitudX, latitudY, popup){
+                const marker = new mapboxgl.Marker({
+                    color: '#005a60', 
+                    scale: 1,
+                    //arrastrable 
+                    //draggable: true     
+                })
                 //Asignar coordenadas
-                .setLngLat([-4.47204, 36.71872])
+                .setLngLat([longitudX, latitudY])
                 //Crear un popup que indique info del marcador 
-                .setPopup(
-                    new mapboxgl.Popup().setText('Aquí hay un parking')
-                )
+                .setPopup(popup) //.setPopup(new mapboxgl.Popup().setText('Aquí hay un parking'))
                 //Añadir al mapa 
-                .addTo(mapa); 
+                .addTo(mapa);  //se usa el encadenamiento de métodos porque cada método devuelve el propio objeto this, es igual que hacer marker.addTo(mapa)
+                return marker; 
+            }
+
+            const marcaUbi = añadirMarcadorBasico(-4.47204, 36.71872, popupUsuarioUbicacion);
+            const marcaCasa = añadirMarcadorBasico(-4.47234, 36.71372, popupUsuarioCasa);
+            const marcaCole = añadirMarcadorBasico(-4.47304, 36.71472, popupUsuarioColegio);
+            //marcaUbi.remove(); 
+
+            //añadir marcador Personalizado Logo 
+            function añadirMarcadorPersonalizado(longitudX, latitudY, popup){
+                const anunciante = document.createElement('div');
+                anunciante.className = 'custom-marker';
+                anunciante.innerHTML = `<img src="./imagotipoAparkt.png" alt="anunciante" style="width:60px;height:60px;display:block;">`;
+                
+                const markerAnunciante = new mapboxgl.Marker({
+                    element: anunciante,
+                    anchor: 'bottom' //se centra lo de abajo 
+                })
+                .setLngLat([longitudX, latitudY])
+                .setPopup(popup)
+                .addTo(mapa);
+                return markerAnunciante; 
+            }
+
+            const marcaCasaLola = añadirMarcadorPersonalizado(-4.480782, 36.717794, popupAnuncianteCasaLola);
+            const marcaCasaPaco = añadirMarcadorPersonalizado(-4.480700, 36.720100, popupAnuncianteCasaPaco);
+            //marcaCasaLola.remove(); 
+
+            
 
         })
         .catch(function(error){
