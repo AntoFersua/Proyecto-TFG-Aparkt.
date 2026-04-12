@@ -173,7 +173,7 @@ window.addEventListener('DOMContentLoaded', function () {
             function añadirMarcadorPersonalizado(longitudX, latitudY, popup){
                 const anunciante = document.createElement('div');
                 anunciante.className = 'custom-marker';
-                anunciante.innerHTML = `<img src="./imagotipoAparkt.png" alt="anunciante" style="width:60px;height:60px;display:block;">`;
+                anunciante.innerHTML = `<img src="./assets/imagotipoAparkt.png" alt="anunciante" style="width:60px;height:60px;display:block;">`;
                 
                 const markerAnunciante = new mapboxgl.Marker({
                     element: anunciante,
