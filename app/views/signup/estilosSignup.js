@@ -161,6 +161,8 @@
       if (especiales.includes(c)) tieneEspecial = true;
     }
 
+
+    /**ESTO DEBE ESTAR BIEN Y FUNCIONAR */
     if (password === "") {
       mostrarError(passwordInput, "La contraseña es obligatoria.");
       valido = false;
