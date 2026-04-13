@@ -24,40 +24,58 @@ class SignupController
         $errores = [];
 
         //obtener datos
-        $usuario = trim($DatosPost['usuario'] ?? "");
+        $nombre = trim($DatosPost['nombre'] ?? "");
         $apellido = trim($DatosPost['apellido'] ?? "");
         $ciudad = trim($DatosPost['ciudad'] ?? "");
+        $telefono = trim($DatosPost['telefono'] ?? "");
         $contrasena = trim($DatosPost['contrasena'] ?? "");
-        $email = filter_var($DatosPost['email'], FILTER_SANITIZE_EMAIL) ?? "";
+        $email = trim($DatosPost["email"] ?? "");
+        $email = htmlspecialchars($email, ENT_QUOTES, "UTF-8");
+
+        $ciudadesPermitidas = ["Malaga", "Sevilla", "Granada", "Cordoba"];
 
         //validar datos
-        if ($usuario == "") {
-            $errores["usuario"] = "Introduzca un nombre de usuario";
-        } elseif (!preg_match("/^[a-zA-Z][a-zA-Z0-9_]{7,15}$/", $usuario)) {
+        if ($nombre == "") {
+            $errores["nombre"] = "Introduzca un nombre";
+        } elseif (!preg_match('/^[a-zA-Z]{2,20}$/', $nombre)) {
             $errores["usuario"] = "Usuario inválido: debe empezar con letra, solo letras, números y _, entre 8 y 16 caracteres";
-        }
-        //IMPORTANTE, MIRAR LA VAALIDACIÓN DEL FRONTEND, FALTA AÑADIR NUMEROS A LA PASS
-        if ($contrasena == "") {
-            $errores["contrasena"] = "Introduzca una contraseña";
-        } elseif (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[@!?%])[A-Za-z0-9@!%?]{6,15}$/", $contrasena)) {
-            $errores["contrasena"] = "mínimo 6 caracteres y máximo 15, al menos una mayúscula, al menos una minúscula, al menos un símbolo (@!?%)";
-        }
-        
-        if ($email == "") {
-            $errores["email"] = "Introduzca un email";
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errores["email"] = "Formato incorrecto de email";
         }
 
         if ($apellido == "") {
             $errores["apellido"] = "Introduzca el apellido";
-        } elseif (!preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]{3,100}$/", $apellido)) {
-            $errores["apellido"] = "El apellido solo puede contener letras, espacios y tildes (3-100 caracteres)";
+        } elseif (!preg_match('/^[\p{L}]+(?:\s[\p{L}]+){0,49}$/u', $apellido)) {
+            $errores["apellido"] = "El apellido solo puede contener letras y espacios (2-50 caracteres)";
         }
 
+        //PONER LAS MISMAS CIUDADES EN CIUDADESPERMITIDAS
         if ($ciudad == "") {
-            $errores["ciudad"] = "Introduzca la ciudad";
+            $errores["ciudad"] = "Seleccione una ciudad";
+        } elseif (!in_array($ciudad, $ciudadesPermitidas, true)) {
+            $errores["ciudad"] = "Ciudad no válida";
         }
+
+        if ($telefono == "") {
+            $errores["telefono"] = "telefono no valido";
+        } elseif (!preg_replace('/[^0-9+]/', '', $telefono)) {
+            $errores["telefono"] = "telefono no cumple con los parametros";
+        } elseif ($this->usuarioModelo->verificarTelefono($telefono) > 0) {
+            $errores["telefono"] = "El telefono ya esta registrado";
+        }
+        //IMPORTANTE, MIRAR LA VAALIDACIÓN DEL FRONTEND, FALTA AÑADIR NUMEROS A LA PASS
+        if ($contrasena == "") {
+            $errores["contrasena"] = "Introduzca una contraseña";
+        } elseif (!preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,15}$/', $contrasena)) {
+            $errores["contrasena"] = "mínimo 6 caracteres y máximo 15, al menos una mayúscula, al menos una minúscula, al menos un símbolo (@!?%)";
+        }
+
+        if ($email == "") {
+            $errores["email"] = "Introduzca un email";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errores["email"] = "Formato de correo no válido";
+        } elseif ($this->usuarioModelo->verificarEmail($email) > 0) {
+            $errores["email"] = "El email ya esta registrado";
+        }
+
         /**
          * 
          * obtenerUsuario sirve como comprobante de si hay o no usuario
@@ -66,7 +84,7 @@ class SignupController
          */
         //si no hay errores
         if (empty($errores)) {
-            if ($this->usuarioModelo->obtenerUsuario($usuario)) {
+            if ($this->usuarioModelo->obtenerUsuario($nombre)) {
                 $errores["usuario"] = "Ya existe un usuario con ese nombre";
             } elseif ($this->usuarioModelo->existeEmail($email)) {
                 $errores["email"] = "Ya existe un usuario con ese email";
@@ -79,7 +97,7 @@ class SignupController
         if (empty($errores)) {
             //hashear contraseña y crear usuario
             $contrasenaHasheada = password_hash($contrasena, PASSWORD_DEFAULT);
-            if ($this->usuarioModelo->crearUsuario($usuario, $apellido, $email, $ciudad, $contrasenaHasheada)) {
+            if ($this->usuarioModelo->crearUsuario($nombre, $apellido, $email, $ciudad, $contrasenaHasheada)) {
                 echo json_encode([
                     "status" => "ok",
                     "mensaje" => "usuario registrado correctamente"

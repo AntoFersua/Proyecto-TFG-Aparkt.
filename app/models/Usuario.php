@@ -53,6 +53,25 @@ class Usuario extends Model
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
+
+    public function verificarTelefono($telefono)
+    {
+        $consulta = "SELECT COUNT(*) FROM usuarios WHERE telefono = :telefono";
+        $stmt = $this->_conexion->prepare($consulta);
+        //verificar sin telefono es string o int
+        $stmt->bindValue(":telefono", $telefono, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    public function verificarEmail($email)
+    {
+        $consulta = "SELECT COUNT(*) FROM usuarios WHERE email = :email";
+        $stmt = $this->_conexion->prepare($consulta);
+        $stmt->bindValue(":email", $email, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
 }
 
 ?>
