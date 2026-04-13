@@ -37,7 +37,7 @@
   }
 
   // Funciones de validación por paso
-  function mostrarExito(elemento, mensaje) {
+  /*function mostrarExito(elemento, mensaje) {
     limpiarExito(elemento);
     let ok = document.createElement("div");
     ok.className = "mensajeExito";
@@ -161,8 +161,6 @@
       if (especiales.includes(c)) tieneEspecial = true;
     }
 
-
-    /**ESTO DEBE ESTAR BIEN Y FUNCIONAR */
     if (password === "") {
       mostrarError(passwordInput, "La contraseña es obligatoria.");
       valido = false;
@@ -218,10 +216,10 @@
         }
       });
     }
-  }
+  }*/
 
   // Esperar a que Owl Carousel cree los botones
-  setTimeout(configurarBotonSiguiente, 100);
+  /*setTimeout(configurarBotonSiguiente, 100);
 
   carrusel.on("changed.owl.carousel", function (e) {
     actualizarUI(e.item.index);
@@ -242,5 +240,5 @@
     });
   });
 
-  actualizarUI(0);
+  actualizarUI(0);*/
 })();
