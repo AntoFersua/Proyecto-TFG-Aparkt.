@@ -30,15 +30,14 @@ class SignupController
         $telefono = trim($DatosPost['telefono'] ?? "");
         $contrasena = trim($DatosPost['contrasena'] ?? "");
         $email = trim($DatosPost["email"] ?? "");
-        $email = htmlspecialchars($email, ENT_QUOTES, "UTF-8");
 
         $ciudadesPermitidas = ["Malaga", "Sevilla", "Granada", "Cordoba"];
 
         //validar datos
         if ($nombre == "") {
             $errores["nombre"] = "Introduzca un nombre";
-        } elseif (!preg_match('/^[a-zA-Z]{2,20}$/', $nombre)) {
-            $errores["usuario"] = "Usuario inválido: debe empezar con letra, solo letras, números y _, entre 8 y 16 caracteres";
+        } elseif (!preg_match('/^[\p{L}]{2,20}$/u', $nombre)) {
+            $errores["nombre"] = "nombre inválido: debe empezar con letra, solo letras, números y _, entre 2 y 20 caracteres";
         }
 
         if ($apellido == "") {
@@ -54,17 +53,18 @@ class SignupController
             $errores["ciudad"] = "Ciudad no válida";
         }
 
+
         if ($telefono == "") {
-            $errores["telefono"] = "telefono no valido";
-        } elseif (!preg_replace('/[^0-9+]/', '', $telefono)) {
-            $errores["telefono"] = "telefono no cumple con los parametros";
+            $errores["telefono"] = "Teléfono no válido";
+        } elseif (!preg_match('/^[0-9]{9,15}$/', $telefono)) {
+            $errores["telefono"] = "Formato de teléfono no válido";
         } elseif ($this->usuarioModelo->verificarTelefono($telefono) > 0) {
-            $errores["telefono"] = "El telefono ya esta registrado";
+            $errores["telefono"] = "El teléfono ya está registrado";
         }
         //IMPORTANTE, MIRAR LA VAALIDACIÓN DEL FRONTEND, FALTA AÑADIR NUMEROS A LA PASS
         if ($contrasena == "") {
             $errores["contrasena"] = "Introduzca una contraseña";
-        } elseif (!preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,15}$/', $contrasena)) {
+        } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,15}$/', $contrasena)) {
             $errores["contrasena"] = "mínimo 6 caracteres y máximo 15, al menos una mayúscula, al menos una minúscula, al menos un símbolo (@!?%)";
         }
 
@@ -72,7 +72,7 @@ class SignupController
             $errores["email"] = "Introduzca un email";
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errores["email"] = "Formato de correo no válido";
-        } elseif ($this->usuarioModelo->verificarEmail($email) > 0) {
+        } elseif ($this->usuarioModelo->existeEmail($email) > 0) {
             $errores["email"] = "El email ya esta registrado";
         }
 
@@ -85,9 +85,7 @@ class SignupController
         //si no hay errores
         if (empty($errores)) {
             if ($this->usuarioModelo->obtenerUsuario($nombre)) {
-                $errores["usuario"] = "Ya existe un usuario con ese nombre";
-            } elseif ($this->usuarioModelo->existeEmail($email)) {
-                $errores["email"] = "Ya existe un usuario con ese email";
+                $errores["nombre"] = "Ya existe un usuario con ese nombre";
             }
         }
 
@@ -97,7 +95,7 @@ class SignupController
         if (empty($errores)) {
             //hashear contraseña y crear usuario
             $contrasenaHasheada = password_hash($contrasena, PASSWORD_DEFAULT);
-            if ($this->usuarioModelo->crearUsuario($nombre, $apellido, $email, $ciudad, $contrasenaHasheada)) {
+            if ($this->usuarioModelo->crearUsuario($nombre, $apellido, $ciudad, $contrasenaHasheada, $email, $telefono)) {
                 echo json_encode([
                     "status" => "ok",
                     "mensaje" => "usuario registrado correctamente"

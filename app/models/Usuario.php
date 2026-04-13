@@ -40,13 +40,14 @@ class Usuario extends Model
         return $stmt->fetch();
     }
 
-    public function crearUsuario($usuario, $apellido, $email, $ciudad, $contrasenaHasheada)
+    public function crearUsuario($nombre, $apellido, $ciudad , $contrasenaHasheada ,$email, $telefono)
     {
-        $consulta = "INSERT INTO Usuario (nombre, apellido, ciudad, puntuacion, contrasena, email) VALUES (:nombre, :apellido, :ciudad, :puntuacion, :contrasena, :email)";
+        $consulta = "INSERT INTO Usuario (nombre, apellido, ciudad, puntuacion, contrasena, email, telefono) VALUES (:nombre, :apellido, :ciudad, :puntuacion, :contrasena, :email, :telefono)";
         $stmt = $this->_conexion->prepare($consulta);
-        $stmt->bindValue(":nombre", $usuario, PDO::PARAM_STR);
+        $stmt->bindValue(":nombre", $nombre, PDO::PARAM_STR);
         $stmt->bindValue(":apellido", $apellido, PDO::PARAM_STR);
         $stmt->bindValue(":ciudad", $ciudad, PDO::PARAM_STR);
+        $stmt->bindValue(":telefono", $telefono, PDO::PARAM_STR);
         $stmt->bindValue(":puntuacion", 0, PDO::PARAM_INT);
         $stmt->bindValue(":contrasena", $contrasenaHasheada, PDO::PARAM_STR);
         $stmt->bindValue(":email", $email, PDO::PARAM_STR);
@@ -64,14 +65,6 @@ class Usuario extends Model
         return $stmt->fetchColumn();
     }
 
-    public function verificarEmail($email)
-    {
-        $consulta = "SELECT COUNT(*) FROM usuarios WHERE email = :email";
-        $stmt = $this->_conexion->prepare($consulta);
-        $stmt->bindValue(":email", $email, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchColumn();
-    }
 }
 
 ?>
