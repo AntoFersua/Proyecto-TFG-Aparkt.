@@ -1,111 +1,152 @@
-  document.addEventListener("DOMContentLoaded", function () {
-    let form = document.querySelector("form");
+import { z } from "zod";
+//import { z } from "https://cdn.jsdelivr.net/npm/zod@3.23.8/lib/index.esm.js";
 
-    function mostrarError(elemento, mensaje) {
-      let existente = elemento.parentNode.querySelector(".mensajeError");
-      if (existente) existente.remove();
-      let error = document.createElement("div");
-      error.className = "mensajeError";
-      error.style.color = "#f87171";
-      error.style.fontSize = "0.9em";
-      error.textContent = mensaje;
-      elemento.parentNode.appendChild(error);
-    }
+/* ESQUEMA ZOD QUE SIGUE LA VALIDACIÓN */
+const ciudadesPermitidas = ["Malaga", "Sevilla", "Granada", "Cordoba"]; //cuando hagamos el select
 
-    function limpiarErrores() {
-      document.querySelectorAll(".mensajeError").forEach(el => el.remove());
-    }
+const esquemaUsuario = z.object({
+  nombre: z.string().min(2).max(20).regex(/^[\p{L}\s]+$/u),
+  apellido: z.string().min(2).max(50).regex(/^[\p{L}\s]+$/u),
+  email: z.string().email(),
+  ciudad: z.string().min(2).max(30),   //comprobar porque nosotros no tenemos select 
+  contrasena: z.string()
+    .min(6)
+    .max(15)
+    .regex(/[A-Z]/)
+    .regex(/[a-z]/)
+    .regex(/[0-9]/)
+    .regex(/[^A-Za-z0-9]/),
+  confirmarPassword: z.string(),
+  aceptarTerminos: z.boolean(),
+}).refine((data) => data.contrasena === data.confirmarPassword, { //refine para personalizar 
+  message: "Las contraseñas no coinciden",
+  path: ["confirmarPassword"]
+}).refine((data) => data.aceptarTerminos === true, {
+  message: "Debes aceptar los términos",
+  path: ["aceptarTerminos"]
+});
 
-    form.onsubmit = function (e) {
-      e.preventDefault();
-      limpiarErrores();
 
-      const passwordInput = document.getElementById("inputContrasena");
-      const confirmarPasswordInput = document.getElementById("confirmarContrasena");
-      const checkbox = document.getElementById("aceptarTerminos");
+/*APUNTAR A CADA INPUT DEL FORMULARIO */
+const form = document.querySelector("form");
 
-      const password = passwordInput.value.trim();
-      const especiales = "@!?%";
-      let tieneMayuscula = false;
-      let tieneMinuscula = false;
-      let tieneEspecial = false;
+const inputNombre = document.querySelector("#inputNombre");
+const inputApellidos = document.querySelector("#inputApellidos");
+const inputCorreo = document.querySelector("#inputCorreo");
+const inputCiudad = document.querySelector("#inputCiudad");
+const inputContrasena = document.querySelector("#inputContrasena");
+const inputConfirmar = document.querySelector("#confirmarContrasena");
+const inputTerminos = document.querySelector("#aceptarTerminos");
 
-      for (let i = 0; i < password.length; i++) {
-        let c = password[i];
-        if (c >= "A" && c <= "Z") tieneMayuscula = true;
-        if (c >= "a" && c <= "z") tieneMinuscula = true;
-        if (especiales.includes(c)) tieneEspecial = true;
-      }
 
-      let valido = true;
 
-      if (password === "") {
-        mostrarError(passwordInput, "La contraseña es obligatoria.");
-        valido = false;
-      } else if (password.length < 6 || password.length > 15) {
-        mostrarError(passwordInput, "Debe tener entre 6 y 15 caracteres.");
-        valido = false;
-      } else if (!tieneMayuscula) {
-        mostrarError(passwordInput, "Debe tener al menos una mayúscula.");
-        valido = false;
-      } else if (!tieneMinuscula) {
-        mostrarError(passwordInput, "Debe tener al menos una minúscula.");
-        valido = false;
-      } else if (!tieneEspecial) {
-        mostrarError(passwordInput, "Debe tener al menos un símbolo (@!?%).");
-        valido = false;
-      }
-
-      const confirmarPassword = confirmarPasswordInput.value.trim();
-      if (confirmarPassword === "") {
-        mostrarError(confirmarPasswordInput, "Debes confirmar la contraseña.");
-        valido = false;
-      } else if (confirmarPassword !== password) {
-        mostrarError(confirmarPasswordInput, "Las contraseñas no coinciden.");
-        valido = false;
-      }
-
-      if (!checkbox.checked) {
-        mostrarError(checkbox, "Debes aceptar los términos.");
-        valido = false;
-      }
-
-      if (!valido) {
-        return;
-      }
-
-      const nombre = document.getElementById("inputNombre").value.trim();
-      const apellido = document.getElementById("inputApellidos").value.trim();
-      const email = document.getElementById("inputCorreo").value.trim();
-      const ciudad = document.getElementById("inputCiudad").value.trim();
-
-      const datos = {
-        usuario: nombre,
-        apellido: apellido,
-        email: email,
-        ciudad: ciudad,
-        contrasena: password
-      };
-
-      fetch('../../controllers/SignupController.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-      })
-      .then(respuesta => respuesta.json())
-      .then(data => {
-        if (data.status === 'ok') {
-          alert(data.mensaje);
-          window.location.href = '../login/login.html';
-        } else if (data.errores) {
-          alert(Object.values(data.errores).join("\n"));
-        } else {
-          alert(data.mensaje || 'Error en el registro');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Error de conexión');
-      });
-    };
+/*FUNCIÓN QUE VALIDA CADA INPUT Y SU VALOR */
+function validarCampo(campo, valor) {
+  const esquema = z.object({
+    [campo]: esquemaUsuario.shape[campo],  //shape es un objeto que tiene todos los campos del schema
   });
+
+  return esquema.safeParse({ //no te revienta el código si algo falla
+    [campo]: valor,
+  });
+}
+
+
+//VALIDACIÓN DE CADA UNO DE LOS INPUT POR SEPARADO
+
+//NOMBRE
+inputNombre.addEventListener("input", (e) => {
+  const res = validarCampo("nombre", e.target.value);
+  console.log("nombre:", res.success ? "OK" : res.error.errors[0].message);
+});
+
+// APELLIDOS
+inputApellidos.addEventListener("input", (e) => {
+  const res = validarCampo("apellido", e.target.value);
+  console.log("apellido:", res.success ? "OK" : res.error.errors[0].message);
+});
+
+// EMAIL
+inputCorreo.addEventListener("input", (e) => {
+  const res = validarCampo("email", e.target.value);
+  console.log("email:", res.success ? "OK" : res.error.errors[0].message);
+});
+
+// CIUDAD
+inputCiudad.addEventListener("input", (e) => {
+  const res = validarCampo("ciudad", e.target.value);
+  console.log("ciudad:", res.success ? "OK" : res.error.errors[0].message);
+});
+
+// CONTRASEÑA
+inputContrasena.addEventListener("input", (e) => {
+  const res = validarCampo("contrasena", e.target.value);
+  console.log("contrasena:", res.success ? "OK" : res.error.errors[0].message);
+});
+
+// CONFIRMAR PASSWORD
+inputConfirmar.addEventListener("input", (e) => {
+  const coincide = e.target.value === inputContrasena.value;
+  console.log("confirmar:", coincide ? "OK" : "No coincide");
+});
+
+// TÉRMINOS
+inputTerminos.addEventListener("change", (e) => {
+  console.log("terminos:", e.target.checked ? "OK" : "Debes aceptarlos");
+});
+
+
+
+// VALIDACIÓN FINAL CUANDO SE HACE EL SUBMIT 
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const datos = {
+    nombre: inputNombre.value.trim(),
+    apellido: inputApellidos.value.trim(),
+    email: inputCorreo.value.trim(),
+    ciudad: inputCiudad.value.trim(),
+    contrasena: inputContrasena.value,
+    confirmarPassword: inputConfirmar.value,
+    aceptarTerminos: inputTerminos.checked,
+  };
+
+  const resultado = esquemaUsuario.safeParse(datos);
+
+  if (!resultado.success) {
+    console.log("FORMULARIO INVÁLIDO");
+    console.log(resultado.error.flatten().fieldErrors);
+    return;
+  }
+
+  console.log("FORMULARIO VÁLIDO");
+  console.log(resultado.data);
+
+
+  // MANDAAR AL BACK
+  fetch('../../controllers/SignupController.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(resultado.data)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'ok') {
+      alert(data.mensaje);
+      window.location.href = '../login/login.html';
+    } else {
+      alert(data.mensaje || 'Error en el registro');
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Error de conexión');
+  });
+});
+
+
+
+
+
+
+
