@@ -1,133 +1,122 @@
-import { z } from "zod";
-//import { z } from "https://cdn.jsdelivr.net/npm/zod@3.23.8/lib/index.esm.js";
-
-/* ESQUEMA ZOD QUE SIGUE LA VALIDACIÓN */
-const ciudadesPermitidas = ["Malaga", "Sevilla", "Granada", "Cordoba"]; //cuando hagamos el select
-
-const esquemaUsuario = z.object({
-  nombre: z.string().min(2).max(20).regex(/^[\p{L}\s]+$/u),
-  apellido: z.string().min(2).max(50).regex(/^[\p{L}\s]+$/u),
-  email: z.string().email(),
-  ciudad: z.string().min(2).max(30),   //comprobar porque nosotros no tenemos select 
-  contrasena: z.string()
-    .min(6)
-    .max(15)
-    .regex(/[A-Z]/)
-    .regex(/[a-z]/)
-    .regex(/[0-9]/)
-    .regex(/[^A-Za-z0-9]/),
-  confirmarPassword: z.string(),
-  aceptarTerminos: z.boolean(),
-}).refine((data) => data.contrasena === data.confirmarPassword, { //refine para personalizar 
-  message: "Las contraseñas no coinciden",
-  path: ["confirmarPassword"]
-}).refine((data) => data.aceptarTerminos === true, {
-  message: "Debes aceptar los términos",
-  path: ["aceptarTerminos"]
+const validador = new JustValidate('#formUsuario', {
+  validateBeforeSubmitting: true,
+  focusInvalidField: true
 });
 
+// ================= REGEX =================
+const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
+const soloNumeros = /^[0-9]+$/;
 
-/*APUNTAR A CADA INPUT DEL FORMULARIO */
-const form = document.querySelector("form");
+// ================= VALIDACIÓN =================
+validador
 
-const inputNombre = document.querySelector("#inputNombre");
-const inputApellidos = document.querySelector("#inputApellidos");
-const inputCorreo = document.querySelector("#inputCorreo");
-const inputCiudad = document.querySelector("#inputCiudad");
-const inputContrasena = document.querySelector("#inputContrasena");
-const inputConfirmar = document.querySelector("#confirmarContrasena");
-const inputTerminos = document.querySelector("#aceptarTerminos");
+// NOMBRE
+.addField('#inputNombre', [
+  { rule: 'required', errorMessage: 'Nombre obligatorio' },
+  { rule: 'minLength', value: 2, errorMessage: 'Mínimo 2 caracteres' },
+  { rule: 'maxLength', value: 20, errorMessage: 'Máximo 20 caracteres' },
+  {
+    validator: (value) => soloLetras.test(value),
+    errorMessage: 'Solo letras'
+  }
+], {
+  errorsContainer: '#error-nombre'
+})
 
+// APELLIDO
+.addField('#inputApellidos', [
+  { rule: 'required', errorMessage: 'Apellido obligatorio' },
+  { rule: 'minLength', value: 2, errorMessage: 'Mínimo 2 caracteres' },
+  { rule: 'maxLength', value: 50, errorMessage: 'Máximo 50 caracteres' },
+  {
+    validator: (value) => soloLetras.test(value),
+    errorMessage: 'Solo letras'
+  }
+], {
+  errorsContainer: '#error-apellido'
+})
 
+// CIUDAD (opcional)
+.addField('#inputCiudad', [
+  {
+    validator: () => true
+  }
+], {
+  errorsContainer: '#error-ciudad'
+})
 
-/*FUNCIÓN QUE VALIDA CADA INPUT Y SU VALOR */
-function validarCampo(campo, valor) {
-  const esquema = z.object({
-    [campo]: esquemaUsuario.shape[campo],  //shape es un objeto que tiene todos los campos del schema
-  });
-
-  return esquema.safeParse({ //no te revienta el código si algo falla
-    [campo]: valor,
-  });
-}
-
-
-//VALIDACIÓN DE CADA UNO DE LOS INPUT POR SEPARADO
-
-//NOMBRE
-inputNombre.addEventListener("input", (e) => {
-  const res = validarCampo("nombre", e.target.value);
-  console.log("nombre:", res.success ? "OK" : res.error.errors[0].message);
-});
-
-// APELLIDOS
-inputApellidos.addEventListener("input", (e) => {
-  const res = validarCampo("apellido", e.target.value);
-  console.log("apellido:", res.success ? "OK" : res.error.errors[0].message);
-});
+// TELÉFONO (opcional)
+.addField('#inputTelefono', [
+  {
+    validator: (value) => {
+      if (value === '') return true;
+      return soloNumeros.test(value);
+    },
+    errorMessage: 'Solo números'
+  }
+], {
+  errorsContainer: '#error-telefono'
+})
 
 // EMAIL
-inputCorreo.addEventListener("input", (e) => {
-  const res = validarCampo("email", e.target.value);
-  console.log("email:", res.success ? "OK" : res.error.errors[0].message);
-});
+.addField('#inputCorreo', [
+  { rule: 'required', errorMessage: 'Email obligatorio' },
+  { rule: 'email', errorMessage: 'Email inválido' }
+], {
+  errorsContainer: '#error-email'
+})
 
-// CIUDAD
-inputCiudad.addEventListener("input", (e) => {
-  const res = validarCampo("ciudad", e.target.value);
-  console.log("ciudad:", res.success ? "OK" : res.error.errors[0].message);
-});
-
-// CONTRASEÑA
-inputContrasena.addEventListener("input", (e) => {
-  const res = validarCampo("contrasena", e.target.value);
-  console.log("contrasena:", res.success ? "OK" : res.error.errors[0].message);
-});
-
-// CONFIRMAR PASSWORD
-inputConfirmar.addEventListener("input", (e) => {
-  const coincide = e.target.value === inputContrasena.value;
-  console.log("confirmar:", coincide ? "OK" : "No coincide");
-});
-
-// TÉRMINOS
-inputTerminos.addEventListener("change", (e) => {
-  console.log("terminos:", e.target.checked ? "OK" : "Debes aceptarlos");
-});
-
-
-
-// VALIDACIÓN FINAL CUANDO SE HACE EL SUBMIT 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const datos = {
-    nombre: inputNombre.value.trim(),
-    apellido: inputApellidos.value.trim(),
-    email: inputCorreo.value.trim(),
-    ciudad: inputCiudad.value.trim(),
-    contrasena: inputContrasena.value,
-    confirmarPassword: inputConfirmar.value,
-    aceptarTerminos: inputTerminos.checked,
-  };
-
-  const resultado = esquemaUsuario.safeParse(datos);
-
-  if (!resultado.success) {
-    console.log("FORMULARIO INVÁLIDO");
-    console.log(resultado.error.flatten().fieldErrors);
-    return;
+// PASSWORD
+.addField('#inputContrasena', [
+  { rule: 'required', errorMessage: 'Password obligatoria' },
+  { rule: 'minLength', value: 6, errorMessage: 'Mínimo 6 caracteres' },
+  { rule: 'maxLength', value: 15, errorMessage: 'Máximo 15 caracteres' },
+  {
+    validator: (value) =>
+      /[A-Z]/.test(value) &&
+      /[0-9]/.test(value) &&
+      /[^A-Za-z0-9]/.test(value),
+    errorMessage: 'Debe tener mayúscula, número y símbolo'
   }
+], {
+  errorsContainer: '#error-password'
+})
 
-  console.log("FORMULARIO VÁLIDO");
-  console.log(resultado.data);
+// REPETIR PASSWORD
+.addField('#confirmarContrasena', [
+  { rule: 'required', errorMessage: 'Repite la contraseña' },
+  {
+    validator: (value, fields) => {
+      return value === fields['#inputContrasena'].elem.value;
+    },
+    errorMessage: 'Las contraseñas no coinciden'
+  }
+], {
+  errorsContainer: '#error-repetirPassword'
+})
 
+// ================= SUBMIT =================
+.onSuccess((event) => {
+  event.preventDefault();
 
-  // MANDAAR AL BACK
+ const datos = {
+   nombre: document.querySelector('#inputNombre').value,
+   apellido: document.querySelector('#inputApellidos').value,
+   ciudad: document.querySelector('#inputCiudad').value,
+   telefono: document.querySelector('#inputTelefono').value,
+   email: document.querySelector('#inputCorreo').value,
+   contrasena: document.querySelector('#inputContrasena').value,
+   confirmarContrasena: document.querySelector('#confirmarContrasena').value,
+   aceptarTerminos: document.querySelector('#aceptarTerminos').checked
+ };
+
+  console.log("Usuario válido:", datos);
+
+    // MANDAAR AL BACK
   fetch('../../controllers/SignupController.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(resultado.data)
+    body: JSON.stringify(datos)
   })
   .then(res => res.json())
   .then(data => {
@@ -143,6 +132,9 @@ form.addEventListener("submit", (e) => {
     alert('Error de conexión');
   });
 });
+
+
+
 
 
 
