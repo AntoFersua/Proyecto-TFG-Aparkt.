@@ -1,42 +1,34 @@
-document.addEventListener("DOMContentLoaded", function () {
-  let form = document.querySelector("form");
-  let emailInput = document.getElementById("email");
-  let passwordInput = document.getElementById("password");
+const validador = new JustValidate('#loginForm', {
+  validateBeforeSubmitting: true,
+  focusInvalidField: true
+});
 
-  form.onsubmit = function (e) {
-    e.preventDefault();
-    limpiarErrores();
-    let valido = true;
+// EMAIL
+validador.addField('#email', [
+  {
+    rule: 'required',
+    errorMessage: 'El email es obligatorio'
+  }
+]);
 
-    // EMAIL (no vacía y no mayor de 50)
-    if (emailInput.value == "") {
-      mostrarError(emailInput, "El email es obligatorio.");
-      valido = false;
-    } else if (emailInput.value.length > 50) {
-      mostrarError(emailInput, "El email es demasiado largo.");
-      valido = false;
-    }
+// PASSWORD
+validador.addField('#password', [
+  {
+    rule: 'required',
+    errorMessage: 'La contraseña es obligatoria'
+  }
+]);
 
-    // Contraseña (no vacía y mayor de 6)
-    if (passwordInput.value == "") {
-      mostrarError(passwordInput, "La contraseña es obligatoria.");
-      valido = false;
-    } else if (passwordInput.value.length < 6) {
-      mostrarError(passwordInput, "La contraseña debe ser mayor de 6 caracteres");
-      valido = false;
-    }
+// SUBMIT
+validador.onSuccess((event) => {
+  event.preventDefault();
 
-    // Paramos envío de formulario ante algún fallo
-    if (!valido) {
-      return;
-    }
+  const datos = {
+    usuario: document.querySelector('#email').value.trim(),
+    contrasena: document.querySelector('#password').value.trim()
+  };
 
-    let datos = {
-      usuario: emailInput.value.trim(),
-      contrasena: passwordInput.value.trim()
-    };
-
-    fetch('../../controllers/LoginController.php', {
+  fetch('../../controllers/LoginController.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(datos)
@@ -61,21 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error('Error:', error);
         alert('Error de conexión');
       });
-  };
-
-  function mostrarError(elemento, mensaje) {
-    const error = document.createElement("div");
-    error.className = "mensajeError";
-    error.style.color = "red";
-    error.style.fontSize = "0.9em";
-    error.textContent = mensaje;
-    elemento.parentNode.appendChild(error);
-  }
-
-  function limpiarErrores() {
-    let errores = document.querySelectorAll(".mensajeError");
-    for (let i = 0; i < errores.length; i++) {
-      errores[i].parentNode.removeChild(errores[i]);
-    }
-  }
 });
+
+  
