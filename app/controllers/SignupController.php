@@ -84,8 +84,8 @@ class SignupController
          */
         //si no hay errores
         if (empty($errores)) {
-            if ($this->usuarioModelo->obtenerUsuario($nombre)) {
-                $errores["nombre"] = "Ya existe un usuario con ese nombre";
+            if ($this->usuarioModelo->obtenerUsuarioPorEmail($email)) {
+                $errores["email"] = "Ya existe un usuario con ese email";
             }
         }
 
@@ -119,4 +119,3 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'SignupController.php') {
     $controller = new SignupController($conexion);
     $controller->registrar();
 }
-?>

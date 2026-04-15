@@ -7,14 +7,16 @@
     <meta name="keywords" content="Aparkt, Cuenta, Aparcamiento" />
     <meta name="author" content="Aparkt" />
     <title>Sign Up</title>
+    <script src="../just-validate.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../estilosGlobales.css" />
     <link rel="stylesheet" type="text/css" href="signup.css" />
+    <script src="estilosSignup.js" defer></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
     />
     <script src="../funcionesGlobales.js" defer></script>
-    <script type="module" src="signup.js" defer></script>
+    <script type="module" src="signup.js?v=2" defer></script>
   </head>
   <body>
     <!--HEADER-->
@@ -147,13 +149,13 @@
                 </div>
                 <div class="input-field">
                   <input
-                    id="inputCiudad"
+                    id="inputTelefono"
                     type="text"
                     placeholder=" "
                     required
-                    name="ciudad"
+                    name="telefono"
                   />
-                  <label for="inputCiudad">Ciudad</label>
+                  <label for="inputTelefono">Teléfono</label>
                 </div>
                 <div class="input-field">
                   <select id="inputCiudad" name="ciudad" required>
