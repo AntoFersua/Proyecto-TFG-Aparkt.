@@ -7,18 +7,16 @@
     <meta name="keywords" content="Aparkt, Cuenta, Aparcamiento" />
     <meta name="author" content="Aparkt" />
     <title>Sign Up</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../estilosGlobales.css"
-    />
+    <script src="../just-validate.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../estilosGlobales.css" />
     <link rel="stylesheet" type="text/css" href="signup.css" />
+    <script src="estilosSignup.js" defer></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
     />
     <script src="../funcionesGlobales.js" defer></script>
-    <script src="signup.js"></script>
+    <script type="module" src="signup.js?v=2" defer></script>
   </head>
   <body>
     <!--HEADER-->
@@ -99,7 +97,7 @@
       <article class="telefono">
         <span class="notch"></span>
 
-        <form>
+        <form id="formUsuario">
           <div class="form-contenido">
             <h2>CREAR CUENTA</h2>
             <img src="../assets/imagotipoAparkt.png" alt="Aparkt" />
@@ -121,6 +119,7 @@
                     type="text"
                     placeholder=" "
                     required
+                    name="nombre"
                   />
                   <label for="inputNombre">Nombre</label>
                 </div>
@@ -130,6 +129,7 @@
                     type="text"
                     placeholder=" "
                     required
+                    name="apellido"
                   />
                   <label for="inputApellidos">Apellidos</label>
                 </div>
@@ -143,16 +143,30 @@
                     type="email"
                     placeholder=" "
                     required
+                    name="email"
                   />
                   <label for="inputCorreo">Correo Electrónico</label>
                 </div>
                 <div class="input-field">
                   <input
-                    id="inputCiudad"
+                    id="inputTelefono"
                     type="text"
                     placeholder=" "
                     required
+                    name="telefono"
                   />
+                  <label for="inputTelefono">Teléfono</label>
+                </div>
+                <div class="input-field">
+                  <select id="inputCiudad" name="ciudad" required>
+                    <option value="" disabled selected>
+                      Selecciona tu ciudad
+                    </option>
+                    <option value="Malaga">Malaga</option>
+                    <option value="Sevilla">Sevilla</option>
+                    <option value="Granada">Granada</option>
+                    <option value="Cordoba">Cordoba</option>
+                  </select>
                   <label for="inputCiudad">Ciudad</label>
                 </div>
               </div>
@@ -165,6 +179,7 @@
                     type="password"
                     placeholder=" "
                     required
+                    name="contrasena"
                   />
                   <label for="inputContrasena">Contraseña</label>
                   <button
@@ -177,7 +192,10 @@
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   </button>
-                  <small>6-15 caracteres, mayúscula, minúscula y símbolo (@!%?)</small>
+                  <small
+                    >6-15 caracteres, mayúscula, minúscula y símbolo
+                    (@!%?)</small
+                  >
                 </div>
                 <div class="input-field">
                   <input
@@ -185,6 +203,7 @@
                     type="password"
                     placeholder=" "
                     required
+                    name="confirmarContrasena"
                   />
                   <label for="confirmarContrasena">Confirmar Contraseña</label>
                   <button
@@ -199,7 +218,12 @@
                   </button>
                 </div>
                 <label class="checkbox-wrapper">
-                  <input id="aceptarTerminos" type="checkbox" required />
+                  <input
+                    id="aceptarTerminos"
+                    type="checkbox"
+                    required
+                    name="terminos"
+                  />
                   <span
                     >Acepto los Términos de servicio y política de
                     privacidad</span
@@ -217,7 +241,9 @@
             </button>
           </div>
 
-          <p>¿Ya tienes cuenta? <a href="../login/login.html">Iniciar sesión</a></p>
+          <p>
+            ¿Ya tienes cuenta? <a href="../login/login.html">Iniciar sesión</a>
+          </p>
         </form>
       </article>
 

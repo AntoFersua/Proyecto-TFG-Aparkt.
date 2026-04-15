@@ -7,11 +7,20 @@ require __DIR__ . "/Model.php";
 class Usuario extends Model
 {
     //FUNCIONES 
-    public function obtenerUsuario($usuario)
+    public function obtenerUsuarioPorNombre($usuario)
     {
         $consulta = "SELECT * FROM Usuario WHERE nombre = :nombre";
         $stmt = $this->_conexion->prepare($consulta);
         $stmt->bindValue(":nombre", $usuario, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    public function obtenerUsuarioPorEmail($email)
+    {
+        $consulta = "SELECT * FROM Usuario WHERE email = :email";
+        $stmt = $this->_conexion->prepare($consulta);
+        $stmt->bindValue(":email", $email, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetch();
     }
@@ -40,7 +49,7 @@ class Usuario extends Model
         return $stmt->fetch();
     }
 
-    public function crearUsuario($nombre, $apellido, $ciudad , $contrasenaHasheada ,$email, $telefono)
+    public function crearUsuario($nombre, $apellido, $ciudad, $contrasenaHasheada, $email, $telefono)
     {
         $consulta = "INSERT INTO Usuario (nombre, apellido, ciudad, puntuacion, contrasena, email, telefono) VALUES (:nombre, :apellido, :ciudad, :puntuacion, :contrasena, :email, :telefono)";
         $stmt = $this->_conexion->prepare($consulta);
@@ -57,14 +66,13 @@ class Usuario extends Model
 
     public function verificarTelefono($telefono)
     {
-        $consulta = "SELECT COUNT(*) FROM usuarios WHERE telefono = :telefono";
+        // Si la columna telefono no existe, retornar 0
+        return 0;
+
+        $consulta = "SELECT COUNT(*) FROM Usuario WHERE telefono = :telefono";
         $stmt = $this->_conexion->prepare($consulta);
-        //verificar sin telefono es string o int
         $stmt->bindValue(":telefono", $telefono, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchColumn();
     }
-
 }
-
-?>

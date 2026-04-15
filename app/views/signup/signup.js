@@ -1,111 +1,97 @@
-  document.addEventListener("DOMContentLoaded", function () {
-    let form = document.querySelector("form");
+// Validación con JustValidate
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Inicializando JustValidate");
 
-    function mostrarError(elemento, mensaje) {
-      let existente = elemento.parentNode.querySelector(".mensajeError");
-      if (existente) existente.remove();
-      let error = document.createElement("div");
-      error.className = "mensajeError";
-      error.style.color = "#f87171";
-      error.style.fontSize = "0.9em";
-      error.textContent = mensaje;
-      elemento.parentNode.appendChild(error);
-    }
+  const form = document.getElementById("formUsuario");
+  if (!form) {
+    console.log("Formulario no encontrado");
+    return;
+  }
 
-    function limpiarErrores() {
-      document.querySelectorAll(".mensajeError").forEach(el => el.remove());
-    }
+  const validador = new JustValidate("#formUsuario", {
+    validateBeforeSubmitting: true,
+    focusInvalidField: true,
+  });
 
-    form.onsubmit = function (e) {
-      e.preventDefault();
-      limpiarErrores();
+  console.log("Validador creado:", validador);
 
-      const passwordInput = document.getElementById("inputContrasena");
-      const confirmarPasswordInput = document.getElementById("confirmarContrasena");
-      const checkbox = document.getElementById("aceptarTerminos");
+  const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
 
-      const password = passwordInput.value.trim();
-      const especiales = "@!?%";
-      let tieneMayuscula = false;
-      let tieneMinuscula = false;
-      let tieneEspecial = false;
+  // NOMBRE
+  validador.addField("#inputNombre", [
+    { rule: "required", errorMessage: "Nombre obligatorio" },
+    { rule: "minLength", value: 2, errorMessage: "Mínimo 2 caracteres" },
+    { rule: "maxLength", value: 20, errorMessage: "Máximo 20 caracteres" },
+  ]);
 
-      for (let i = 0; i < password.length; i++) {
-        let c = password[i];
-        if (c >= "A" && c <= "Z") tieneMayuscula = true;
-        if (c >= "a" && c <= "z") tieneMinuscula = true;
-        if (especiales.includes(c)) tieneEspecial = true;
-      }
+  // APELLIDO
+  validador.addField("#inputApellidos", [
+    { rule: "required", errorMessage: "Apellido obligatorio" },
+    { rule: "minLength", value: 2, errorMessage: "Mínimo 2 caracteres" },
+    { rule: "maxLength", value: 50, errorMessage: "Máximo 50 caracteres" },
+  ]);
 
-      let valido = true;
+  // CIUDAD (select)
+  validador.addField("#inputCiudad", [
+    { rule: "required", errorMessage: "Selecciona una ciudad" },
+  ]);
 
-      if (password === "") {
-        mostrarError(passwordInput, "La contraseña es obligatoria.");
-        valido = false;
-      } else if (password.length < 6 || password.length > 15) {
-        mostrarError(passwordInput, "Debe tener entre 6 y 15 caracteres.");
-        valido = false;
-      } else if (!tieneMayuscula) {
-        mostrarError(passwordInput, "Debe tener al menos una mayúscula.");
-        valido = false;
-      } else if (!tieneMinuscula) {
-        mostrarError(passwordInput, "Debe tener al menos una minúscula.");
-        valido = false;
-      } else if (!tieneEspecial) {
-        mostrarError(passwordInput, "Debe tener al menos un símbolo (@!?%).");
-        valido = false;
-      }
+  // EMAIL
+  validador.addField("#inputCorreo", [
+    { rule: "required", errorMessage: "Email obligatorio" },
+    { rule: "email", errorMessage: "Email inválido" },
+  ]);
 
-      const confirmarPassword = confirmarPasswordInput.value.trim();
-      if (confirmarPassword === "") {
-        mostrarError(confirmarPasswordInput, "Debes confirmar la contraseña.");
-        valido = false;
-      } else if (confirmarPassword !== password) {
-        mostrarError(confirmarPasswordInput, "Las contraseñas no coinciden.");
-        valido = false;
-      }
+  // PASSWORD
+  validador.addField("#inputContrasena", [
+    { rule: "required", errorMessage: "Contraseña obligatoria" },
+    { rule: "minLength", value: 6, errorMessage: "Mínimo 6 caracteres" },
+    { rule: "maxLength", value: 15, errorMessage: "Máximo 15 caracteres" },
+  ]);
 
-      if (!checkbox.checked) {
-        mostrarError(checkbox, "Debes aceptar los términos.");
-        valido = false;
-      }
+  // CONFIRMAR PASSWORD
+  validador.addField("#confirmarContrasena", [
+    { rule: "required", errorMessage: "Repite la contraseña" },
+    {
+      validator: (value, fields) => {
+        return value === fields["#inputContrasena"].elem.value;
+      },
+      errorMessage: "Las contraseñas no coinciden",
+    },
+  ]);
 
-      if (!valido) {
-        return;
-      }
+  // SUBMIT
+  validador.onSuccess((event) => {
+    event.preventDefault();
 
-      const nombre = document.getElementById("inputNombre").value.trim();
-      const apellido = document.getElementById("inputApellidos").value.trim();
-      const email = document.getElementById("inputCorreo").value.trim();
-      const ciudad = document.getElementById("inputCiudad").value.trim();
+    const datos = {
+      nombre: document.getElementById("inputNombre").value.trim(),
+      apellido: document.getElementById("inputApellidos").value.trim(),
+      ciudad: document.getElementById("inputCiudad").value,
+      telefono: document.getElementById("inputTelefono")?.value.trim() || "",
+      email: document.getElementById("inputCorreo").value.trim(),
+      contrasena: document.getElementById("inputContrasena").value,
+      confirmarContrasena: document.getElementById("confirmarContrasena").value,
+      aceptarTerminos: document.getElementById("aceptarTerminos").checked,
+    };
 
-      const datos = {
-        usuario: nombre,
-        apellido: apellido,
-        email: email,
-        ciudad: ciudad,
-        contrasena: password
-      };
-
-      fetch('../../controllers/SignupController.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-      })
-      .then(respuesta => respuesta.json())
-      .then(data => {
-        if (data.status === 'ok') {
+    fetch("../../controllers/SignupController.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "ok") {
           alert(data.mensaje);
-          window.location.href = '../login/login.html';
-        } else if (data.errores) {
-          alert(Object.values(data.errores).join("\n"));
+          window.location.href = "../login/login.html";
         } else {
-          alert(data.mensaje || 'Error en el registro');
+          alert(data.mensaje || "Error en el registro");
         }
       })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Error de conexión');
+      .catch((err) => {
+        console.error(err);
+        alert("Error de conexión");
       });
-    };
   });
+});

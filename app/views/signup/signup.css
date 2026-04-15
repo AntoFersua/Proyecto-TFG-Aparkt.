@@ -5,6 +5,11 @@ main {
   font-family: "Roboto", Arial, Verdana, sans-serif;
   padding: 40px 20px;
   gap: 60px;
+  background-image: url("../assets/fondoAparkt.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 .telefono {
@@ -159,7 +164,8 @@ main {
     transition: all 0.3s ease;
   }
 
-  input {
+  input,
+  select {
     padding: 10px 15px;
     font-size: 0.85rem;
     border-radius: 8px;

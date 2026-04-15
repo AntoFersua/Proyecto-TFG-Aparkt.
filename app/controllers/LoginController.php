@@ -19,15 +19,18 @@ class LoginController
         //obtener datos del frontend
         $usuario = trim($DatosPost['usuario'] ?? '');
         $contrasena = trim($DatosPost['contrasena'] ?? '');
-        //validaciones
+
+        //validaciones básicas
         if ($usuario == '') {
-            $errores['usuario'] = "Introduce un usuario";
+            $errores['usuario'] = "Introduce un usuario o email";
         }
         if ($contrasena == '') {
             $errores['contrasena'] = "Introduce una contraseña";
         }
+
         //indicar cabecera json y devolver respuesta al frontend
         header('Content-Type: application/json');
+
         //si hay errores de validación básica, devolverlos
         if (!empty($errores)) {
             echo json_encode([
@@ -36,17 +39,18 @@ class LoginController
             ]);
             exit();
         }
-        //si no hay errores, verificar usuario en la base de datos
-        $user_info = $this->usuarioModelo->obtenerUsuario($usuario);
-        if (!$user_info) {
-            $errores['usuario'] = "Usuario no existe";
-        } else {
-            //verificar contraseña
-            $contrasenaInfo = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
-            if (!$contrasenaInfo) {
-                $errores['contrasena'] = "Contraseña incorrecta";
-            }
+
+        // Validar que sea email
+        if (strpos($usuario, '@') === false) {
+            $errores['usuario'] = "Introduce un email válido";
         }
+
+        // Buscar por email
+        $user_info = $this->usuarioModelo->obtenerUsuarioPorEmail($usuario);
+        if (!$user_info) {
+            $errores['usuario'] = "No existe cuenta con este email";
+        }
+
         //si hay errores de base de datos, devolverlos
         if (!empty($errores)) {
             echo json_encode([
@@ -55,6 +59,22 @@ class LoginController
             ]);
             exit();
         }
+
+        //verificar contraseña
+        $contrasenaInfo = $this->usuarioModelo->verificarContrasena($contrasena, $user_info['contrasena']);
+        if (!$contrasenaInfo) {
+            $errores['contrasena'] = "Contraseña incorrecta";
+        }
+
+        //si hay errores de contraseña, devolverlos
+        if (!empty($errores)) {
+            echo json_encode([
+                "status" => "error",
+                "errores" => $errores
+            ]);
+            exit();
+        }
+
         //si todo está bien, crear sesión
         session_start();
         $_SESSION["usuario"] = $usuario;
@@ -71,4 +91,3 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'LoginController.php') {
     $controller = new LoginController($conexion);
     $controller->login();
 }
-?>
