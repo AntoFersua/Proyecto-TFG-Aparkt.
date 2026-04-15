@@ -13,8 +13,8 @@
     dots: false,
     smartSpeed: 300,
     loop: false,
-    mouseDrag: false,
-    touchDrag: false,
+    mouseDrag: true,
+    touchDrag: true,
   });
 
   function actualizarUI(index) {

@@ -39,43 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ocultarCirculo();
   });
 
-  // Banner lateral de usuario
-  const botonPerfil = document.getElementById("perfilUsuario");
-  const banner = document.getElementById("bannerUsuario");
-  const cerrarBanner = document.getElementById("cerrarBanner");
-  const btnLogout = document.getElementById("logout");
-
-  // Verificar si hay sesión activa
-  const sesionActiva = localStorage.getItem("sesionActiva") === "true";
-
-  if (botonPerfil && banner) {
-    // Solo mostrar botón si hay sesión
-    botonPerfil.style.display = sesionActiva ? "block" : "none";
-
-    botonPerfil.addEventListener("click", function (e) {
-      console.log("Click en perfil");
-      banner.classList.toggle("abierto");
-      console.log("Banner abierto:", banner.classList.contains("abierto"));
-      console.log("Banner display:", window.getComputedStyle(banner).display);
-    });
-  }
-
-  if (cerrarBanner && banner) {
-    cerrarBanner.addEventListener("click", function (e) {
-      banner.classList.remove("abierto");
-    });
-  }
-
-  // Logout - borrar sesión y recargar
-  if (btnLogout) {
-    console.log("Logout button found, adding event");
-    btnLogout.addEventListener("click", function (e) {
-      e.preventDefault();
-      console.log("Logout clicked!");
-      localStorage.removeItem("sesionActiva");
-      window.location.href = "../login/login.html";
-    });
-  }
+  // Banner lateral de usuario - la lógica de sesión está en aparkt.js
+  // El botón de perfil y el banner se controlan desde aparkt.js
 
   const btnAnadirVehiculo = document.querySelector(".anadirVehiculo");
   const formVehiculo = document.getElementById("formVehiculo");
