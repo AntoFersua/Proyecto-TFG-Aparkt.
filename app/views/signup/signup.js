@@ -15,50 +15,136 @@ document.addEventListener("DOMContentLoaded", function () {
 
   console.log("Validador creado:", validador);
 
-  const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
+  //NOMBRE
+  validador.addField(
+    "#inputNombre",
+    [
+      { rule: "required", errorMessage: "El nombre es obligatorio" },
+      { rule: "minLength", value: 2, errorMessage: "Mínimo 2 caracteres" },
+      { rule: "maxLength", value: 20, errorMessage: "Máximo 20 caracteres" },
+      {
+        rule: "custom",
+        validator: (value) => {
+          return /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(value);
+        },
+        errorMessage: "El nombre solo puede contener letras",
+      },
+    ],
+    {
+      errorsContainer: "#error-nombre",
+    },
+  );
 
-  // NOMBRE
-  validador.addField("#inputNombre", [
-    { rule: "required", errorMessage: "Nombre obligatorio" },
-    { rule: "minLength", value: 2, errorMessage: "Mínimo 2 caracteres" },
-    { rule: "maxLength", value: 20, errorMessage: "Máximo 20 caracteres" },
-  ]);
-
-  // APELLIDO
-  validador.addField("#inputApellidos", [
-    { rule: "required", errorMessage: "Apellido obligatorio" },
-    { rule: "minLength", value: 2, errorMessage: "Mínimo 2 caracteres" },
-    { rule: "maxLength", value: 50, errorMessage: "Máximo 50 caracteres" },
-  ]);
+  //APELLIDOS
+  validador.addField(
+    "#inputApellidos",
+    [
+      { rule: "required", errorMessage: "El apellido es obligatorio" },
+      { rule: "minLength", value: 2, errorMessage: "Mínimo 2 caracteres" },
+      { rule: "maxLength", value: 50, errorMessage: "Máximo 50 caracteres" },
+      {
+        rule: "custom",
+        validator: (value) => {
+          return /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(value);
+        },
+        errorMessage: "El apellido solo puede contener letras",
+      },
+    ],
+    {
+      errorsContainer: "#error-apellidos",
+    },
+  );
 
   // CIUDAD (select)
-  validador.addField("#inputCiudad", [
+  /*validador.addField("#inputCiudad", [
     { rule: "required", errorMessage: "Selecciona una ciudad" },
-  ]);
+  ], {
+    errorsContainer: '#error-ciudad'
+  });*/
 
   // EMAIL
-  validador.addField("#inputCorreo", [
-    { rule: "required", errorMessage: "Email obligatorio" },
-    { rule: "email", errorMessage: "Email inválido" },
-  ]);
-
-  // PASSWORD
-  validador.addField("#inputContrasena", [
-    { rule: "required", errorMessage: "Contraseña obligatoria" },
-    { rule: "minLength", value: 6, errorMessage: "Mínimo 6 caracteres" },
-    { rule: "maxLength", value: 15, errorMessage: "Máximo 15 caracteres" },
-  ]);
-
-  // CONFIRMAR PASSWORD
-  validador.addField("#confirmarContrasena", [
-    { rule: "required", errorMessage: "Repite la contraseña" },
+  validador.addField(
+    "#inputCorreo",
+    [
+      { rule: "required", errorMessage: "El email es obligatorio" },
+      { rule: "email", errorMessage: "Email inválido" },
+    ],
     {
-      validator: (value, fields) => {
-        return value === fields["#inputContrasena"].elem.value;
-      },
-      errorMessage: "Las contraseñas no coinciden",
+      errorsContainer: "#error-email",
     },
-  ]);
+  );
+
+  //TELÉFONO
+  validador.addField(
+    "#inputTelefono",
+    [
+      {
+        rule: "custom",
+        validator: (value) => {
+          return /^\d{9,15}$/.test(value);
+        },
+        errorMessage: "El teléfono debe tener entre 9 y 15 números",
+      },
+    ],
+    {
+      errorsContainer: "#error-telefono",
+    },
+  );
+
+  // CONTRASEÑA
+  validador.addField(
+    "#inputContrasena",
+    [
+      {
+        rule: "required",
+        errorMessage: "La contraseña es obligatoria",
+      },
+      {
+        rule: "custom",
+        validator: (value) => {
+          return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,15}$/.test(
+            value,
+          );
+        },
+        errorMessage:
+          "La contraseña debe tener 6-15 caracteres, una mayúscula, una minúscula, un número y un símbolo",
+      },
+    ],
+    {
+      errorsContainer: "#error-contrasena",
+    },
+  );
+
+  // CONFIRMAR CONTRASEÑA
+  validador.addField(
+    "#confirmarContrasena",
+    [
+      { rule: "required", errorMessage: "Repite la contraseña" },
+      {
+        validator: (value, fields) => {
+          return value === fields["#inputContrasena"].elem.value;
+        },
+        errorMessage: "Las contraseñas no coinciden",
+      },
+    ],
+    {
+      errorsContainer: "#error-confirmarContrasena",
+    },
+  );
+
+  //ACEPTAR TERMINOS
+  validador.addField(
+    "#aceptarTerminos",
+    [
+      {
+        rule: "required",
+        errorMessage: "Debes aceptar los términos",
+      },
+    ],
+    {
+      errorsContainer: "#error-aceptarTerminos",
+    },
+  );
 
   // SUBMIT
   validador.onSuccess((event) => {

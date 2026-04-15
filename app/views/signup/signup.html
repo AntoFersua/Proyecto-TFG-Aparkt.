@@ -118,20 +118,20 @@
                     id="inputNombre"
                     type="text"
                     placeholder=" "
-                    required
                     name="nombre"
                   />
                   <label for="inputNombre">Nombre</label>
+                  <div id="error-nombre"></div>
                 </div>
                 <div class="input-field">
                   <input
                     id="inputApellidos"
                     type="text"
                     placeholder=" "
-                    required
                     name="apellido"
                   />
                   <label for="inputApellidos">Apellidos</label>
+                  <div id="error-apellidos"></div>
                 </div>
               </div>
 
@@ -142,23 +142,23 @@
                     id="inputCorreo"
                     type="email"
                     placeholder=" "
-                    required
                     name="email"
                   />
                   <label for="inputCorreo">Correo Electrónico</label>
+                  <div id="error-email"></div>
                 </div>
                 <div class="input-field">
                   <input
                     id="inputTelefono"
                     type="text"
                     placeholder=" "
-                    required
                     name="telefono"
                   />
                   <label for="inputTelefono">Teléfono</label>
+                  <div id="error-telefono"></div>
                 </div>
                 <div class="input-field">
-                  <select id="inputCiudad" name="ciudad" required>
+                  <select id="inputCiudad" name="ciudad">
                     <option value="" disabled selected>
                       Selecciona tu ciudad
                     </option>
@@ -168,6 +168,7 @@
                     <option value="Cordoba">Cordoba</option>
                   </select>
                   <label for="inputCiudad">Ciudad</label>
+                  <div id="error-ciudad"></div>
                 </div>
               </div>
 
@@ -178,10 +179,10 @@
                     id="inputContrasena"
                     type="password"
                     placeholder=" "
-                    required
                     name="contrasena"
                   />
                   <label for="inputContrasena">Contraseña</label>
+                  <div id="error-contrasena"></div>
                   <button
                     type="button"
                     class="ver-contrasena"
@@ -192,20 +193,16 @@
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   </button>
-                  <small
-                    >6-15 caracteres, mayúscula, minúscula y símbolo
-                    (@!%?)</small
-                  >
                 </div>
                 <div class="input-field">
                   <input
                     id="confirmarContrasena"
                     type="password"
                     placeholder=" "
-                    required
                     name="confirmarContrasena"
                   />
                   <label for="confirmarContrasena">Confirmar Contraseña</label>
+                  <div id="error-confirmarContrasena"></div>
                   <button
                     type="button"
                     class="ver-contrasena"
@@ -221,13 +218,13 @@
                   <input
                     id="aceptarTerminos"
                     type="checkbox"
-                    required
                     name="terminos"
                   />
                   <span
                     >Acepto los Términos de servicio y política de
                     privacidad</span
                   >
+                  <div id="error-aceptarTerminos"></div>
                 </label>
               </div>
             </div>
