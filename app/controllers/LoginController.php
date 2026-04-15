@@ -81,6 +81,8 @@ class LoginController
         //devolver éxito
         echo json_encode([
             "status" => "ok",
+            "loged" => true,
+            "user" => $_SESSION['usuario'],
             "mensaje" => "Usuario inició sesión correctamente"
         ]);
     }
