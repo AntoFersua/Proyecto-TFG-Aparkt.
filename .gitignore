@@ -17,3 +17,6 @@ Thumbs.db
 
 # IDEs (opcionales)
 .vscode/
+
+# BD para visualizar
+*.sql
