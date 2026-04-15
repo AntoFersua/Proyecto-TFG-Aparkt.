@@ -80,7 +80,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
             
             //Obtener las coordenadas y la dirección de una ubi específica
-            mapa.on('click', function (e) {
+            function obtenerDireccionDeCoordenadas(e){
                 //Obtener latitud y longitud, se accede mediante las propiedades del objeto. e.lngLat da latitud y longitud juntas
                 const longitud = e.lngLat.lng;
                 const latitud = e.lngLat.lat;
@@ -94,7 +94,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     //Procesar datos obtenidos
                     .then(function (datos) {
                         /*Se obtiene el nombre del lugar completo con calle, provincia y país o solo el nombre de la calle o un nombre de la calle o un mensaje por defecto.
-                        Se accede al elemento 0 del array featutes de datos, si existe se accede a properties, si existe se accede a full_address en caso de que no se sigue con name...
+                        Se accede al elemento 0 del array features de datos, si existe se accede a properties, si existe se accede a full_address en caso de que no se sigue con name...
                         console.log(datos);*/  
                         const address = datos.features[0]?.properties?.full_address || datos.features[0]?.properties?.name || 'Dirección no encontrada'; 
                         alert('Coordenadas: ' + longitud.toFixed(6) + ', ' + latitud.toFixed(6) + '\nDirección: ' + address);
@@ -103,7 +103,60 @@ window.addEventListener('DOMContentLoaded', function () {
                     .catch(function (error) {
                         alert('Coordenadas: ' + longitud.toFixed(6) + ', ' + latitud.toFixed(6) + '\nError al obtener dirección');
                     });
-            });
+            }
+            mapa.on('click', obtenerDireccionDeCoordenadas);
+
+            //Redirigir el mapa a la nueva ubicación
+            function buscarLugar(inputBusqueda){
+                //Obtener el texto de la barra de navegación de búsqueda
+                const searchText = inputBusqueda.value;
+                //Llamada a la API de geocoding directo de Mapbox, uso de encodeURIComponent para evitar carácteres raros en URL
+                fetch('https://api.mapbox.com/search/geocode/v6/forward?q=' + encodeURIComponent(searchText) + '&access_token=' + mapboxgl.accessToken)
+                    .then(function (response) {
+                        //Convertir la respuesta en JSON
+                        return response.json();
+                    })
+                    //Procesar datos obtenidos
+                    .then(function (datos) {
+                        const feature = datos.features[0];
+                        //si feature tiene datos
+                        if(feature){
+                            //Obtener coordenadas de longitud y latitud
+                            const longitudNuevaBusqueda = feature.geometry.coordinates[0];
+                            const latitudNuevaBusqueda = feature.geometry.coordinates[1];
+    
+                            //Mover la ubicación del mapa con la función flyto
+                            mapa.flyTo({
+                                center: [longitudNuevaBusqueda, latitudNuevaBusqueda],
+                                essential: true //Asegura que la animación se realice
+                            });      
+                        }else{
+                            alert('No se encontraron resultados para: ' + searchText);
+                        }
+                    })
+                    //En caso de error
+                    .catch(function (error) {
+                        alert('Error al obtener coordenadas para: ' + searchText);
+                    }); 
+
+            }
+
+            //Obtener el formulario de realizar una búsqueda
+            let formulario = document.querySelector("form");
+            //Aplicar listener en caso de que sea enviado
+            formulario.addEventListener("submit", enviarFormulario);
+            //Evento es un objeto
+            function enviarFormulario (evento) {
+                //Obtener el input
+                let input = document.querySelector("#busqueda");
+                //Si no está vacio se llama a la función
+                if(input.value.length!=0){
+                    buscarLugar(input);
+                }
+                //Parar para no recargar la página
+                evento.preventDefault();
+            }
+            //formulario.removeEventListener("click", enviarFormulario);
             
             
             //Crear popup con titulo y texto
