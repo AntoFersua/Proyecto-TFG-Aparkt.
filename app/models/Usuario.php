@@ -75,4 +75,7 @@ class Usuario extends Model
         $stmt->execute();
         return $stmt->fetchColumn();
     }
+
+
+    
 }
