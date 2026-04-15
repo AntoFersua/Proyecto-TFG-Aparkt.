@@ -5,7 +5,6 @@ require __DIR__ . "/Model.php";
 
 class Zona extends Model
 {
-
     public function crearZona($ubicacion)
     {
         $consulta = "INSERT INTO Zona (ubicacion)
@@ -14,7 +13,6 @@ class Zona extends Model
         $stmt->execute(['ubicacion' => $ubicacion]);
         return $stmt->rowCount() > 0;
     }
-
 
     public function obtenerZonas()
     {
