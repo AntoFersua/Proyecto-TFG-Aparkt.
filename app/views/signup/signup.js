@@ -1,6 +1,26 @@
-// Validación con JustValidate
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("Inicializando JustValidate");
+import { iniciarAuth, obtenerUsuario, cerrarSesion } from '../auth.js';
+
+let usuarioActual = null;
+
+document.addEventListener("DOMContentLoaded", async function () {
+  console.log("Inicializando Signup");
+
+// Verificar sesión pero permitir acceso siempre al signup
+  await iniciarAuth({
+    alLoguearse: (usuario) => {
+      // Está logueado, pero permitir acceso al signup
+      inicializarFormulario();
+    },
+    alNoLoguearse: () => {
+      // No está logueado
+      inicializarFormulario();
+    }
+  });
+});
+
+function inicializarFormulario() {
+  // Configurar botones de sesión
+  configurarBotonesSesion();
 
   const form = document.getElementById("formUsuario");
   if (!form) {
@@ -13,43 +33,49 @@ document.addEventListener("DOMContentLoaded", function () {
     focusInvalidField: true,
   });
 
-  console.log("Validador creado:", validador);
-
-  const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
-
   // NOMBRE
   validador.addField("#inputNombre", [
-    { rule: "required", errorMessage: "Nombre obligatorio" },
+    { rule: "required", errorMessage: "El nombre es obligatorio" },
     { rule: "minLength", value: 2, errorMessage: "Mínimo 2 caracteres" },
     { rule: "maxLength", value: 20, errorMessage: "Máximo 20 caracteres" },
-  ]);
+  ], {
+    errorsContainer: "#error-nombre",
+  });
 
-  // APELLIDO
+  // APELLIDOS
   validador.addField("#inputApellidos", [
-    { rule: "required", errorMessage: "Apellido obligatorio" },
+    { rule: "required", errorMessage: "El apellido es obligatorio" },
     { rule: "minLength", value: 2, errorMessage: "Mínimo 2 caracteres" },
     { rule: "maxLength", value: 50, errorMessage: "Máximo 50 caracteres" },
-  ]);
-
-  // CIUDAD (select)
-  validador.addField("#inputCiudad", [
-    { rule: "required", errorMessage: "Selecciona una ciudad" },
-  ]);
+  ], {
+    errorsContainer: "#error-apellidos",
+  });
 
   // EMAIL
   validador.addField("#inputCorreo", [
-    { rule: "required", errorMessage: "Email obligatorio" },
+    { rule: "required", errorMessage: "El email es obligatorio" },
     { rule: "email", errorMessage: "Email inválido" },
-  ]);
+  ], {
+    errorsContainer: "#error-email",
+  });
 
-  // PASSWORD
+  // TELÉFONO
+  validador.addField("#inputTelefono", [
+    { rule: "required", errorMessage: "El teléfono es obligatorio" },
+  ], {
+    errorsContainer: "#error-telefono",
+  });
+
+  // CONTRASEÑA
   validador.addField("#inputContrasena", [
-    { rule: "required", errorMessage: "Contraseña obligatoria" },
+    { rule: "required", errorMessage: "La contraseña es obligatoria" },
     { rule: "minLength", value: 6, errorMessage: "Mínimo 6 caracteres" },
     { rule: "maxLength", value: 15, errorMessage: "Máximo 15 caracteres" },
-  ]);
+  ], {
+    errorsContainer: "#error-contrasena",
+  });
 
-  // CONFIRMAR PASSWORD
+  // CONFIRMAR CONTRASEÑA
   validador.addField("#confirmarContrasena", [
     { rule: "required", errorMessage: "Repite la contraseña" },
     {
@@ -58,7 +84,9 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       errorMessage: "Las contraseñas no coinciden",
     },
-  ]);
+  ], {
+    errorsContainer: "#error-confirmarContrasena",
+  });
 
   // SUBMIT
   validador.onSuccess((event) => {
@@ -94,4 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Error de conexión");
       });
   });
-});
+}
+
+function configurarBotonesSesion() {
+  // Los botones de sesión ya están configurados en funcionesGlobales.js
+}

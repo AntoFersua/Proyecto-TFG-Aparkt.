@@ -351,7 +351,6 @@ main img {
 .menu-superior {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   gap: 12px;
 }
 
@@ -370,6 +369,13 @@ main img {
   border-radius: 8px;
   transition: all 0.2s ease;
   cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.anadirVehiculo {
+  background: var(--color-verde);
+  color: white;
 }
 
 .opcion-btn:hover {
@@ -448,6 +454,7 @@ main img {
   background: rgba(255, 255, 255, 0.5);
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  width: 100%;
 }
 
 .form-group {
@@ -539,4 +546,16 @@ main img {
 .error-field {
   border-color: #c62828 !important;
   box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15) !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.usuarioCerrado {
+  display: none;
+}
+
+#bannerUsuario {
+  z-index: 100;
 }

@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
     <script src="../validacionVehiculo.js"></script>
     <script src="../funcionesGlobales.js" defer></script>
+    <script src="aparkt.js" type="module"></script>
   </head>
   <body>
     <!--HEADER-->
@@ -21,8 +22,8 @@
         <ul>
           <li><a href="../index.html">Mapa</a></li>
           <li><a href="aparkt.html">Aparkt</a></li>
-          <li><a href="../login/login.html">Log In</a></li>
-          <li><a href="../signup/signup.html">Sign Up</a></li>
+          <li data-auth="hide"><a href="../login/login.html">Log In</a></li>
+          <li data-auth="hide"><a href="../signup/signup.html">Sign Up</a></li>
         </ul>
       </nav>
       <div id="headerDerecha">
@@ -87,7 +88,7 @@
       aaaaaa
 
       <!-- Banner lateral de usuario -->
-      <aside id="bannerUsuario" class="banner-lateral abierto">
+      <aside id="bannerUsuario" class="banner-lateral">
         <button class="cerrar-banner" id="cerrarBanner">
           <svg
             xmlns="http://www.w3.org/2000/svg"

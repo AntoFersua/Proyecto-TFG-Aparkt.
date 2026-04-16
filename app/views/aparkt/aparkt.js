@@ -1,0 +1,43 @@
+import { iniciarAuth, obtenerUsuario, cerrarSesion } from '../auth.js';
+
+let usuarioActual = null;
+
+async function iniciarPagina() {
+  await iniciarAuth({
+    alLoguearse: (usuario) => {
+      usuarioActual = usuario;
+      configurarUIUsuarioLogueado(usuario);
+    },
+    alNoLoguearse: () => {
+      configurarUIUsuarioNoLogueado();
+    }
+  });
+}
+
+function configurarUIUsuarioLogueado(usuario) {
+  const botonLogout = document.getElementById('logout');
+  if (botonLogout) {
+    botonLogout.addEventListener('click', () => cerrarSesion());
+  }
+
+  const botonPerfil = document.getElementById('perfilUsuario');
+  if (botonPerfil) {
+    botonPerfil.addEventListener('click', () => {
+      const banner = document.getElementById('bannerUsuario');
+      if (banner) {
+        banner.classList.add('abierto');
+      }
+    });
+  }
+
+  const nombreUsuario = usuario.nombre || usuario.name || usuario.email || 'Usuario';
+  console.log(`Bienvenido, ${nombreUsuario}`);
+}
+
+function configurarUIUsuarioNoLogueado() {
+  // No hacer nada al hacer click en perfil si no está logueado
+}
+
+document.addEventListener('DOMContentLoaded', iniciarPagina);
+
+export { usuarioActual };

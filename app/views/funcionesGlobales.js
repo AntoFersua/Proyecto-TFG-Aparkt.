@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const navUl = document.querySelector(".navPrincipal ul");
+  if (!navUl) return;
+  
   const navLinks = document.querySelectorAll(".navPrincipal ul li");
 
   let spanDelante = document.createElement("span");
@@ -39,43 +41,63 @@ document.addEventListener("DOMContentLoaded", () => {
     ocultarCirculo();
   });
 
-  // Banner lateral de usuario
+  // ========================================================================
+  // BANNER LATERAL DE USUARIO - Funcionalidad para todas las páginas
+  // ========================================================================
+  
   const botonPerfil = document.getElementById("perfilUsuario");
   const banner = document.getElementById("bannerUsuario");
-  const cerrarBanner = document.getElementById("cerrarBanner");
-  const btnLogout = document.getElementById("logout");
+  const botonCerrarBanner = document.getElementById("cerrarBanner");
 
-  // Verificar si hay sesión activa
-  const sesionActiva = localStorage.getItem("sesionActiva") === "true";
-
+  // Botón de perfil - abre/cierra el banner
   if (botonPerfil && banner) {
-    // Solo mostrar botón si hay sesión
-    botonPerfil.style.display = sesionActiva ? "block" : "none";
-
     botonPerfil.addEventListener("click", function (e) {
-      console.log("Click en perfil");
+      e.stopPropagation();
       banner.classList.toggle("abierto");
-      console.log("Banner abierto:", banner.classList.contains("abierto"));
-      console.log("Banner display:", window.getComputedStyle(banner).display);
     });
   }
 
-  if (cerrarBanner && banner) {
-    cerrarBanner.addEventListener("click", function (e) {
+  // Botón de cerrar banner
+  if (botonCerrarBanner && banner) {
+    botonCerrarBanner.addEventListener("click", function (e) {
+      e.stopPropagation();
       banner.classList.remove("abierto");
     });
   }
 
-  // Logout - borrar sesión y recargar
-  if (btnLogout) {
-    console.log("Logout button found, adding event");
-    btnLogout.addEventListener("click", function (e) {
+  // Cerrar banner al hacer click fuera de él
+  document.addEventListener("click", function (e) {
+    if (banner && banner.classList.contains("abierto")) {
+      if (!banner.contains(e.target) && !botonPerfil.contains(e.target)) {
+        banner.classList.remove("abierto");
+      }
+    }
+  });
+
+  // ========================================================================
+  // CERRAR SESIÓN
+  // ========================================================================
+
+  const botonLogout = document.getElementById("logout");
+  if (botonLogout) {
+    botonLogout.addEventListener("click", function (e) {
       e.preventDefault();
-      console.log("Logout clicked!");
-      localStorage.removeItem("sesionActiva");
-      window.location.href = "../login/login.html";
+      
+      // Determinar la ruta base
+      const path = window.location.pathname;
+      let rutaBase = '';
+      if (path.includes('/PRUEBAS/')) {
+        rutaBase = '/PRUEBAS';
+      }
+      
+      // Redirigir al logout
+      window.location.href = rutaBase + '/app/controllers/Logout.php';
     });
   }
+
+  // ========================================================================
+  // FORMULARIO AÑADIR VEHÍCULO
+  // ========================================================================
 
   const btnAnadirVehiculo = document.querySelector(".anadirVehiculo");
   const formVehiculo = document.getElementById("formVehiculo");
@@ -88,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnAnadirVehiculo.textContent = "Cancelar";
         formVehiculo.style.display = "flex";
       } else {
-        btnAnadirVehiculo.textContent = "Añadir vehículo";
+        btnAnadirVehiculo.textContent = "Añadir mi vehículo";
         formVehiculo.style.display = "none";
       }
     });
