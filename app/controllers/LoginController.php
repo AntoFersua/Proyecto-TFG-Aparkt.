@@ -1,7 +1,7 @@
 <?php
 //importar los archivos
-require __DIR__ . '/../models/Conexion.php';
-require __DIR__ . '/../models/Usuario.php';
+require_once __DIR__ . '/../models/Conexion.php';
+require_once __DIR__ . '/../models/Usuario.php';
 class LoginController
 {
     private $usuarioModelo;
@@ -78,11 +78,13 @@ class LoginController
         //si todo está bien, crear sesión
         session_start();
         $_SESSION["usuario"] = $usuario;
+        $_SESSION["usuario_id"] = $user_info['id'];
         //devolver éxito
         echo json_encode([
             "status" => "ok",
             "loged" => true,
             "user" => $_SESSION['usuario'],
+            "user_id" => $_SESSION['usuario_id'],
             "mensaje" => "Usuario inició sesión correctamente"
         ]);
     }

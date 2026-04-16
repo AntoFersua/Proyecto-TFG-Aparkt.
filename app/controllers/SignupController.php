@@ -1,7 +1,7 @@
 <?php
 //importar los archivos
-require __DIR__ . '/../models/Conexion.php';
-require __DIR__ . '/../models/Usuario.php';
+require_once __DIR__ . '/../models/Conexion.php';
+require_once __DIR__ . '/../models/Usuario.php';
 
 class SignupController
 {
