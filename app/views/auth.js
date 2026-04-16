@@ -21,7 +21,7 @@
 function obtenerRutaBase() {
   const ruta = window.location.pathname;
   // Si la URL contiene /PRUEBAS/, devolvemos /PRUEBAS
-  if (ruta.includes('/PRUEBAS/')) return '/PRUEBAS';
+  if (ruta.includes('/Proyecto-TFG-Aparkt/')) return '/Proyecto-TFG-Aparkt';
   // Si contiene /app/, estamos en la raíz
   if (ruta.includes('/app/')) return '';
   // Por defecto vacío
