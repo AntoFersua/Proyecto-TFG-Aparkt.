@@ -1,26 +1,22 @@
 <?php
-//importar los archivos
-require __DIR__ . '/../models/Conexion.php';
-require __DIR__ . '/../models/Vehiculo.php';
+session_start();
+
 class VehiculoController
 {
     private $vehiculoModelo;
     public function __construct($conexion)
     {
+        require_once __DIR__ . '/../models/Vehiculo.php';
         $this->vehiculoModelo = new Vehiculo($conexion);
     }
     public function crear()
     {
-        // Obtener el contenido raw del body
         $inputJSON = file_get_contents('php://input');
-        // Convertir a array asociativo
         $DatosPost = json_decode($inputJSON, true);
         $errores = [];
-        //obtener datos del frontend
         $tipoVehiculo = trim($DatosPost['tipoVehiculo'] ?? '');
         $tamano = trim($DatosPost['tamano'] ?? '');
 
-        //validaciones básicas
         if ($tipoVehiculo == '') {
             $errores['tipoVehiculo'] = "El tipo de vehículo es obligatorio";
         }
@@ -28,10 +24,8 @@ class VehiculoController
             $errores['tamano'] = "El tamaño es obligatorio";
         }
 
-        //indicar cabecera json y devolver respuesta al frontend
         header('Content-Type: application/json');
 
-        //si hay errores de validación básica, devolverlos
         if (!empty($errores)) {
             echo json_encode([
                 "status" => "error",
@@ -40,20 +34,28 @@ class VehiculoController
             exit();
         }
 
-        //si todo está bien, crear sesión y guardar vehículo
-        session_start();
-        $usuarioId = $_SESSION['usuario_id'];
+        $usuarioId = $_SESSION['usuario_id'] ?? null;
+
+        if ($usuarioId === null) {
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "No hay sesión activa. Por favor, inicia sesión.",
+                "debug" => "session_id: " . session_id() . ", session: " . json_encode($_SESSION)
+            ]);
+            exit();
+        }
+
         $id = $this->vehiculoModelo->crearVehiculo($usuarioId, $tipoVehiculo, $tamano);
 
-        //devolver éxito
         echo json_encode([
             "status" => "ok",
             "mensaje" => "Vehículo creado",
-            "id" => $id
+            "id" => $id,
+            "debug" => ["usuarioId" => $usuarioId, "tipo" => $tipoVehiculo, "tamano" => $tamano]
         ]);
     }
 }
-//Ejecuta automaticamente el proceso de crear vehículo cuando se accede al archivo VehiculoController
+
 if (basename($_SERVER['SCRIPT_FILENAME']) === 'VehiculoController.php') {
     $conexion = require __DIR__ . '/../models/Conexion.php';
     $controller = new VehiculoController($conexion);

@@ -39,7 +39,7 @@ window.inicializarValidacionVehiculo = function () {
 
       console.log("Enviando:", datos);
 
-      fetch("../../controllers/VehiculoController.php", {
+      fetch("../controllers/VehiculoController.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",

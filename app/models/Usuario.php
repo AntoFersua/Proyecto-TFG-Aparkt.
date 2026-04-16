@@ -1,7 +1,7 @@
 <?php
 //incluir el archivo conexion
-require __DIR__ . "/Conexion.php";
-require __DIR__ . "/Model.php";
+require_once __DIR__ . "/Conexion.php";
+require_once __DIR__ . "/Model.php";
 
 //clase usuario que hereda de model
 class Usuario extends Model

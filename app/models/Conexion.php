@@ -22,7 +22,9 @@
         //echo "Todo funciona correctamente. Estás conectado! <br>";
 
     } catch (PDOException $e) {
-        die($e->getMessage());
+        header('Content-Type: application/json');
+        echo json_encode(["status" => "error", "mensaje" => "Error de conexión: " . $e->getMessage()]);
+        exit();
     }
 
     return $_conexion;

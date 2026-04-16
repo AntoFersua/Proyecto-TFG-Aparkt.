@@ -1,7 +1,7 @@
 <?php
 
-require __DIR__ . "/Conexion.php";
-require __DIR__ . "/Model.php";
+require_once __DIR__ . "/Conexion.php";
+require_once __DIR__ . "/Model.php";
 
 class Zona extends Model
 {
