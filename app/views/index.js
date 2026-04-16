@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", async function () {
         projection: "globe",
         zoom: 15,
         //Coordenadas Teatinos
-        center: [-4.475468174458712, 36.72410119432091],
+        center: [-4.475468174458712, 36.72410119432091]
       });
 
       //Cuando el estilo del mapa se carga, se establece la niebla por defecto
@@ -115,6 +115,35 @@ window.addEventListener("DOMContentLoaded", async function () {
           "rgba(255, 0, 0, 0.3)",
           "red",
         );
+
+        const aparcamiento1 = estadoAparcamiento(-4.478995, 36.719671, 3, "aparcamiento1", "aparcamiento1-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento2 = estadoAparcamiento(-4.478964, 36.719724, 3, "aparcamiento2", "aparcamiento2-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento3 = estadoAparcamiento(-4.478932, 36.719775, 3, "aparcamiento3", "aparcamiento3-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento4 = estadoAparcamiento(-4.478893, 36.719831, 3, "aparcamiento4", "aparcamiento4-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento5 = estadoAparcamiento(-4.478849, 36.719893, 3, "aparcamiento5", "aparcamiento5-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento6 = estadoAparcamiento(-4.478809, 36.719951, 3, "aparcamiento6", "aparcamiento6-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento7 = estadoAparcamiento(-4.478773, 36.720014, 3, "aparcamiento7", "aparcamiento7-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento8 = estadoAparcamiento(-4.478735, 36.720075, 3, "aparcamiento8", "aparcamiento8-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento9 = estadoAparcamiento(-4.478698, 36.720135, 3, "aparcamiento9", "aparcamiento9-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento10 = estadoAparcamiento(-4.478652, 36.720199, 3, "aparcamiento10", "aparcamiento10-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento11 = estadoAparcamiento(-4.478620, 36.720259, 3, "aparcamiento11", "aparcamiento11-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento12 = estadoAparcamiento(-4.478586, 36.720321, 3, "aparcamiento12", "aparcamiento12-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento13 = estadoAparcamiento(-4.478549, 36.720377, 3, "aparcamiento13", "aparcamiento13-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento14 = estadoAparcamiento(-4.478893, 36.719831, 3, "aparcamiento14", "aparcamiento14-fill", "rgba(255, 0, 0, 0.3)", "red");
+
+        const aparcamiento15 = estadoAparcamiento(-4.478381, 36.720620, 3, "aparcamiento15", "aparcamiento15-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento16 = estadoAparcamiento(-4.478348, 36.720672, 3, "aparcamiento16", "aparcamiento16-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento17 = estadoAparcamiento(-4.478305, 36.720726, 3, "aparcamiento17", "aparcamiento17-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento18 = estadoAparcamiento(-4.478275, 36.720781, 3, "aparcamiento18", "aparcamiento18-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento19 = estadoAparcamiento(-4.478243, 36.720835, 3, "aparcamiento19", "aparcamiento19-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento20 = estadoAparcamiento(-4.478201, 36.720897, 3, "aparcamiento20", "aparcamiento20-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento21 = estadoAparcamiento(-4.478166, 36.720953, 3, "aparcamiento21", "aparcamiento21-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento22 = estadoAparcamiento(-4.478113, 36.7201023, 3, "aparcamiento22", "aparcamiento22-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento23 = estadoAparcamiento(-4.478120, 36.721014, 3, "aparcamiento23", "aparcamiento23-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento24 = estadoAparcamiento(-4.478085, 36.721070, 3, "aparcamiento24", "aparcamiento24-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento25 = estadoAparcamiento(-4.478042, 36.721132, 3, "aparcamiento25", "aparcamiento25-fill", "rgba(0, 255, 0, 0.3)", "green");
+        const aparcamiento26 = estadoAparcamiento(-4.478005, 36.721189, 3, "aparcamiento26", "aparcamiento26-fill", "rgba(255, 0, 0, 0.3)", "red");
+        const aparcamiento27 = estadoAparcamiento(-4.477965, 36.721239, 3, "aparcamiento27", "aparcamiento27-fill", "rgba(0, 255, 0, 0.3)", "green");
       });
 
       //Obtener las coordenadas y la dirección de una ubi específica
