@@ -1,4 +1,4 @@
-// Validation for vehicle form using JustValidate
+// Validation de vehiculo usando la librería JustValidate
 window.inicializarValidacionVehiculo = function () {
   let form = document.getElementById("formVehiculo");
   if (!form) return;
@@ -8,20 +8,26 @@ window.inicializarValidacionVehiculo = function () {
     errorLabelCssClass: "error-mensaje",
   });
 
-  validator
-    .addField("#tipoVehiculo", [
+  validator.addField("#tipoVehiculo", [
       {
         rule: "required",
         errorMessage: "Selecciona un tipo de vehículo",
       },
-    ])
-    .addField("#tamanoVehiculo", [
+    ], {
+    errorsContainer: "#error-tipoVehiculo",
+  });
+
+
+    validator.addField("#tamanoVehiculo", [
       {
         rule: "required",
         errorMessage: "Selecciona un tamaño",
       },
-    ])
-    .onSuccess(function (event) {
+    ],{
+      errorsContainer: "#error-tamanoVehiculo",
+    });
+
+    validator.onSuccess(function (event) {
       event.preventDefault();
       let tipoVehiculo = document.getElementById("tipoVehiculo").value;
       let tamanoVehiculo = document.getElementById("tamanoVehiculo").value;
@@ -64,41 +70,4 @@ window.inicializarValidacionVehiculo = function () {
     });
 
   return validator;
-};
-
-window.mostrarError = function (campo, mensaje) {
-  let elemento = document.getElementById(campo);
-  if (!elemento) return;
-
-  let formGroup = elemento.closest(".form-group");
-  if (!formGroup) formGroup = elemento.parentElement;
-
-  let errorDiv = formGroup.querySelector(".error-mensaje");
-  if (!errorDiv) {
-    errorDiv = document.createElement("span");
-    errorDiv.className = "error-mensaje";
-    formGroup.appendChild(errorDiv);
-  }
-
-  errorDiv.textContent = mensaje;
-};
-
-window.limpiarError = function (campo) {
-  let elemento = document.getElementById(campo);
-  if (!elemento) return;
-
-  let formGroup = elemento.closest(".form-group");
-  if (!formGroup) formGroup = elemento.parentElement;
-
-  let errorDiv = formGroup.querySelector(".error-mensaje");
-  if (errorDiv) {
-    errorDiv.remove();
-  }
-};
-
-window.limpiarErrores = function () {
-  let selects = document.querySelectorAll("#formVehiculo select");
-  selects.forEach(function (select) {
-    window.limpiarError(select.id);
-  });
 };
