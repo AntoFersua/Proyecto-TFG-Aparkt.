@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const navUl = document.querySelector(".navPrincipal ul");
+  if (!navUl) return;
+  
   const navLinks = document.querySelectorAll(".navPrincipal ul li");
 
   let spanDelante = document.createElement("span");
@@ -39,8 +41,63 @@ document.addEventListener("DOMContentLoaded", () => {
     ocultarCirculo();
   });
 
-  // Banner lateral de usuario - la lógica de sesión está en aparkt.js
-  // El botón de perfil y el banner se controlan desde aparkt.js
+  // ========================================================================
+  // BANNER LATERAL DE USUARIO - Funcionalidad para todas las páginas
+  // ========================================================================
+  
+  const botonPerfil = document.getElementById("perfilUsuario");
+  const banner = document.getElementById("bannerUsuario");
+  const botonCerrarBanner = document.getElementById("cerrarBanner");
+
+  // Botón de perfil - abre/cierra el banner
+  if (botonPerfil && banner) {
+    botonPerfil.addEventListener("click", function (e) {
+      e.stopPropagation();
+      banner.classList.toggle("abierto");
+    });
+  }
+
+  // Botón de cerrar banner
+  if (botonCerrarBanner && banner) {
+    botonCerrarBanner.addEventListener("click", function (e) {
+      e.stopPropagation();
+      banner.classList.remove("abierto");
+    });
+  }
+
+  // Cerrar banner al hacer click fuera de él
+  document.addEventListener("click", function (e) {
+    if (banner && banner.classList.contains("abierto")) {
+      if (!banner.contains(e.target) && !botonPerfil.contains(e.target)) {
+        banner.classList.remove("abierto");
+      }
+    }
+  });
+
+  // ========================================================================
+  // CERRAR SESIÓN
+  // ========================================================================
+
+  const botonLogout = document.getElementById("logout");
+  if (botonLogout) {
+    botonLogout.addEventListener("click", function (e) {
+      e.preventDefault();
+      
+      // Determinar la ruta base
+      const path = window.location.pathname;
+      let rutaBase = '';
+      if (path.includes('/PRUEBAS/')) {
+        rutaBase = '/PRUEBAS';
+      }
+      
+      // Redirigir al logout
+      window.location.href = rutaBase + '/app/controllers/Logout.php';
+    });
+  }
+
+  // ========================================================================
+  // FORMULARIO AÑADIR VEHÍCULO
+  // ========================================================================
 
   const btnAnadirVehiculo = document.querySelector(".anadirVehiculo");
   const formVehiculo = document.getElementById("formVehiculo");
@@ -53,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnAnadirVehiculo.textContent = "Cancelar";
         formVehiculo.style.display = "flex";
       } else {
-        btnAnadirVehiculo.textContent = "Añadir vehículo";
+        btnAnadirVehiculo.textContent = "Añadir mi vehículo";
         formVehiculo.style.display = "none";
       }
     });

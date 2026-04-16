@@ -1,72 +1,43 @@
-import {
-  getSession,
-  getUser,
-  initAuthUI,
-  showIfLoggedIn,
-  hideIfLoggedOut,
-} from "../auth.js";
+import { iniciarAuth, obtenerUsuario, cerrarSesion } from '../auth.js';
 
-let currentUser = null;
+let usuarioActual = null;
 
-async function initPage() {
-  try {
-    const session = await getSession();
-
-    console.log("Sesión:", session.logged ? "LOGUEADO" : "NO LOGUEADO");
-    console.log("Usuario:", session.user);
-
-    if (session.logged) {
-      currentUser = session.user;
-      setupAuthenticatedUI();
-    } else {
-      setupPublicUI();
+async function iniciarPagina() {
+  await iniciarAuth({
+    alLoguearse: (usuario) => {
+      usuarioActual = usuario;
+      configurarUIUsuarioLogueado(usuario);
+    },
+    alNoLoguearse: () => {
+      configurarUIUsuarioNoLogueado();
     }
-  } catch (error) {
-    console.error("Error al inicializar la página:", error);
-  }
+  });
 }
 
-function setupAuthenticatedUI() {
-  console.log("Ejecutando setupAuthenticatedUI");
-  initAuthUI();
-
-  const logoutBtn = document.getElementById("logout");
-  if (logoutBtn) {
-    console.log("Logout button encontrado");
-    logoutBtn.addEventListener("click", handleLogout);
+function configurarUIUsuarioLogueado(usuario) {
+  const botonLogout = document.getElementById('logout');
+  if (botonLogout) {
+    botonLogout.addEventListener('click', () => cerrarSesion());
   }
 
-  const perfilBtn = document.getElementById("perfilUsuario");
-  console.log("Boton perfil:", perfilBtn);
-  if (perfilBtn) {
-    perfilBtn.addEventListener("click", () => {
-      console.log("Click en perfil --abriendo banner");
-      const banner = document.getElementById("bannerUsuario");
-      console.log("Banner:", banner);
+  const botonPerfil = document.getElementById('perfilUsuario');
+  if (botonPerfil) {
+    botonPerfil.addEventListener('click', () => {
+      const banner = document.getElementById('bannerUsuario');
       if (banner) {
-        banner.classList.add("abierto");
+        banner.classList.add('abierto');
       }
     });
   }
 
-  const userName =
-    currentUser.nombre || currentUser.name || currentUser.email || "Usuario";
-  console.log(`Bienvenido, ${userName}`);
+  const nombreUsuario = usuario.nombre || usuario.name || usuario.email || 'Usuario';
+  console.log(`Bienvenido, ${nombreUsuario}`);
 }
 
-function setupPublicUI() {
+function configurarUIUsuarioNoLogueado() {
   // No hacer nada al hacer click en perfil si no está logueado
 }
 
-function getBasePath() {
-  return window.location.pathname.includes("/PRUEBAS/") ? "/PRUEBAS" : "";
-}
+document.addEventListener('DOMContentLoaded', iniciarPagina);
 
-async function handleLogout() {
-  const basePath = getBasePath();
-  window.location.href = basePath + "/app/controllers/Logout.php";
-}
-
-document.addEventListener("DOMContentLoaded", initPage);
-
-export { currentUser };
+export { usuarioActual };
