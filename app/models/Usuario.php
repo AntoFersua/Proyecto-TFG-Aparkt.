@@ -76,6 +76,33 @@ class Usuario extends Model
         return $stmt->fetchColumn();
     }
 
+    public function verificarVehiculoPorEmail($email)
+    {
+        $consulta = "SELECT COUNT(v.id) as total FROM usuario u 
+                    LEFT JOIN vehiculo v ON u.id = v.usuario_id 
+                    WHERE u.email = :email AND v.id IS NOT NULL";
+        $stmt = $this->_conexion->prepare($consulta);
+        $stmt->bindValue(":email", $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $resultado = $stmt->fetch();
+
+        return $resultado['total'] > 0;
+    }
+
+    public function obtenerVehiculosPorEmail($email)
+    {
+        $consulta = "SELECT v.*, p.id as plaza_id, p.tipo as plaza_tipo, p.tamano as plaza_tamano
+                    FROM usuario u 
+                    LEFT JOIN vehiculo v ON u.id = v.usuario_id
+                    LEFT JOIN plazaaparcamiento p ON v.plaza_aparcamiento_id = p.id
+                    WHERE u.email = :email";
+        $stmt = $this->_conexion->prepare($consulta);
+        $stmt->bindValue(":email", $email, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     
 }

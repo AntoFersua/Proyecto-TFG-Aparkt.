@@ -2,6 +2,7 @@
 //importar los archivos
 require_once __DIR__ . '/../models/Conexion.php';
 require_once __DIR__ . '/../models/Usuario.php';
+require_once __DIR__ . '/../models/Vehiculo.php';
 class LoginController
 {
     private $usuarioModelo;
@@ -51,7 +52,7 @@ class LoginController
             $errores['usuario'] = "No existe cuenta con este email";
         }
 
-        //si hay errores de base de datos, devolverlos
+        //si hay errores de email, devolverlos
         if (!empty($errores)) {
             echo json_encode([
                 "status" => "error",
@@ -75,16 +76,33 @@ class LoginController
             exit();
         }
 
+        //Buscar si tiene vehiculo asociado
+        $vehiculo_info = $this->usuarioModelo->obtenerVehiculosPorEmail($usuario);
+        if (empty($vehiculo_info)) {
+            $errores['vehiculo'] = "No tienes vehiculo asociado";
+        }
+
+        //si hay errores de vehiculo, devolverlos
+        if (!empty($errores)) {
+            echo json_encode([
+                "status" => "error",
+                "errores" => $errores
+            ]);
+            exit();
+        }
+
         //si todo está bien, crear sesión
         session_start();
         $_SESSION["usuario"] = $usuario;
         $_SESSION["usuario_id"] = $user_info['id'];
+        $_SESSION["vehiculo"] = $vehiculo_info;
         //devolver éxito
         echo json_encode([
             "status" => "ok",
             "loged" => true,
             "user" => $_SESSION['usuario'],
             "user_id" => $_SESSION['usuario_id'],
+            "vehiculo_user" => $_SESSION['vehiculo'],
             "mensaje" => "Usuario inició sesión correctamente"
         ]);
     }
