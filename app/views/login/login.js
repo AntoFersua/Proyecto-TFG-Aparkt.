@@ -1,4 +1,7 @@
 import { iniciarAuth, obtenerUsuario, cerrarSesion } from '../auth.js';
+import "../components/header.js";
+import "../components/PerfilUsuario.js";
+import '../components/Footer.js';
 
 let usuarioActual = null;
 

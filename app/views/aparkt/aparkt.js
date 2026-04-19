@@ -1,3 +1,7 @@
+// Importamos componenetes
+import '../components/header.js';
+import '../components/Footer.js';
+
 import { iniciarAuth, obtenerUsuario, cerrarSesion } from '../auth.js';
 
 let usuarioActual = null;
