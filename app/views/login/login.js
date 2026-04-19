@@ -69,9 +69,9 @@ function inicializarFormulario() {
       .then((data) => {
         if (data.status === "ok") {
           alert(data.mensaje);
-          window.location.href = '../index.html';
+          window.location.href = '../aparkt/aparkt.html';
         } else {
-          alert(data.mensaje || "Error en el login");
+          alert("Error en el login");
         }
       })
       .catch((error) => {
