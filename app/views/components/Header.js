@@ -1,11 +1,12 @@
 class Header extends HTMLElement {
-  constructor() {
+  constructor(nombre) {
     super();
   }
 
   // Método que se llama cuando el elemento se conecta al DOM.
   connectedCallback() {
     this.render();
+    this.initJS();
   }
 
   // Método que define el contenido HTML del componente.
@@ -82,6 +83,48 @@ class Header extends HTMLElement {
         </button>
       </div>
     </header>`;
+  }
+
+  // Método para inicializar la lógica JavaScript del componente.
+  initJS() {
+    const navUl = this.querySelector(".navPrincipal ul");
+    if (!navUl) return;
+
+    const navLinks = this.querySelectorAll(".navPrincipal ul li");
+
+    let spanDelante = document.createElement("span");
+    spanDelante.className = "span-delante";
+    navUl.appendChild(spanDelante);
+
+    let spanDetras = document.createElement("span");
+    spanDetras.className = "span-detras";
+    navUl.appendChild(spanDetras);
+
+    let circle = document.createElement("div");
+    circle.className = "nav-circulo";
+    navUl.appendChild(circle);
+
+    function moverCirculo(li) {
+      const liRect = li.getBoundingClientRect();
+      const ulRect = navUl.getBoundingClientRect();
+      const left = liRect.left - ulRect.left + liRect.width / 2 - 35;
+
+      circle.style.transform = `translateY(calc(-50% + 17px)) translateX(${left}px) scale(1)`;
+      spanDelante.style.transform = `translateY(calc(-50% + 17px)) translateX(${left}px) scale(1)`;
+      spanDetras.style.transform = `translateY(calc(-50% + 17px)) translateX(${left}px) scale(1)`;
+    }
+
+    function ocultarCirculo() {
+      circle.style.transform = "translateY(-50%) scale(0)";
+      spanDelante.style.transform = "translateY(-50%) scale(0)";
+      spanDetras.style.transform = "translateY(-50%) scale(0)";
+    }
+
+    navLinks.forEach((li) => {
+      li.addEventListener("mouseenter", () => moverCirculo(li));
+    });
+
+    navUl.addEventListener("mouseleave", ocultarCirculo);
   }
 }
 

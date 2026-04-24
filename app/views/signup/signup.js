@@ -4,6 +4,8 @@ import '../components/perfilUsuario.js';
 import '../components/Footer.js';
 
 
+
+
 // Validación con JustValidate
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Inicializando JustValidate");
