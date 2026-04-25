@@ -5,83 +5,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="../estilosGlobales.css" />
+    <link rel="stylesheet" href="aparkt.css" />
     <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
     <script src="../validacionVehiculo.js"></script>
     <script src="../funcionesGlobales.js" defer></script>
     <script src="aparkt.js" type="module"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
   </head>
   <body>
     <!--HEADER-->
     <app-header></app-header>
-
-    <main>
-      aaaaaa
-
-      <!-- Banner lateral de usuario -->
-      <aside id="bannerUsuario" class="banner-lateral">
-        <button class="cerrar-banner" id="cerrarBanner">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 384 512"
-            width="18"
-            height="18"
-          >
-            <path
-              fill="white"
-              d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
-            />
-          </svg>
-        </button>
-        <div class="banner-header">
-          <h2>Mi Perfil</h2>
-        </div>
-        <div class="banner-body">
-          <div class="menu-superior">
-            <div class="menu-opciones">
-              <button class="opcion-btn">Cambiar contraseña</button>
-              <button class="opcion-btn">Editar foto de perfil</button>
-              <button class="opcion-btn">Cambiar email</button>
-              <button class="opcion-btn">Editar vehículo</button>
-              <button class="opcion-btn">Borrar vehículo</button>
-              <button class="opcion-btn anadirVehiculo">
-                Añadir mi vehículo
-              </button>
+    <!-- Banner lateral de usuario -->
+    <aside id="bannerUsuario" class="banner-lateral">
+      <button class="cerrar-banner" id="cerrarBanner">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 384 512"
+          width="18"
+          height="18"
+        >
+          <path
+            fill="white"
+            d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
+          />
+        </svg>
+      </button>
+      <div class="banner-header">
+        <h2>Mi Perfil</h2>
+      </div>
+      <div class="banner-body">
+        <div class="menu-superior">
+          <div class="menu-opciones">
+            <button class="opcion-btn">Cambiar contraseña</button>
+            <button class="opcion-btn">Editar foto de perfil</button>
+            <button class="opcion-btn">Cambiar email</button>
+            <button class="opcion-btn">Editar vehículo</button>
+            <button class="opcion-btn">Borrar vehículo</button>
+            <button class="opcion-btn anadirVehiculo">
+              Añadir mi vehículo
+            </button>
+          </div>
+          <form id="formVehiculo" class="form-vehiculo" style="display: none">
+            <div class="form-group">
+              <label for="tipoVehiculo">Tipo de vehículo</label>
+              <select id="tipoVehiculo" name="tipo_vehiculo">
+                <option value=""></option>
+                <option value="turismo">Turismo</option>
+                <option value="ranchera">Ranchera</option>
+                <option value="todoterreno">Todoterreno</option>
+                <option value="monovolumen">Monovolumen</option>
+                <option value="furgo">Furgoneta</option>
+                <option value="otro">Otro</option>
+              </select>
+              <div id="error-tipoVehiculo"></div>
             </div>
-            <form id="formVehiculo" class="form-vehiculo" style="display: none">
-              <div class="form-group">
-                <label for="tipoVehiculo">Tipo de vehículo</label>
-                <select id="tipoVehiculo" name="tipo_vehiculo">
-                  <option value=""></option>
-                  <option value="turismo">Turismo</option>
-                  <option value="ranchera">Ranchera</option>
-                  <option value="todoterreno">Todoterreno</option>
-                  <option value="monovolumen">Monovolumen</option>
-                  <option value="furgo">Furgoneta</option>
-                  <option value="otro">Otro</option>
-                </select>
-                <div id="error-tipoVehiculo"></div>
-              </div>
-              <div class="form-group">
-                <label for="tamanoVehiculo">Tamaño</label>
-                <select id="tamanoVehiculo" name="tamano">
-                  <option value=""></option>
-                  <option value="pequeno">Pequeño</option>
-                  <option value="mediano">Mediano</option>
-                  <option value="grande">Grande</option>
-                </select>
-                <div id="error-tamanoVehiculo"></div>
-              </div>
-              <button type="submit" class="btn-guardar">Guardar</button>
-            </form>
-          </div>
-          <div class="menu-inferior">
-            <button class="opcion-btn" id="logout">Cerrar sesión</button>
-            <button class="opcion-btn danger">Eliminar cuenta</button>
+            <div class="form-group">
+              <label for="tamanoVehiculo">Tamaño</label>
+              <select id="tamanoVehiculo" name="tamano">
+                <option value=""></option>
+                <option value="pequeno">Pequeño</option>
+                <option value="mediano">Mediano</option>
+                <option value="grande">Grande</option>
+              </select>
+              <div id="error-tamanoVehiculo"></div>
+            </div>
+            <button type="submit" class="btn-guardar">Guardar</button>
+          </form>
+        </div>
+        <div class="menu-inferior">
+          <button class="opcion-btn" id="logout">Cerrar sesión</button>
+          <button class="opcion-btn danger">Eliminar cuenta</button>
+        </div>
+      </div>
+    </aside>
+    <main id="aparkt">
+      <div class="owl-carousel">
+        <div class="item">
+          <video
+            src="../assets/video/Aparkt_corporate_video_202604241138.mp4"
+            autoplay
+            muted
+            playsinline
+          ></video>
+        </div>
+        <div class="item">
+          <img
+            src="../assets/imgCarrusel/Empresa_busca_aparcamiento_202604241132.jpeg"
+            alt="Imagen 1"
+          />
+        </div>
+
+        <div class="item">
+          <img
+            src="../assets/imgCarrusel/Person_holding_smartphone_202604250309.jpeg"
+            alt="Imagen 2"
+          />
+        </div>
+
+        <div class="item">
+          <img
+            src="../assets/imgCarrusel/quiero_un_video_202604241142.jpeg"
+            alt="Imagen 3"
+          />
+        </div>
+      </div>
+      <section class="seccion-principal contenedor">
+        <h1 class="titulo-principal">
+          Aparcar más fácil <br />
+          con <span class="texto-verde">Aparkt</span>
+        </h1>
+        <p class="descripcion">Encuentra plazas en tiempo real fácilmente.</p>
+
+        <div class="contenedor-tarjetas">
+          <div class="tarjeta">Buscar</div>
+          <div class="tarjeta">Aparcar</div>
+          <div class="tarjeta">Indicar</div>
+        </div>
+      </section>
+
+      <section class="contenedor seccion-mapa">
+        <h2>Mapa</h2>
+        <iframe
+          src="http://localhost/Proyecto-TFG-Aparkt/app/views/index.html"
+        ></iframe>
+      </section>
+
+      <section class="seccion-recompensas">
+        <div class="contenedor">
+          <h2>Recompensas</h2>
+          <div class="grid-recompensas">
+            <div>Regístrate</div>
+            <div>Colabora</div>
+            <div>Indica</div>
+            <div>Canjea</div>
           </div>
         </div>
-      </aside>
+      </section>
+
+      <section class="contenedor seccion-historia">
+        <div class="texto-historia">
+          <h2>Historia</h2>
+          <p>Facilitamos el aparcamiento en ciudades.</p>
+        </div>
+        <div class="estadisticas">
+          <div class="estadistica">+15k usuarios</div>
+          <div class="estadistica">+5 ciudades</div>
+          <div class="estadistica">4.8 rating</div>
+          <div class="estadistica">+56 plazas</div>
+        </div>
+      </section>
+
+      <section class="contenedor seccion-equipo">
+        <div>Antonio</div>
+        <div>Adrián</div>
+        <div>Celia</div>
+        <div>Noemí</div>
+      </section>
     </main>
 
     <app-footer></app-footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="estilosAparkt.js"></script>
   </body>
 </html>
