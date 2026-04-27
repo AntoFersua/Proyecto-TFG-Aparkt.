@@ -5,17 +5,19 @@ require_once __DIR__ . "/Model.php";
 
 class PlazaAparcamiento extends Model
 {
-    public function crearPlaza($ubicacion, $tipo, $tamano, $zonaId, $usuarioId = null)
+    public function crearPlaza($ubicacion, $tipo, $tamano, $zonaId, $sourceID, $capaID, $usuarioId = null)
     {
-        $consulta = "INSERT INTO plazaaparcamiento (ubicacion, tipo, tamano, zona_id, usuario_id) 
-                VALUES (ST_GeomFromText(:ubicacion), :tipo, :tamano, :zona_id, :usuario_id)";
+        $consulta = "INSERT INTO plazaaparcamiento (ubicacion, tipo, tamano, zona_id, sourceID, capaID, usuario_id) 
+                VALUES (ST_GeomFromText(:ubicacion), :tipo, :tamano, :zona_id, :sourceID, :capaID, :usuario_id)";
 
         $stmt = $this->_conexion->prepare($consulta);
 
         $stmt->bindValue(":ubicacion", $ubicacion, PDO::PARAM_STR);
         $stmt->bindValue(":tipo", $tipo, PDO::PARAM_STR);
-        $stmt->bindValue(":tamano", $tamano, PDO::PARAM_STR);
+        $stmt->bindValue(":tamano", $tamano, PDO::PARAM_INT);
         $stmt->bindValue(":zona_id", $zonaId, PDO::PARAM_INT);
+        $stmt->bindValue(":sourceID", $sourceID, PDO::PARAM_STR);
+        $stmt->bindValue(":capaID", $capaID, PDO::PARAM_STR);
 
         if ($usuarioId === null) {
             $stmt->bindValue(":usuario_id", null, PDO::PARAM_NULL);
@@ -91,18 +93,20 @@ class PlazaAparcamiento extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function actualizarPlaza($id, $tipo, $tamano, $zonaId)
+    public function actualizarPlaza($id, $tipo, $tamano, $zonaId, $sourceID, $capaID)
     {
         $consulta = "UPDATE plazaaparcamiento 
-                SET tipo = :tipo, tamano = :tamano, zona_id = :zona_id
+                SET tipo = :tipo, tamano = :tamano, zona_id = :zona_id, sourceID = :sourceID, capaID = :capaID
                 WHERE id = :id";
 
         $stmt = $this->_conexion->prepare($consulta);
 
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
         $stmt->bindValue(":tipo", $tipo, PDO::PARAM_STR);
-        $stmt->bindValue(":tamano", $tamano, PDO::PARAM_STR);
+        $stmt->bindValue(":tamano", $tamano, PDO::PARAM_INT);
         $stmt->bindValue(":zona_id", $zonaId, PDO::PARAM_INT);
+        $stmt->bindValue(":sourceID", $sourceID, PDO::PARAM_STR);
+        $stmt->bindValue(":capaID", $capaID, PDO::PARAM_STR);
 
         $stmt->execute();
 

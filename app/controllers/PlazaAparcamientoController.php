@@ -4,11 +4,14 @@ session_start();
 class PlazaAparcamientoController
 {
     private $plazaModelo;
+    private $puntuacionModelo;
 
     public function __construct($conexion)
     {
         require_once __DIR__ . '/../models/plazaAparcamiento.php';
+        require_once __DIR__ . '/../models/SistemaPuntuacion.php';
         $this->plazaModelo = new PlazaAparcamiento($conexion);
+        $this->puntuacionModelo = new SistemaPuntuacion($conexion);
     }
 
     public function crear()
@@ -19,8 +22,10 @@ class PlazaAparcamientoController
 
         $ubicacion = trim($datos['ubicacion'] ?? '');
         $tipo = trim($datos['tipo'] ?? '');
-        $tamano = trim($datos['tamano'] ?? '');
+        $tamano = $datos['tamano'] ?? null;
         $zonaId = $datos['zona_id'] ?? null;
+        $sourceID = trim($datos['sourceID'] ?? '');
+        $capaID = trim($datos['capaID'] ?? '');
 
         if ($ubicacion == '') {
             $errores['ubicacion'] = "La ubicación es obligatoria";
@@ -28,11 +33,17 @@ class PlazaAparcamientoController
         if ($tipo == '') {
             $errores['tipo'] = "El tipo es obligatorio";
         }
-        if ($tamano == '') {
+        if ($tamano === null || $tamano === '') {
             $errores['tamano'] = "El tamaño es obligatorio";
         }
         if ($zonaId === null || $zonaId === '') {
             $errores['zona_id'] = "La zona es obligatoria";
+        }
+        if ($sourceID == '') {
+            $errores['sourceID'] = "El sourceID es obligatorio";
+        }
+        if ($capaID == '') {
+            $errores['capaID'] = "El capaID es obligatorio";
         }
 
         header('Content-Type: application/json');
@@ -45,7 +56,16 @@ class PlazaAparcamientoController
             exit();
         }
 
-        $id = $this->plazaModelo->crearPlaza($ubicacion, $tipo, $tamano, $zonaId);
+        $id = $this->plazaModelo->crearPlaza($ubicacion, $tipo, $tamano, $zonaId, $sourceID, $capaID);
+
+        $usuarioId = $_SESSION['usuario_id'] ?? null;
+        if ($usuarioId !== null) {
+            $this->puntuacionModelo->sumandoPuntuacion(
+                $usuarioId,
+                SistemaPuntuacion::PUNTOS_CREAR,
+                "Registrar plaza de aparcamiento"
+            );
+        }
 
         echo json_encode([
             "status" => "ok",
@@ -140,8 +160,10 @@ class PlazaAparcamientoController
 
         $id = $datos['id'] ?? null;
         $tipo = trim($datos['tipo'] ?? '');
-        $tamano = trim($datos['tamano'] ?? '');
+        $tamano = $datos['tamano'] ?? null;
         $zonaId = $datos['zona_id'] ?? null;
+        $sourceID = trim($datos['sourceID'] ?? '');
+        $capaID = trim($datos['capaID'] ?? '');
 
         if ($id === null) {
             $errores['id'] = "El ID es obligatorio";
@@ -149,11 +171,17 @@ class PlazaAparcamientoController
         if ($tipo == '') {
             $errores['tipo'] = "El tipo es obligatorio";
         }
-        if ($tamano == '') {
+        if ($tamano === null || $tamano === '') {
             $errores['tamano'] = "El tamaño es obligatorio";
         }
         if ($zonaId === null || $zonaId === '') {
             $errores['zona_id'] = "La zona es obligatoria";
+        }
+        if ($sourceID == '') {
+            $errores['sourceID'] = "El sourceID es obligatorio";
+        }
+        if ($capaID == '') {
+            $errores['capaID'] = "El capaID es obligatorio";
         }
 
         header('Content-Type: application/json');
@@ -166,7 +194,7 @@ class PlazaAparcamientoController
             exit();
         }
 
-        $filas = $this->plazaModelo->actualizarPlaza($id, $tipo, $tamano, $zonaId);
+        $filas = $this->plazaModelo->actualizarPlaza($id, $tipo, $tamano, $zonaId, $sourceID, $capaID);
 
         echo json_encode([
             "status" => "ok",
@@ -204,6 +232,12 @@ class PlazaAparcamientoController
 
         $filas = $this->plazaModelo->ocuparPlaza($id, $usuarioId);
 
+        $this->puntuacionModelo->sumandoPuntuacion(
+            $usuarioId,
+            SistemaPuntuacion::PUNTOS_OCUPAR,
+            "Ocupar plaza de aparcamiento"
+        );
+
         echo json_encode([
             "status" => "ok",
             "mensaje" => "Plaza ocupada",
@@ -228,7 +262,18 @@ class PlazaAparcamientoController
             exit();
         }
 
+        $plaza = $this->plazaModelo->obtenerPorId($id);
+        $esDueno = $plaza && $plaza['usuario_id'] == ($_SESSION['usuario_id'] ?? null);
+
         $filas = $this->plazaModelo->liberarPlaza($id);
+
+        if ($esDueno) {
+            $this->puntuacionModelo->sumandoPuntuacion(
+                $_SESSION['usuario_id'],
+                SistemaPuntuacion::PUNTOS_LIBERAR,
+                "Liberar plaza de aparcamiento"
+            );
+        }
 
         echo json_encode([
             "status" => "ok",
