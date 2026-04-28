@@ -38,6 +38,9 @@ class PerfilUsuario extends HTMLElement {
               <button class="opcion-btn anadirVehiculo">
                 Añadir mi vehículo
               </button>
+              <button class="opcion-btn verPuntuacion">
+              Ver puntuación
+              </button>
             </div>
             <form id="formVehiculo" class="form-vehiculo" style="display: none">
               <div class="form-group">
