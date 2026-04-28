@@ -146,5 +146,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+
+  // ========================================================================
+  // VER PUNTUACIÓN
+  // ========================================================================
+
+  document.addEventListener("click", function (e) {
+    if (e.target.closest(".verPuntuacion")) {
+      if (document.querySelector("modal-puntos")) return;
+      const modal = document.createElement("modal-puntos");
+      document.body.appendChild(modal);
+    }
+    
+    const overlay = e.target.closest(".modal-overlay");
+    const botonCerrar = e.target.closest(".modal-button");
+    if (overlay || botonCerrar) {
+      const modal = document.querySelector("modal-puntos");
+      if (modal) modal.remove();
+    }
+  });
   }
 });
