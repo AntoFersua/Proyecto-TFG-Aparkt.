@@ -6,17 +6,19 @@
     <title>Document</title>
     <link rel="stylesheet" href="../estilosGlobales.css" />
     <link rel="stylesheet" href="aparkt.css" />
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
-    <script src="../validacionVehiculo.js"></script>
-    <script src="../funcionesGlobales.js" defer></script>
-    <script src="aparkt.js" type="module"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    <script src="../validacionVehiculo.js"></script>
+    <script src="../funcionesGlobales.js" defer></script>
+    <script src="aparkt.js" type="module"></script>
+    
   </head>
   <body>
     <!--HEADER-->
@@ -118,14 +120,37 @@
       <section class="seccion-principal contenedor">
         <h1 class="titulo-principal">
           Aparcar más fácil <br />
-          con <span class="texto-verde">Aparkt</span>
+          que nunca con <span class="texto-verde">Aparkt</span>
         </h1>
-        <p class="descripcion">Encuentra plazas en tiempo real fácilmente.</p>
-
+        <p class="descripcion">
+          Nuestra plataforma te ayuda a localizar espacios disponibles cerca de
+          tu destino en tiempo real, ahorrándote tiempo y estrés.
+        </p>
         <div class="contenedor-tarjetas">
-          <div class="tarjeta">Buscar</div>
-          <div class="tarjeta">Aparcar</div>
-          <div class="tarjeta">Indicar</div>
+          <div class="tarjeta">
+            <div class="numero">1</div>
+            <h3>Buscar</h3>
+            <p>
+              Encuentra aparcamiento en segundos, introduce tu destino y
+              visualiza las plazas disponibles cerca de él en tiempo real.
+            </p>
+          </div>
+          <div class="tarjeta">
+            <div class="numero">2</div>
+            <h3>Aparcar</h3>
+            <p>
+              Elige la opción que mejor se adapte a ti, llega sin complicaciones
+              y estaciona de forma rápida y segura.
+            </p>
+          </div>
+          <div class="tarjeta">
+            <div class="numero">3</div>
+            <h3>Indicar</h3>
+            <p>
+              Confirma que has estacionado para actualizar la disponibilidad y
+              ayudar a otros conductores a encontrar espacio fácilmente.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -136,29 +161,31 @@
         ></iframe>
       </section>
 
-      <section class="seccion-recompensas">
-        <div class="contenedor">
-          <h2>Recompensas</h2>
-          <div class="grid-recompensas">
-            <div>Regístrate</div>
-            <div>Colabora</div>
-            <div>Indica</div>
-            <div>Canjea</div>
+      <section class="horizontal">
+        <section class="seccion-recompensas">
+          <div class="contenedor">
+            <h2>Recompensas</h2>
+            <div class="grid-recompensas">
+              <div>Regístrate</div>
+              <div>Colabora</div>
+              <div>Indica</div>
+              <div>Canjea</div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="contenedor seccion-historia">
-        <div class="texto-historia">
-          <h2>Historia</h2>
-          <p>Facilitamos el aparcamiento en ciudades.</p>
-        </div>
-        <div class="estadisticas">
-          <div class="estadistica">+15k usuarios</div>
-          <div class="estadistica">+5 ciudades</div>
-          <div class="estadistica">4.8 rating</div>
-          <div class="estadistica">+56 plazas</div>
-        </div>
+        <section class="contenedor seccion-historia">
+          <div class="texto-historia">
+            <h2>Historia</h2>
+            <p>Facilitamos el aparcamiento en ciudades.</p>
+          </div>
+          <div class="estadisticas">
+            <div class="estadistica">+15k usuarios</div>
+            <div class="estadistica">+5 ciudades</div>
+            <div class="estadistica">4.8 rating</div>
+            <div class="estadistica">+56 plazas</div>
+          </div>
+        </section>
       </section>
 
       <section class="contenedor seccion-equipo">
@@ -171,8 +198,6 @@
 
     <app-footer></app-footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="estilosAparkt.js"></script>
   </body>
 </html>

@@ -273,3 +273,17 @@ section {
     flex-direction: column;
   }
 }
+
+/* SECCIÓN DE SCROLL HORIZONTAL */
+.horizontal {
+  display: flex;
+  width: 300vw; /* ajusta según el número de secciones */
+  height: 100vh;
+  overflow: hidden;
+
+  > section {
+    flex: 0 0 100vw; /* cada sección ocupa el ancho completo */
+    height: 100vh;
+  }
+
+}
