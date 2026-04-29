@@ -1,6 +1,7 @@
 import { iniciarAuth, obtenerUsuario, cerrarSesion } from './auth.js';
 import "./components/header.js";
 import "./components/PerfilUsuario.js";
+import "./components/ModalAparcamiento.js";
 
 let usuarioActual = null;
 
@@ -188,12 +189,29 @@ window.addEventListener("DOMContentLoaded", async function () {
 
         //console.log(aparcamiento1);
 
-        mapa.addInteraction('click', {
-          type: 'click',
-          target: { layerId: 'aparcamiento1-fill' },
-          handler: ({ feature }) => {
-            console.log(feature);
+        // Función para abrir el modal del aparcamiento
+        function abrirModalAparcamiento() {
+          const modalExistente = document.querySelector("modal-aparcamiento");
+          if (modalExistente) {
+            modalExistente.remove();
           }
+          const modal = document.createElement("modal-aparcamiento");
+          document.body.appendChild(modal);
+        }
+
+        // Añadir evento click a cada aparcamiento para abrir el modal
+        arrayAparcamientos.forEach(aparcamiento => {
+          mapa.on('click', aparcamiento.layerID, (e) => {
+            e.preventDefault();
+            abrirModalAparcamiento();
+          });
+          // Cambiar cursor al pasar por encima
+          mapa.on('mouseenter', aparcamiento.layerID, () => {
+            mapa.getCanvas().style.cursor = 'pointer';
+          });
+          mapa.on('mouseleave', aparcamiento.layerID, () => {
+            mapa.getCanvas().style.cursor = '';
+          });
         });
 
       });
@@ -246,7 +264,15 @@ window.addEventListener("DOMContentLoaded", async function () {
             );
           });
       }
-      mapa.on("click", obtenerDireccionDeCoordenadas);
+
+      function ModalAparcamiento() {
+        const modal = document.createElement("modal-aparcamiento");
+        document.body.appendChild(modal);
+      }
+
+      mapa.on("click", ModalAparcamiento);
+
+      //mapa.on("click", obtenerDireccionDeCoordenadas);
 
       //Redirigir el mapa a la nueva ubicación
       function buscarLugar(inputBusqueda) {
