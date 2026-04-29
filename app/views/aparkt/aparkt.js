@@ -1,6 +1,7 @@
 // Importamos componenetes
 import '../components/header.js';
 import '../components/Footer.js';
+import '../components/Modalpuntos.js';
 
 import { iniciarAuth, obtenerUsuario, cerrarSesion } from '../auth.js';
 
