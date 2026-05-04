@@ -1,6 +1,6 @@
 // Importamos componenetes
-import '../components/header.js';
-import '../components/perfilUsuario.js';
+import '../components/Header.js';
+import '../components/PerfilUsuario.js';
 import '../components/Footer.js';
 
 

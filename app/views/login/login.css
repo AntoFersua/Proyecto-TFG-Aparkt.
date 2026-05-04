@@ -10,6 +10,7 @@ main {
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
+  background-color: var(--bg-primary);
 }
 
 .telefono {
@@ -27,6 +28,7 @@ main {
     0 4px 8px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
   background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+  background: var(--bg-primary);
 
   &::after {
     position: absolute;
@@ -114,7 +116,7 @@ main {
 
     > p {
       font-size: 0.75rem;
-      color: #888;
+      color: var(--text-muted);
       text-align: center;
       margin-top: 8px;
 
@@ -203,7 +205,7 @@ main {
     &:focus ~ label,
     &:not(:placeholder-shown) ~ label {
       transform: translateY(-51%) translateX(-10px) scale(0.8);
-      background-color: #fff;
+      background-color: var(--bg-primary);
       padding: 0px 5px;
       color: var(--color-azulOscuro);
       font-weight: bold;
@@ -260,7 +262,7 @@ main {
 
   span {
     font-size: 0.72rem;
-    color: #666;
+    color: var(--text-secondary);
   }
 }
 
@@ -275,7 +277,7 @@ main {
     content: "";
     flex: 1;
     height: 1px;
-    background: #ddd;
+    background: var(--divider-color);
   }
 
   span {
@@ -312,7 +314,7 @@ main {
 
   &:hover {
     border-color: #bbb;
-    background: #fafafa;
+    background: var(--bg-secondary);
     transform: translateY(-1px);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   }

@@ -8,6 +8,81 @@
   --color-naranja: #d99e73;
 }
 
+/* Tema claro por defecto */
+:root,
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-card: rgba(255, 255, 255, 0.1);
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --bg-team: #fafafa;
+  --bg-team-hover: var(--color-naranja);
+  --bg-stats: #f5f5f5;
+  --bg-stats-hover: var(--color-verde);
+  --bg-gradient-rewards: linear-gradient(to bottom, var(--color-azulOscuro), var(--color-verde));
+  --bg-banner: linear-gradient(180deg, #fdfcfb 0%, #f5e6d3 50%, #d99e73 100%);
+  --bg-form: rgba(255, 255, 255, 0.5);
+  --bg-opcion-btn: rgba(255, 255, 255, 0.6);
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-muted: #888888;
+  --text-on-dark: #ffffff;
+  --border-opcion: rgba(0, 0, 0, 0.08);
+  --border-banner: rgba(0, 0, 0, 0.1);
+  --divider-color: #ddd;
+  --shadow-card: 0 12px 30px rgba(0, 90, 96, 0.18), 0 6px 14px rgba(52, 175, 114, 0.15);
+}
+
+/* Tema oscuro - preferencia del sistema (baja prioridad) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-card: rgba(22, 33, 62, 0.6);
+    --bg-card-hover: rgba(22, 33, 62, 0.9);
+    --bg-team: #1e2a45;
+    --bg-team-hover: var(--color-naranja);
+    --bg-stats: #1e2a45;
+    --bg-stats-hover: var(--color-verde);
+    --bg-gradient-rewards: linear-gradient(to bottom, #003d42, #1a6b47);
+    --bg-banner: linear-gradient(180deg, #1a1a2e 0%, #1e2a45 50%, #2d3a52 100%);
+    --bg-form: rgba(22, 33, 62, 0.5);
+    --bg-opcion-btn: rgba(30, 42, 69, 0.7);
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-muted: #888888;
+    --text-on-dark: #ffffff;
+    --border-opcion: rgba(255, 255, 255, 0.08);
+    --border-banner: rgba(255, 255, 255, 0.05);
+    --divider-color: #333;
+    --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.4), 0 6px 14px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Tema oscuro manual (alta prioridad - sobreescribe todo) */
+:root[data-theme="dark"] {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-card: rgba(22, 33, 62, 0.6);
+  --bg-card-hover: rgba(22, 33, 62, 0.9);
+  --bg-team: #1e2a45;
+  --bg-team-hover: var(--color-naranja);
+  --bg-stats: #1e2a45;
+  --bg-stats-hover: var(--color-verde);
+  --bg-gradient-rewards: linear-gradient(to bottom, #003d42, #1a6b47);
+  --bg-banner: linear-gradient(180deg, #1a1a2e 0%, #1e2a45 50%, #2d3a52 100%);
+  --bg-form: rgba(22, 33, 62, 0.5);
+  --bg-opcion-btn: rgba(30, 42, 69, 0.7);
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-muted: #888888;
+  --text-on-dark: #ffffff;
+  --border-opcion: rgba(255, 255, 255, 0.08);
+  --border-banner: rgba(255, 255, 255, 0.05);
+  --divider-color: #333;
+  --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.4), 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
 *,
 *::before,
 *::after {
@@ -22,6 +97,9 @@ body {
   display: flex;
   flex-direction: column;
   font-family: "Roboto", Arial, Verdana, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* HEADER */
@@ -306,7 +384,7 @@ main img {
   right: 0;
   width: 300px;
   height: calc(100vh - 70px);
-  background: linear-gradient(180deg, #fdfcfb 0%, #f5e6d3 50%, #d99e73 100%);
+  background: var(--bg-banner);
   padding: 20px;
   display: none;
   flex-direction: column;
@@ -362,9 +440,9 @@ main img {
 
 .opcion-btn {
   padding: 10px 14px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.6);
-  color: #333;
+  border: 1px solid var(--border-opcion);
+  background: var(--bg-opcion-btn);
+  color: var(--text-primary);
   font-size: 13px;
   border-radius: 8px;
   transition: all 0.2s ease;
@@ -451,7 +529,7 @@ main img {
   flex-direction: column;
   gap: 20px;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--bg-form);
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   width: 100%;

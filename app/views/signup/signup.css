@@ -10,6 +10,7 @@ main {
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
+  background-color: var(--bg-primary);
 }
 
 .telefono {
@@ -27,6 +28,7 @@ main {
     0 4px 8px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
   background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+  background: var(--bg-primary);
 
   &::after {
     position: absolute;
@@ -93,7 +95,7 @@ main {
 
     > p {
       font-size: 0.75rem;
-      color: #888;
+      color: var(--text-muted);
       text-align: center;
       margin-top: 8px;
 
@@ -120,7 +122,7 @@ main {
   .paso {
     width: 40px;
     height: 4px;
-    background: #ddd;
+    background: var(--divider-color);
     border-radius: 2px;
     transition: background 0.3s ease;
 
@@ -187,7 +189,7 @@ main {
     &:focus ~ label,
     &:not(:placeholder-shown) ~ label {
       transform: translateY(-51%) translateX(-10px) scale(0.8);
-      background-color: #fff;
+      background-color: var(--bg-primary);
       padding: 0px 5px;
       color: var(--color-azulOscuro);
       font-weight: bold;
@@ -199,7 +201,7 @@ main {
 
   small {
     font-size: 0.6rem;
-    color: #999;
+    color: var(--text-muted);
     display: block;
     margin-top: 2px;
     padding-left: 4px;
@@ -254,7 +256,7 @@ main {
 
   span {
     font-size: 0.65rem;
-    color: #666;
+    color: var(--text-secondary);
   }
 }
 
@@ -355,4 +357,77 @@ main {
   .main-izquierdo img {
     height: 200px;
   }
+}
+
+/* MODO OSCURO - Igual que login */
+:root[data-theme="dark"] .telefono {
+  background: var(--bg-primary);
+  border-color: #444;
+}
+
+:root[data-theme="dark"] .telefono::after,
+:root[data-theme="dark"] .telefono::before {
+  background: #444;
+}
+
+:root[data-theme="dark"] .telefono > .notch {
+  background: #444;
+}
+
+:root[data-theme="dark"] .telefono form h2 {
+  color: #fff;
+}
+
+:root[data-theme="dark"] .telefono form > p {
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .telefono form > p a {
+  color: #fff;
+}
+
+:root[data-theme="dark"] .indicador-paso .paso {
+  background: #444;
+}
+
+:root[data-theme="dark"] .input-field label {
+  color: #888;
+}
+
+:root[data-theme="dark"] .input-field input,
+:root[data-theme="dark"] .input-field select {
+  background: #2a2a3e;
+  color: #fff;
+  border-color: #444;
+}
+
+:root[data-theme="dark"] .input-field input:focus,
+:root[data-theme="dark"] .input-field select:focus {
+  border-color: var(--color-azulOscuro);
+  box-shadow: 0 0 0 3px rgba(0, 90, 96, 0.3);
+}
+
+:root[data-theme="dark"] .ver-contrasena svg {
+  stroke: #aaa;
+}
+
+:root[data-theme="dark"] .checkbox-wrapper span {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .nav-pasos .owl-prev {
+  color: #ccc;
+  border-color: #555;
+}
+
+:root[data-theme="dark"] .nav-pasos .owl-next {
+  background: linear-gradient(135deg, var(--color-azulOscuro), #007a82);
+}
+
+:root[data-theme="dark"] .btn-crear {
+  background: linear-gradient(135deg, var(--color-verde), #2a9d5e);
+}
+
+:root[data-theme="dark"] .main-izquierdo img {
+  filter: drop-shadow(0 8px 24px rgba(0, 90, 96, 0.4));
 }
