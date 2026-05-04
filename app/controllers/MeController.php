@@ -8,8 +8,14 @@
  * El frontend (auth.js) llama a este endpoint para saber si el usuario está logueado.
  */
 
-// Configuración de sesión - permite cookies en mismo sitio (Lax)
-ini_set('session.cookie_samesite', 'Lax');
+// Configuración de sesión - permite cookies en todo el dominio
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'secure' => false,
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
@@ -23,16 +29,23 @@ header('Content-Type: application/json');
 // Esta variable se crea en LoginController.php cuando el usuario hace login correctamente
 $logueado = isset($_SESSION['usuario']) && !empty($_SESSION['usuario']);
 
-// Devuelve JSON con:
-// - logueado: boolean indicando si hay sesión activa
-// - usuario: el email del usuario si está logueado, null si no
-// - session_id: ID de la sesión (debug)
-// - session_contents: contenido de la sesión (debug)
-// - cookies: cookies actuales (debug)
-echo json_encode([
+$response = [
     'logueado' => $logueado,
     'usuario' => $logueado ? $_SESSION['usuario'] : null,
     'session_id' => session_id(),
     'session_contents' => $_SESSION,
     'cookies' => $_COOKIE
-]);
+];
+
+// If user is logged in, also fetch their score
+if ($logueado && isset($_SESSION['usuario_id'])) {
+    require_once __DIR__ . '/../models/SistemaPuntuacion.php';
+    $puntuacionModel = new SistemaPuntuacion();
+    $response['puntuacion'] = $puntuacionModel->obtenerPuntuacion($_SESSION['usuario_id']);
+    $response['usuario_id'] = $_SESSION['usuario_id'];
+    $response['puntosCrear'] = SistemaPuntuacion::PUNTOS_CREAR;
+    $response['puntosOcupar'] = SistemaPuntuacion::PUNTOS_OCUPAR;
+    $response['puntosLiberar'] = SistemaPuntuacion::PUNTOS_LIBERAR;
+}
+
+echo json_encode($response);

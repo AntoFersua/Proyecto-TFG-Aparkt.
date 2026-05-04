@@ -1,14 +1,49 @@
+function obtenerRutaBase() {
+  const ruta = window.location.pathname;
+  if (ruta.includes("/Proyecto-TFG-Aparkt/")) return "/Proyecto-TFG-Aparkt";
+  if (ruta.includes("/app/")) return "";
+  return "";
+}
+
 class Modalpuntos extends HTMLElement {
   constructor() {
     super();
+    this.puntuacion = 0;
+    this.puntosCrear = 10;
+    this.puntosOcupar = 5;
+    this.puntosLiberar = 15;
+    this.cargando = true;
   }
 
-  // Método que se llama cuando el elemento se conecta al DOM.
   connectedCallback() {
+    this.fetchPuntuacion();
+  }
+
+  async fetchPuntuacion() {
+    try {
+      const rutaBase = obtenerRutaBase();
+      const response = await fetch(rutaBase + "/app/controllers/MeController.php", {
+        credentials: "include"
+      });
+      const data = await response.json();
+
+      if (data.logueado) {
+        this.puntuacion = data.puntuacion ?? 0;
+        this.puntosCrear = data.puntosCrear ?? 100;
+        this.puntosOcupar = data.puntosOcupar ?? 50;
+        this.puntosLiberar = data.puntosLiberar ?? 150;
+      }
+    } catch (error) {
+      console.error("Error al obtener puntuación:", error);
+    }
+
+    this.cargando = false;
     this.render();
   }
 
   render() {
+    const puntos = this.cargando ? "..." : Number(this.puntuacion).toLocaleString("es-ES");
+
     this.innerHTML = `<style>
   * {
     box-sizing: border-box;
@@ -17,7 +52,6 @@ class Modalpuntos extends HTMLElement {
     font-family: Arial, sans-serif;
   }
 
-  /* Overlay */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -30,7 +64,6 @@ class Modalpuntos extends HTMLElement {
     z-index: 1000;
   }
 
-  /* Modal */
   .modal {
     width: 100%;
     max-width: 420px;
@@ -48,7 +81,6 @@ class Modalpuntos extends HTMLElement {
     gap: 24px;
   }
 
-  /* Header */
   .modal-header {
     text-align: center;
   }
@@ -85,7 +117,6 @@ class Modalpuntos extends HTMLElement {
     color: #555;
   }
 
-  /* List */
   .rewards-list {
     display: flex;
     flex-direction: column;
@@ -110,7 +141,6 @@ class Modalpuntos extends HTMLElement {
     color: #2ecc71;
   }
 
-  /* Button */
   .modal-button {
     width: 100%;
     padding: 14px;
@@ -128,9 +158,6 @@ class Modalpuntos extends HTMLElement {
     transform: scale(0.97);
   }
 </style>
-</head>
-
-<body>
 
 <div class="modal-overlay">
   <div class="modal">
@@ -140,25 +167,25 @@ class Modalpuntos extends HTMLElement {
         <div class="modal-title">Mis Recompensas</div>
 
         <div class="points-circle">
-          <div class="points-value">1,250</div>
+          <div class="points-value">${puntos}</div>
           <div class="points-label">Puntos</div>
         </div>
       </div>
 
       <div class="rewards-list">
         <div class="reward-item">
-          <span class="reward-text">Liberar plazas</span>
-          <span class="reward-points">+500 pts</span>
+          <span class="reward-text">Crear plazas</span>
+          <span class="reward-points">+${this.puntosCrear} pts</span>
         </div>
 
         <div class="reward-item">
           <span class="reward-text">Ocupar plazas</span>
-          <span class="reward-points">+450 pts</span>
+          <span class="reward-points">+${this.puntosOcupar} pts</span>
         </div>
 
         <div class="reward-item">
-          <span class="reward-text">Marcar plazas</span>
-          <span class="reward-points">+300 pts</span>
+          <span class="reward-text">Liberar plazas</span>
+          <span class="reward-points">+${this.puntosLiberar} pts</span>
         </div>
       </div>
 
@@ -171,5 +198,4 @@ class Modalpuntos extends HTMLElement {
   }
 }
 
-// Define el nuevo elemento personalizado "app-footer" y lo asocia con la clase footer.
 customElements.define("modal-puntos", Modalpuntos);

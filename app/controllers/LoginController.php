@@ -92,7 +92,15 @@ class LoginController
         }
 
         //si todo está bien, crear sesión
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'secure' => false,
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
         session_start();
+        session_regenerate_id(true);
         $_SESSION["usuario"] = $usuario;
         $_SESSION["usuario_id"] = $user_info['id'];
         $_SESSION["vehiculo"] = $vehiculo_info;

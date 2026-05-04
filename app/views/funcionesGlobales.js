@@ -83,14 +83,14 @@ document.addEventListener("DOMContentLoaded", () => {
     botonLogout.addEventListener("click", function (e) {
       e.preventDefault();
       
-      // Determinar la ruta base
       const path = window.location.pathname;
       let rutaBase = '';
-      if (path.includes('/PRUEBAS/')) {
+      if (path.includes('/Proyecto-TFG-Aparkt/')) {
+        rutaBase = '/Proyecto-TFG-Aparkt';
+      } else if (path.includes('/PRUEBAS/')) {
         rutaBase = '/PRUEBAS';
       }
       
-      // Redirigir al logout
       window.location.href = rutaBase + '/app/controllers/Logout.php';
     });
   }
@@ -117,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (formVehiculo) {
-    // Inicializar JustValidate
     console.log("JustValidate:", typeof window.JustValidate);
     if (typeof window.JustValidate !== "undefined") {
       window.inicializarValidacionVehiculo();
@@ -125,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("JustValidate no cargado");
     }
 
-    // Para el efecto de label flotante
     const selects = formVehiculo.querySelectorAll("select");
     selects.forEach(function (select) {
       select.addEventListener("change", function () {
@@ -146,6 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+  }
 
   // ========================================================================
   // VER PUNTUACIÓN
@@ -165,5 +164,4 @@ document.addEventListener("DOMContentLoaded", () => {
       if (modal) modal.remove();
     }
   });
-  }
 });

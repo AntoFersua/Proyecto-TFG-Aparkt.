@@ -5,9 +5,9 @@ require_once __DIR__ . "/Model.php";
 
 class SistemaPuntuacion extends Model
 {
-    const PUNTOS_CREAR = 10;
-    const PUNTOS_OCUPAR = 5;
-    const PUNTOS_LIBERAR = 15;
+    const PUNTOS_CREAR = 100;
+    const PUNTOS_OCUPAR = 50;
+    const PUNTOS_LIBERAR = 150;
 
     public function obtenerPuntuacion($usuarioId)
     {
